@@ -44,7 +44,11 @@
     queryparts[orderby][]:description
     ```
     - ![](https://trello-attachments.s3.amazonaws.com/5ea73745e908e04a038ca5ef/528x725/67967e1f92a12415f1b11413d7f9e4f6/image.png) 
-
+- **POST** /apify/read/raw?context=c1&dbname=db_one
+    ```
+    query:SELECT * FROM table_1 ORDER BY 1 DESC
+    ```
+    - ![](https://trello-attachments.s3.amazonaws.com/5ea73745e908e04a038ca5ef/958x656/6e269ca99b6aa4287d182b76486d7747/image.png)
 
 ## Contextos
 ```json
