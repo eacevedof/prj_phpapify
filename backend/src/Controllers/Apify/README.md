@@ -58,8 +58,8 @@
   queryparts[fields][description]:from-ddd
   queryparts[fields][codeerp]:88  
   ```
-  ! [](https://trello-attachments.s3.amazonaws.com/5ea73745e908e04a038ca5ef/1029x562/70129150852ecc5402bd4de7655fc353/image.png)
-  
+  ![](https://trello-attachments.s3.amazonaws.com/5ea73745e908e04a038ca5ef/1029x562/70129150852ecc5402bd4de7655fc353/image.png)
+
 
 ## Contextos
 ```json
