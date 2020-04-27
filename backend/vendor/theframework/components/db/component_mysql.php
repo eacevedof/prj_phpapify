@@ -138,6 +138,7 @@ class ComponentMysql
     public function show_errors(){echo "<pre>".var_export($this->arErrors,1);}
     
     public function add_conn($k,$v){$this->arConn[$k]=$v;}
+    public function get_conn($k){return $this->arConn[$k];}
     public function get_affected(){return $this->iAffected;}
     
 }//ComponentMysql

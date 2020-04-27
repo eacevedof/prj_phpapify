@@ -35,4 +35,11 @@ class DbsService extends AppService
         return $arRows;
     }
 
+    public function is_db($database)
+    {
+        $config = $this->oContext->get_by_id($this->idContext);
+        $cofigdb = $config[0]["config"]["database"] ?? "";
+        return  $cofigdb === $database;
+    }
+
 }//DbsService

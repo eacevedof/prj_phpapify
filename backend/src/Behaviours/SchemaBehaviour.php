@@ -50,8 +50,7 @@ class SchemaBehaviour extends AppModel
     
     public function get_tables($sDb="")
     {
-        if(!$sDb)
-            $sDb = $this->get_config("db","database");
+
         $sSQL = $this->oQServ->get_tables($sDb);
         //bug($sSQL);
         $arRows = $this->query($sSQL,0);
