@@ -128,6 +128,7 @@ class WriterService extends AppService
 
     public function write_raw($sSQL)
     {
+        if(!$sSQL) return [];
         if(!$this->isError)
         {
             $r = $this->oBehav->write_raw($sSQL);

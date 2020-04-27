@@ -68,6 +68,7 @@ class ReaderService extends AppService
 
     public function read_raw($sSQL)
     {
+        if(!$sSQL) return [];
         $this->sSQL = $sSQL;
         $r = $this->oBehav->read_raw($sSQL);   
         if($this->oBehav->is_error())
