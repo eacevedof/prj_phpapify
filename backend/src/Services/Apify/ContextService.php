@@ -15,15 +15,21 @@ use TheFramework\Components\Db\Context\ComponentContext;
 class ContextService extends AppService
 {
     private $oContext;
-    private $idContext;
-    
-    public function __construct($sPathcontext="",$idContext="") 
+
+    public function __construct()
     {
-        $this->oContext = new ComponentContext($_ENV["APP_CONTEXTS"],$idContext);
+        $this->oContext = new ComponentContext($_ENV["APP_CONTEXTS"]);
+        //bug($this->oContext,"ContextService");
     }
     
     public function get_context_by_id($id){return $this->oContext->get_by("id", $id);}
     public function get_noconfig(){return $this->oContext->get_noconfig();}
-    public function get_noconfig_by_id($id){return $this->oContext->get_noconfig_by("id",$id);}    
+    public function get_noconfig_by_id($id){return $this->oContext->get_noconfig_by("id",$id);}
+    public function is_context($idContext)
+    {
+        $arContext = $this->oContext->get_by_id($idContext);
+        //bug($arContext,"is_context");
+        return !empty($arContext);
+    }
     
 }//ContextService

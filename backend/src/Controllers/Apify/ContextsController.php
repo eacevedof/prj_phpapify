@@ -30,13 +30,26 @@ class ContextsController extends AppController
     public function index()
     {
         $oServ = new ContextService();
-        $arJson = $oServ->get_noconfig();
-//pr($arJson,"ContextsController.index.arJson");die;
 
-        if($this->is_get("id"))
-            $arJson = $oServ->get_noconfig_by_id($this->get_get("id"));
-        
+        $idContext = $this->get_get("id");
         $oJson = new HelperJson();
+        if($idContext)
+        {
+            //pr($oServ->is_context($idContext));die;
+            //pr("con");die;
+            if(!$oServ->is_context($idContext))
+                $oJson->set_code(HelperJson::CODE_NOT_FOUND)->
+                        set_error("context does not exist")->
+                        show(1);
+
+            $arJson = $oServ->get_noconfig_by_id($this->get_get("id"));
+        }
+        else
+        {
+            //pr("no id");
+            $arJson = $oServ->get_noconfig();
+        }
+
         if($oServ->is_error()) 
             $oJson->set_code(HelperJson::CODE_INTERNAL_SERVER_ERROR)->
                     set_error($oServ->get_errors())->

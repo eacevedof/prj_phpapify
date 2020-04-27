@@ -1,6 +1,6 @@
 [
   {
-    "id":"devlocal-1", 
+    "id":"c1",
     "alias":"Docker mysql", 
     "description":"Docker mysql", 
     "config":{

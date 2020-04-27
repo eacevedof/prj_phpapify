@@ -34,5 +34,5 @@ class DbsService extends AppService
         //bug($this->oBehav);die;
         return $arRows;
     }
-    
+
 }//DbsService

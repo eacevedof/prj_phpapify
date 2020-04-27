@@ -9,30 +9,32 @@
  */
 namespace TheFramework\Components\Db\Context;
 
-class ComponentContext 
+class ComponentContext
 {
     private $isError;
-    private $arErrors; 
-    
+    private $arErrors;
+
     private $arContexts;
+    private $arContextNoconf;
 
     private $idSelected;
     private $arSelected;
-    
+
     public function __construct($sPathfile="", $idSelected="")
     {
         $this->idSelected = $idSelected;
         $this->arContexts = [];
-        if(!$sPathfile) $sPathfile = $_ENV["APP_CONTEXTS"];
+        if(!$sPathfile) $sPathfile = $_ENV["APP_CONTEXTS"] ?? __DIR__.DIRECTORY_SEPARATOR."contexts.json";
         if(!is_file($sPathfile))
         {
             $this->add_error("No context file found: $sPathfile");
             return -1;
         }
         $this->load_contextjs($sPathfile);
+        $this->load_context_noconf();
         $this->load_selected();
     }
-    
+
     private function load_contextjs($sPathfile)
     {
         if($sPathfile)
@@ -40,12 +42,23 @@ class ComponentContext
             {
                 $sJson = file_get_contents($sPathfile);
                 $this->arContexts = json_decode($sJson,1);
-                //print_r($this->arContexts);
             }
             else
                 $this->add_error("load_contextjs: file $sPathfile not found");
         else
             $this->add_error("load_contextjs: no pathfile passed");
+    }
+
+    /**
+     * carga la información que no es sensible, por eso se elimina config
+     */
+    private function load_context_noconf()
+    {
+        foreach($this->arContexts as $arContext)
+        {
+            unset($arContext["config"]);
+            $this->arContextNoconf[] = $arContext;
+        }
     }
 
     private function load_selected()
@@ -55,25 +68,26 @@ class ComponentContext
         if($this->arSelected["ctx"])
             $this->arSelected["ctx"] = $this->arSelected["ctx"][array_keys($this->arSelected["ctx"])[0]];
 
+        $this->arSelected["noconfig"] = $this->get_noconfig_by("id",$this->idSelected);
         //pr($this->arSelected,"arSelected");
     }
-    
+
     private function get_filter_level_1($sKey, $sValue, $arArray=[])
     {
         if(!$arArray) $arArray = $this->arContexts;
-        
+
         $arFiltered = array_filter($arArray, function($arConfig) use($sKey,$sValue) {
             return $arConfig[$sKey] == $sValue;
         });
         return $arFiltered;
-    }    
-    
+    }
+
     public function get_config(){ return $this->arContexts;}
-    
+
     public function get_by_id($id){ return $this->get_filter_level_1("id",$id); }
-    
+
     public function get_by($key,$val){ return $this->get_filter_level_1($key,$val); }
-    
+
     public function get_config_by($key,$val)
     {
         $arConfig = $this->get_filter_level_1($key,$val);
@@ -84,15 +98,26 @@ class ComponentContext
         }
         return [];
     }
-    
+
     public function get_selected(){return $this->arSelected;}
     public function get_selected_id(){return $this->arSelected["ctx"]["id"];}
     public function get_selected_db(){return $this->arSelected["ctx"]["config"]["database"];}
 
-    public function get_errors(){return isset($this->arErrors)?$this->arErrors:[];}     
+    public function get_noconfig_by($key,$val)
+    {
+        $arConfig = $this->get_filter_level_1($key,$val,$this->arContextNoconf);
+        if($arConfig)
+        {
+            return $arConfig[array_keys($arConfig)[0]];
+        }
+        return [];
+    }
+
+    public function get_noconfig(){return $this->arContextNoconf;}
+    public function get_errors(){return isset($this->arErrors)?$this->arErrors:[];}
     public function is_error(){return $this->isError;}
     private function add_error($sMessage){$this->isError = true; $this->arErrors[] = $sMessage;}
-    
+
 }//ComponentContext
 
 /*
@@ -110,9 +135,7 @@ class ComponentContext
                     [user] => xxx
                     [password] => slavereader
                 )
-
         )
-
     [1] => Array
         (
             [id] => dev
@@ -126,9 +149,7 @@ class ComponentContext
                     [user] => root
                     [password] => yyy
                 )
-
         )
-
     [2] => Array
         (
             [id] => draco
@@ -142,8 +163,6 @@ class ComponentContext
                     [user] => stratebi
                     [password] => zzz
                 )
-
         )
-
 )
 */

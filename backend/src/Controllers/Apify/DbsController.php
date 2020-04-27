@@ -9,6 +9,7 @@
  */
 namespace App\Controllers\Apify;
 
+use App\Services\Apify\ContextService;
 use TheFramework\Helpers\HelperJson;
 use App\Controllers\AppController;
 use App\Services\Apify\DbsService;
@@ -23,13 +24,20 @@ class DbsController extends AppController
     }
     
     /**
-     * ruta:    <dominio>/apify/dbs/{id}
+     * ruta:    <dominio>/apify/dbs/{id_context}
      * Muestra los schemas
      */
     public function index()
     {
         $oJson = new HelperJson();
         $idContext = $this->get_get("id_context");
+
+        $oServ = new ContextService();
+        if(!$oServ->is_context($idContext))
+            $oJson->set_code(HelperJson::CODE_NOT_FOUND)->
+            set_error("context does not exist")->
+            show(1);
+
         $oServ = new DbsService($idContext);
         $arJson = $oServ->get_all();
 
