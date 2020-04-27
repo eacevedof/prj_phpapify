@@ -7,7 +7,7 @@
       "type":"mysql",
       "server":"127.0.0.1",
       "port":"3350",
-      "database":"db",
+      "database":"db_one",
       "user":"root",
       "password":"root"
     }
