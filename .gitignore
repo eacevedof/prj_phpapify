@@ -1,0 +1,9 @@
+!/backend/vendor/
+/backend/vendor/*
+!/backend/vendor/theframework/
+/backend/tests/logs/
+/backend/src/logs/
+/backend/src/config/config.php
+/backend/src/config/contexts.json
+/backend/public/temp/
+.idea
