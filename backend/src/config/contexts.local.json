@@ -16,6 +16,11 @@
         "database":"db_two",
         "user":"root",
         "password":"root"
+      },
+      {
+        "database": "sf5-expenses-api_api",
+        "user":"root",
+        "password":"root"
       }
     ]
   },

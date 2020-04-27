@@ -31,6 +31,7 @@ class TablesService extends AppService
         
         $this->oContext = new ComponentContext($_ENV["APP_CONTEXTS"],$idContext);
         $oDb = DbFactory::get_dbobject_by_ctx($this->oContext,$sDb);
+        //pr($oDb);die;
         $this->oBehav = new SchemaBehaviour($oDb);
     }
     

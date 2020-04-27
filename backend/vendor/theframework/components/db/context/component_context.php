@@ -108,7 +108,10 @@ class ComponentContext
 
     public function get_selected(){return $this->arSelected;}
     public function get_selected_id(){return $this->arSelected["ctx"]["id"];}
-    public function get_selected_db(){return $this->arSelected["ctx"]["schemas"]["database"];}
+
+    public function get_databases(){
+        return $this->arSelected["ctx"]["schemas"];
+    }
 
     public function get_noconfig_by($key,$val)
     {

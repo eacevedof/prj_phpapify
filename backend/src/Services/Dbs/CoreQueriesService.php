@@ -55,6 +55,7 @@ class CoreQueriesService extends AppService
         if($sTable) $sSQL .= " AND table_name='$sTable'";
 
         $sSQL .= " ORDER BY 1";
+        //pr($sSQL,"sql");
         return $sSQL;
     }//get_tables
 
