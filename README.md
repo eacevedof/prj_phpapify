@@ -23,3 +23,14 @@ php run.php --class=App.Services.Dbs.SchemaService --method=get_tables
 php run.php --class=App.Services.Dbs.SchemaService --method=get_tables_info --sTables=insertion_orders,bigdata_banners,bigdata_placements,super_black_list,line_items,insertion_orders_placement_type,insertion_orders_placement_tactic,pmp_deals,pmp_deals_placements
 ```
 
+# COMPOSER EN IONOS
+- hay que ejecutar el ionos.sh
+- despues lanzar la siguiente linea:
+    - esto da error: `php composer.phar`
+    ```
+    parse error</b>: syntax error, unexpected T_STRING in composer.phar</b> on line <b>102</b><br />
+    ```
+    - con esta funciona:
+    - `/usr/bin/php7.1-cli -d 'memory_limit=-1' ~/composer.phar update -o --ignore-platform-reqs`
+    - sacado de [aqui](https://www.ionos.com/community/hosting/php/using-php-composer-in-11-ionos-webhosting-packages/)
+        
