@@ -29,7 +29,7 @@ class TablesService extends AppService
         $this->sDb = $sDb;
         $this->sTableName = $sTable;
         
-        $this->oContext = new ComponentContext(AppService::PATH_CONTEXTSS_JSON,$idContext);
+        $this->oContext = new ComponentContext($_ENV["APP_CONTEXTS"],$idContext);
         $oDb = DbFactory::get_dbobject_by_ctx($this->oContext,$sDb);
         $this->oBehav = new SchemaBehaviour($oDb);
     }

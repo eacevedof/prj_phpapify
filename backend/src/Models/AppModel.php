@@ -12,13 +12,11 @@ namespace App\Models;
 use TheFramework\Components\Db\ComponentMysql;
 use TheFramework\Components\Db\ComponentCrud;
 
-use App\Traits\AppConfigTrait;
 use App\Traits\AppErrorTrait;
 use App\Traits\AppLogTrait;
 
 class AppModel 
 {
-    use AppConfigTrait;
     use AppErrorTrait;
     use AppLogTrait;
     
@@ -31,15 +29,7 @@ class AppModel
     {
         $this->oDb = $oDb;
         if(!$this->oDb)
-        {
-            $arConfig = $this->get_config("db");
-            $oDb = new ComponentMysql();
-            $oDb->add_conn("server",$arConfig["server"]);
-            $oDb->add_conn("database",$arConfig["database"]);
-            $oDb->add_conn("user",$arConfig["user"]);
-            $oDb->add_conn("password",$arConfig["password"]);
-            $this->oDb = $oDb;
-        }
+            throw new \Exception("No ddbobject in AppModel");
     }
         
     public function query($sSQL,$iCol=NULL,$iRow=NULL)

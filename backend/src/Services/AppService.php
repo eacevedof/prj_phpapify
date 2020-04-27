@@ -10,18 +10,14 @@
  */
 namespace App\Services;
 
-use App\Traits\AppConfigTrait;
 use App\Traits\AppErrorTrait;
 use App\Traits\AppLogTrait;
 
 class AppService 
 {
-    use AppConfigTrait;
     use AppErrorTrait;
     use AppLogTrait;
-    
-    const PATH_CONTEXTSS_JSON = PATH_SRC_CONFIG.DS."contexts.json";
-    
+
     public function __construct(){;}
  
     public function trim(&$arPost)

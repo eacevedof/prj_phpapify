@@ -31,7 +31,7 @@ class FieldsService extends AppService
         $this->sTableName = $sTable;
         $this->sFieldName = $sFieldName;
         
-        $this->oContext = new ComponentContext(AppService::PATH_CONTEXTSS_JSON,$idContext);
+        $this->oContext = new ComponentContext($_ENV["APP_CONTEXTS"],$idContext);
         $oDb = DbFactory::get_dbobject_by_ctx($this->oContext,$sDb);
         $this->oBehav = new SchemaBehaviour($oDb);
     }

@@ -32,7 +32,7 @@ class WriterService extends AppService
         $this->idContext = $idContext;
         $this->sDb = $sDb;
         
-        $this->oContext = new ComponentContext(AppService::PATH_CONTEXTSS_JSON,$idContext);
+        $this->oContext = new ComponentContext($_ENV["APP_CONTEXTS"],$idContext);
         $oDb = DbFactory::get_dbobject_by_ctx($this->oContext,$sDb);
         $this->oBehav = new SchemaBehaviour($oDb);
         $this->arActions = ["insert","update","delete","drop","alter"];

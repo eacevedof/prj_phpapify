@@ -15,8 +15,7 @@ class ComponentContext
     private $arErrors; 
     
     private $arContexts;
-    private $arContextNoconf;
-    
+
     private $idSelected;
     private $arSelected;
     
@@ -24,14 +23,13 @@ class ComponentContext
     {
         $this->idSelected = $idSelected;
         $this->arContexts = [];
-        if(!$sPathfile) $sPathfile = __DIR__.DIRECTORY_SEPARATOR."contexts.json";
+        if(!$sPathfile) $sPathfile = $_ENV["APP_CONTEXTS"];
         if(!is_file($sPathfile))
         {
             $this->add_error("No context file found: $sPathfile");
             return -1;
         }
         $this->load_contextjs($sPathfile);
-        $this->load_context_noconf();
         $this->load_selected();
     }
     
@@ -42,22 +40,14 @@ class ComponentContext
             {
                 $sJson = file_get_contents($sPathfile);
                 $this->arContexts = json_decode($sJson,1);
+                //print_r($this->arContexts);
             }
             else
                 $this->add_error("load_contextjs: file $sPathfile not found");
         else
             $this->add_error("load_contextjs: no pathfile passed");
     }
-    
-    private function load_context_noconf()
-    {
-        foreach($this->arContexts as $arContext)
-        {
-            unset($arContext["config"]);
-            $this->arContextNoconf[] = $arContext;
-        }
-    }
-    
+
     private function load_selected()
     {
         //si no se pasa id se asume que no se ha seleccionado un contexto
@@ -65,7 +55,6 @@ class ComponentContext
         if($this->arSelected["ctx"])
             $this->arSelected["ctx"] = $this->arSelected["ctx"][array_keys($this->arSelected["ctx"])[0]];
 
-        $this->arSelected["noconfig"] = $this->get_noconfig_by("id",$this->idSelected);
         //pr($this->arSelected,"arSelected");
     }
     
@@ -99,18 +88,7 @@ class ComponentContext
     public function get_selected(){return $this->arSelected;}
     public function get_selected_id(){return $this->arSelected["ctx"]["id"];}
     public function get_selected_db(){return $this->arSelected["ctx"]["config"]["database"];}
-    
-    public function get_noconfig_by($key,$val)
-    {
-        $arConfig = $this->get_filter_level_1($key,$val,$this->arContextNoconf);
-        if($arConfig)
-        {
-            return $arConfig[array_keys($arConfig)[0]];
-        }
-        return [];
-    }
-    
-    public function get_noconfig(){return $this->arContextNoconf;}
+
     public function get_errors(){return isset($this->arErrors)?$this->arErrors:[];}     
     public function is_error(){return $this->isError;}
     private function add_error($sMessage){$this->isError = true; $this->arErrors[] = $sMessage;}

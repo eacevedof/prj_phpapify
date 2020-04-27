@@ -25,8 +25,12 @@ class ComponentMysql
 
     private function get_conn_string()
     {
-        $arCon["mysql:host"] = (isset($this->arConn["server"])?$this->arConn["server"]:"");
-        $arCon["dbname"] = (isset($this->arConn["database"])?$this->arConn["database"]:"");
+        if(!$this->arConn)
+            throw new \Exception("No database config passed");
+
+        $arCon["mysql:host"] = $this->arConn["server"] ?? "";
+        $arCon["dbname"] = $this->arConn["database"] ?? "";
+        $arCon["port"] = $this->arConn["port"] ?? "";
         //$arCon["ConnectionPooling"] = (isset($this->arConn["pool"])?$this->arConn["pool"]:"0");
         
         $sString = "";
@@ -60,6 +64,7 @@ class ComponentMysql
         {
             //devuelve server y bd
             $sConn = $this->get_conn_string();
+pr($sConn,"mysql.query");die;
             //https://stackoverflow.com/questions/38671330/error-with-php7-and-sql-server-on-windows
             $oPdo = new \PDO($sConn,$this->arConn["user"],$this->arConn["password"]
                     ,[\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"]);

@@ -19,7 +19,7 @@ class ContextService extends AppService
     
     public function __construct($sPathcontext="",$idContext="") 
     {
-        $this->oContext = new ComponentContext(AppService::PATH_CONTEXTSS_JSON,$idContext);
+        $this->oContext = new ComponentContext($_ENV["APP_CONTEXTS"],$idContext);
     }
     
     public function get_context_by_id($id){return $this->oContext->get_by("id", $id);}

@@ -17,17 +17,14 @@ use App\Factories\DbFactory;
 class DbsService extends AppService
 {
     private $idContext;
-    private $sDb;
-    
     private $oContext;
     private $oBehav;
     
-    public function __construct($idContext="",$sDb="") 
+    public function __construct($idContext="")
     {
         $this->idContext = $idContext;
-        $this->sDb = $sDb;
-        $this->oContext = new ComponentContext(AppService::PATH_CONTEXTSS_JSON,$idContext);
-        $oDb = DbFactory::get_dbobject_by_ctx($this->oContext,$sDb);
+        $this->oContext = new ComponentContext($_ENV["APP_CONTEXTS"],$idContext);
+        $oDb = DbFactory::get_dbobject_by_ctx($this->oContext);
         $this->oBehav = new SchemaBehaviour($oDb);
     }
     

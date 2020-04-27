@@ -15,7 +15,7 @@ use App\Services\Apify\DbsService;
 
 class DbsController extends AppController
 {
-    
+
     public function __construct()
     {
         //captura trazas de la petición en los logs
@@ -23,21 +23,21 @@ class DbsController extends AppController
     }
     
     /**
-     * ruta:    <dominio>/apify/contexts/{id}
+     * ruta:    <dominio>/apify/dbs/{id}
      * Muestra los schemas
      */
     public function index()
     {
+        $oJson = new HelperJson();
         $idContext = $this->get_get("id_context");
         $oServ = new DbsService($idContext);
         $arJson = $oServ->get_all();
-        
-        $oJson = new HelperJson();
-        if($oServ->is_error()) 
+
+        if($oServ->is_error())
             $oJson->set_code(HelperJson::CODE_INTERNAL_SERVER_ERROR)->
-                    set_error($oServ->get_errors())->
-                    set_message("database error")->
-                    show(1);
+            set_error($oServ->get_errors())->
+            set_message("database error")->
+            show(1);
 
         $oJson->set_payload($arJson)->show();
     }//index
