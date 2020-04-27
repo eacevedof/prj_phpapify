@@ -2,14 +2,21 @@
   {
     "id":"c1",
     "alias":"Docker mysql", 
-    "description":"Docker mysql", 
-    "config":{
-      "type":"mysql",
-      "server":"127.0.0.1",
-      "port":"3350",
-      "database":"db_one",
-      "user":"root",
-      "password":"root"
-    }
+    "description":"Docker mysql",
+    "type":"mysql",
+    "server":"127.0.0.1",
+    "port":"3350",
+    "config":[
+      {
+        "database":"db_one",
+        "user":"root",
+        "password":"root"
+      },
+      {
+        "database":"db_two",
+        "user":"root",
+        "password":"root"
+      }
+    ]
   }
 ]
