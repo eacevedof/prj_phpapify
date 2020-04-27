@@ -60,8 +60,8 @@
   ```
   ![](https://trello-attachments.s3.amazonaws.com/5ea73745e908e04a038ca5ef/1029x562/70129150852ecc5402bd4de7655fc353/image.png)
 
-### Consutla `UPDATE ... WHERE ...`
-- **POST** 
+### Consulta `UPDATE ... WHERE ...`
+- **POST** http://localhost:3000/apify/write?context=c1&dbname=db_one
   ```
   action:update
   queryparts[table]:table_1
@@ -70,6 +70,15 @@
   queryparts[where][]:id=5
   ```
   ![](https://trello-attachments.s3.amazonaws.com/5ea7372a1613296bcf5eda15/5ea73745e908e04a038ca5ef/2cfabbc049d0e1fa91a047f22390fd38/image.png)
+
+### Consulta `DELETE .. FROM ... WHERE ...`
+- **POST** http://localhost:3000/apify/write?context=c1&dbname=db_one
+  ```
+  action:delete
+  queryparts[table]:table_1
+  queryparts[where][]:id=5
+  ```
+  ![](https://trello-attachments.s3.amazonaws.com/5ea7372a1613296bcf5eda15/5ea73745e908e04a038ca5ef/9a75ac00a9286da70013b9d6f60b1990/image.png)
 
 ## Contextos
 ```json
