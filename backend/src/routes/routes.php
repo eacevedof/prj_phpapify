@@ -23,5 +23,6 @@ return [
     ["url"=>"/apify/write","controller"=>"App\Controllers\Apify\Rw\WriterController","method"=>"index"],
 
 //resto de rutas    
+    ["url"=>"https://github.com/eacevedof/prj_phpapify/tree/master/backend/src/Controllers/Apify","controller"=>"App\Controllers\NotFoundController","method"=>"error_404"],
     ["url"=>"/404","controller"=>"App\Controllers\NotFoundController","method"=>"error_404"]
 ];
