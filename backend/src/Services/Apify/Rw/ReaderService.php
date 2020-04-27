@@ -41,16 +41,17 @@ class ReaderService extends AppService
     
     private function get_parsed_tosql($arParams)
     {
+        //pr($arParams,"get_parsed_tosql");die;
         $oCrud = new ComponentCrud();
         if(!isset($arParams["table"])) $this->add_error("get_sql no table");
-        if(!isset($arParams["fields"])) $this->add_error("get_sql no fields");
+        if(!isset($arParams["fields"]) || !is_array($arParams["fields"])) $this->add_error("get_sql no fields");
         if($this->isError) return;
 
         $oCrud->set_table($arParams["table"]);
         $oCrud->set_getfields($arParams["fields"]);
-        $oCrud->set_joins($arParams["joins"]);
-        $oCrud->set_and($arParams["where"]);
-        $oCrud->set_groupby($arParams["groupby"]);
+        $oCrud->set_joins($arParams["joins"]??[]);
+        $oCrud->set_and($arParams["where"]??[]);
+        $oCrud->set_groupby($arParams["groupby"]??[]);
 
         $arTmp = [];
         if(isset($arParams["orderby"]))
@@ -58,12 +59,15 @@ class ReaderService extends AppService
             foreach($arParams["orderby"] as $sField)
             {
                 $arField = explode(" ",trim($sField));
-                $arTmp[$arField[0]] = isset($arField[1])?$arField[1]:"ASC";
+                $arTmp[$arField[0]] = $arField[1] ?? "ASC";
             }
         }
+        //pr($oCrud);die;
         $oCrud->set_orderby($arTmp);
         $oCrud->get_selectfrom();
-        return $oCrud->get_sql();
+        $sql =  $oCrud->get_sql();
+        //pr($sql,"sql");
+        return $sql;
     }
 
     public function read_raw($sSQL)

@@ -33,6 +33,19 @@
 - /apify/fields/{id_context}/{dbname}/{tablename}/{fieldname}    
     - [http://localhost:3000/apify/fields/devlocal/db_killme/tbl_operation/op_d1](http://localhost:3000/apify/fields/devlocal/db_killme/tbl_operation/op_d1)
 
+### Consulta `SELECT .. FROM`
+- **POST** /apify/read?context=c1&dbname=db_one
+    ```
+    queryparts[table]:table_1
+    queryparts[fields][]:description
+    queryparts[fields][]:codeerp
+    queryparts[where][]:codeerp LIKE '%b%'
+    queryparts[groupby][]:codeerp
+    queryparts[orderby][]:description
+    ```
+    - ![](https://trello-attachments.s3.amazonaws.com/5ea73745e908e04a038ca5ef/528x725/67967e1f92a12415f1b11413d7f9e4f6/image.png) 
+
+
 ## Contextos
 ```json
 
