@@ -20,6 +20,23 @@
     ]
   },
   {
-
+    "id":"c2",
+    "alias":"Otro cont",
+    "description":"No dock mysql",
+    "type":"mysql",
+    "server":"127.0.0.1",
+    "port":"3350",
+    "schemas":[
+      {
+        "database":"db_xxx",
+        "user":"root",
+        "password":"root"
+      },
+      {
+        "database":"db_yyy",
+        "user":"root",
+        "password":"root"
+      }
+    ]
   }
 ]

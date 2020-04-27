@@ -15,36 +15,32 @@ use TheFramework\Components\Db\Context\ComponentContext;
 class DbFactory 
 {
 
+    private static function get_dbconfig($arConfig,$i=0)
+    {
+        $arContext = $arConfig["ctx"]?? [];
+        if(!$arContext) return [];
+
+        $arDbconf = [
+            //"type"=>$arContext["type"] ?? "",
+            "server"=>$arContext["server"] ?? "",
+            "port"=>$arContext["port"] ?? "3306",
+            "database"=>$arContext["schemas"][$i]["database"] ?? "",
+            "user"=>$arContext["schemas"][$i]["user"]?? "",
+            "password"=>$arContext["schemas"][$i]["password"]?? ""
+        ];
+        //pr($arDbconf);
+        return $arDbconf;
+    }
+
     public static function get_dbobject_by_ctx(ComponentContext $oCtx)
     {
         //pr($oCtx,"octx");
         $arConfig = $oCtx->get_selected();
-        $arConfig = $arConfig["ctx"]["config"] ?? [];
-        //pr($arConfig,"dbfactory.arconfig");die;
-        $oDb = new ComponentMysql();
-        if(!$arConfig)
-            return $oDb;
-        $oDb->add_conn("server",$arConfig["server"]);
-        $oDb->add_conn("port",$arConfig["port"]);
-        $oDb->add_conn("database",$arConfig["database"]);
-        $oDb->add_conn("user",$arConfig["user"]);
-        $oDb->add_conn("password",$arConfig["password"]);
+        $arConfig = self::get_dbconfig($arConfig);
+        //bug($arConfig,"arconfig");die;
+        if(!$arConfig) return new ComponentMysql();
+        $oDb = new ComponentMysql($arConfig);
         return $oDb;
     }  
-    
-    public static function get_dbobject_by_idctx($id)
-    {
-        //pr(\App\Services\$_ENV["APP_CONTEXTS"]);die;
-        $oCtx = new ComponentContext("",$id);
-        $arConfig = $oCtx->get_config_by("id",$id);
-        //pr($arConfig,"DbFactory.get_dbobject_by_idctx id:$id ");die;
-        $oDb = new ComponentMysql();
-        $oDb->add_conn("server",$arConfig["server"]);
-        $oDb->add_conn("port",$arConfig["port"]);
-        $oDb->add_conn("database",$arConfig["database"]);
-        $oDb->add_conn("user",$arConfig["user"]);
-        $oDb->add_conn("password",$arConfig["password"]);
-        return $oDb;
-    }
-    
+
 }//DbFactory

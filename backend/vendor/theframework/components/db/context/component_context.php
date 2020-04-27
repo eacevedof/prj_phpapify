@@ -3,8 +3,8 @@
  * @author Eduardo Acevedo Farje.
  * @link www.eduardoaf.com
  * @name TheFramework\Components\Db\Context\ComponentContext 
- * @file component_context.php v2.1.1
- * @date 02-07-2019 20:37 SPAIN
+ * @file component_context.php v3.0.0
+ * @date 27-04-2020 20:37 SPAIN
  * @observations
  */
 namespace TheFramework\Components\Db\Context;
@@ -30,41 +30,44 @@ class ComponentContext
             $this->add_error("No context file found: $sPathfile");
             return -1;
         }
-        $this->load_contextjs($sPathfile);
+        $this->load_arrayfromjson($sPathfile);
         $this->load_context_noconf();
         $this->load_selected();
     }
 
-    private function load_contextjs($sPathfile)
+    private function load_arrayfromjson($sPathfile)
     {
         if($sPathfile)
             if(is_file($sPathfile))
             {
                 $sJson = file_get_contents($sPathfile);
                 $this->arContexts = json_decode($sJson,1);
+                //pr($this->arContexts);die;
             }
             else
-                $this->add_error("load_contextjs: file $sPathfile not found");
+                $this->add_error("load_arrayfromjson: file $sPathfile not found");
         else
-            $this->add_error("load_contextjs: no pathfile passed");
+            $this->add_error("load_arrayfromjson: no pathfile passed");
     }
 
     /**
-     * carga la información que no es sensible, por eso se elimina config
+     * carga la información que no es sensible, por eso se elimina schemas
      */
     private function load_context_noconf()
     {
         foreach($this->arContexts as $arContext)
         {
-            unset($arContext["config"]);
+            unset($arContext["schemas"],$arContext["server"],$arContext["port"]);
             $this->arContextNoconf[] = $arContext;
         }
     }
 
     private function load_selected()
     {
+//pr($this->idSelected);
         //si no se pasa id se asume que no se ha seleccionado un contexto
         $this->arSelected["ctx"] = $this->get_by_id($this->idSelected);
+//pr($this->arSelected,"arselected");die;
         if($this->arSelected["ctx"])
             $this->arSelected["ctx"] = $this->arSelected["ctx"][array_keys($this->arSelected["ctx"])[0]];
 
@@ -74,10 +77,13 @@ class ComponentContext
 
     private function get_filter_level_1($sKey, $sValue, $arArray=[])
     {
+        if(!$sKey && !$sValue) return [];
         if(!$arArray) $arArray = $this->arContexts;
-
+        //pr("key:v -> $sKey, $sValue");
+        //print_r($arArray);die;
         $arFiltered = array_filter($arArray, function($arConfig) use($sKey,$sValue) {
-            return $arConfig[$sKey] == $sValue;
+            $confval = $arConfig[$sKey] ?? "";
+            return $confval === $sValue;
         });
         return $arFiltered;
     }
@@ -91,17 +97,18 @@ class ComponentContext
     public function get_config_by($key,$val)
     {
         $arConfig = $this->get_filter_level_1($key,$val);
+
         if($arConfig)
         {
             $arConfig = $arConfig[array_keys($arConfig)[0]];
-            return $arConfig["config"];
+            return $arConfig["schemas"];
         }
         return [];
     }
 
     public function get_selected(){return $this->arSelected;}
     public function get_selected_id(){return $this->arSelected["ctx"]["id"];}
-    public function get_selected_db(){return $this->arSelected["ctx"]["config"]["database"];}
+    public function get_selected_db(){return $this->arSelected["ctx"]["schemas"]["database"];}
 
     public function get_noconfig_by($key,$val)
     {
@@ -121,48 +128,39 @@ class ComponentContext
 }//ComponentContext
 
 /*
+Array
 (
     [0] => Array
         (
-            [id] => agencyreader
-            [alias] => Test agency-reader
-            [description] => Agency Reader
-            [config] => Array
+            [id] => c1
+            [alias] => Docker mysql
+            [description] => Docker mysql
+            [type] => mysql
+            [server] => 127.0.0.1
+            [port] => 3350
+            [schemas] => Array
                 (
-                    [type] => mysql
-                    [server] => dbb2c01-replica-bi.rdsxxx.io
-                    [database] => agency
-                    [user] => xxx
-                    [password] => slavereader
+                    [0] => Array
+                        (
+                            [database] => db_one
+                            [user] => root
+                            [password] => root
+                        )
+
+                    [1] => Array
+                        (
+                            [database] => db_two
+                            [user] => root
+                            [password] => root
+                        )
+
                 )
+
         )
+
     [1] => Array
         (
-            [id] => dev
-            [alias] => Test dev-agregacion
-            [description] => Development
-            [config] => Array
-                (
-                    [type] => mysql
-                    [server] => dev01.serverxxx.io
-                    [database] => db_agregacion
-                    [user] => root
-                    [password] => yyy
-                )
         )
-    [2] => Array
-        (
-            [id] => draco
-            [alias] => Test draco-reader
-            [description] => Draco Reader
-            [config] => Array
-                (
-                    [type] => mysql
-                    [server] => dbcommon-bi.rdsxxx.io
-                    [database] => draco
-                    [user] => stratebi
-                    [password] => zzz
-                )
-        )
+
 )
 */
