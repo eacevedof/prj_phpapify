@@ -9,6 +9,7 @@
  */
 namespace App\Controllers\Apify;
 
+use App\Services\Apify\ContextService;
 use TheFramework\Helpers\HelperJson;
 use App\Controllers\AppController;
 use App\Services\Apify\FieldsService;
@@ -31,6 +32,21 @@ class FieldsController extends AppController
     {
         $idContext = $this->get_get("id_context");
         $sDb = $this->get_get("dbname");
+
+        $oJson = new HelperJson();
+        $oServ = new ContextService();
+
+        //obligatorio
+        if(!$oServ->is_context($idContext))
+            $oJson->set_code(HelperJson::CODE_NOT_FOUND)->
+            set_error("context does not exist")->
+            show(1);
+
+        if (!$oServ->is_db($idContext,$sDb))
+            $oJson->set_code(HelperJson::CODE_NOT_FOUND)->
+            set_error("no database in context")->
+            show(1);
+
         $sTableName = $this->get_get("tablename");
         $sFieldName = $this->get_get("fieldname");
 
@@ -40,7 +56,6 @@ class FieldsController extends AppController
         else
             $arJson = $oServ->get_all($sTableName);
 
-        $oJson = new HelperJson();
         if($oServ->is_error()) 
             $oJson->set_code(HelperJson::CODE_INTERNAL_SERVER_ERROR)->
                     set_error($oServ->get_errors())->
