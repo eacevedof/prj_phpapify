@@ -60,6 +60,16 @@
   ```
   ![](https://trello-attachments.s3.amazonaws.com/5ea73745e908e04a038ca5ef/1029x562/70129150852ecc5402bd4de7655fc353/image.png)
 
+### Consutla `UPDATE ... WHERE ...`
+- **POST** 
+  ```
+  action:update
+  queryparts[table]:table_1
+  queryparts[fields][description]:from-xxx
+  queryparts[fields][codeerp]:aaaa
+  queryparts[where][]:id=5
+  ```
+  ![](https://trello-attachments.s3.amazonaws.com/5ea7372a1613296bcf5eda15/5ea73745e908e04a038ca5ef/2cfabbc049d0e1fa91a047f22390fd38/image.png)
 
 ## Contextos
 ```json

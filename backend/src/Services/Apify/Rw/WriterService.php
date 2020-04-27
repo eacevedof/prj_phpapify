@@ -142,6 +142,7 @@ class WriterService extends AppService
     public function write($arParams,$sAction)
     {
         $sSQL = $this->get_parsed_tosql($arParams,$sAction);
+        //print_r($sSQL);die;
         return $this->write_raw($sSQL);        
     }
 
