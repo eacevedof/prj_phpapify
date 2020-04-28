@@ -35,16 +35,16 @@ class ContextService extends AppService
     public function is_db($idContext,$dbname)
     {
         $arContext = $this->oContext->get_by_id($idContext);
-        $this->logd($arContext,"is_db.arcontext ($dbname)");
+        //$this->logd($arContext,"is_db.arcontext ($dbname)");
         //pr($arContext);die;
         $ipos = array_keys($arContext)[0];
         $schemas = $arContext[$ipos]["schemas"] ?? [];
-        $this->logd($schemas,"schemas");
+        $this->logd($schemas,"schemas para $dbname");
         foreach ($schemas as $arschema)
             if($arschema["database"] === $dbname)
                 return true;
 
-        $this->logd("no is in schemas $dbname");
+        //$this->logd("no is in schemas $dbname");
         return false;
     }
 
