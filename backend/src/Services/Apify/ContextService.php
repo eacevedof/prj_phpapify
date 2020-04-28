@@ -37,7 +37,8 @@ class ContextService extends AppService
         $arContext = $this->oContext->get_by_id($idContext);
         $this->logd($arContext,"is_db.arcontext ($dbname)");
         //pr($arContext);die;
-        $schemas = $arContext[0]["schemas"] ?? [];
+        $ipos = array_keys($arContext)[0];
+        $schemas = $arContext[$ipos]["schemas"] ?? [];
         $this->logd($schemas,"schemas");
         foreach ($schemas as $arschema)
             if($arschema["database"] === $dbname)
