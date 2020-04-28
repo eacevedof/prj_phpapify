@@ -38,10 +38,12 @@ class ContextService extends AppService
         $this->logd($arContext,"is_db.arcontext ($dbname)");
         //pr($arContext);die;
         $schemas = $arContext[0]["schemas"] ?? [];
+        $this->logd($schemas,"schemas");
         foreach ($schemas as $arschema)
             if($arschema["database"] === $dbname)
                 return true;
 
+        $this->logd("no is in schemas $dbname");
         return false;
     }
 
