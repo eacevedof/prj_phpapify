@@ -44,7 +44,7 @@ class FieldsController extends AppController
 
         if (!$oServ->is_db($idContext,$sDb))
             $oJson->set_code(HelperJson::CODE_NOT_FOUND)->
-            set_error("no database in context")->
+            set_error("no database in context 1")->
             show(1);
 
         $sTableName = $this->get_get("tablename");

@@ -45,7 +45,7 @@ class TablesController extends AppController
 
         if (!$oServ->is_db($idContext,$sDb))
             $oJson->set_code(HelperJson::CODE_NOT_FOUND)->
-            set_error("no database in context")->
+            set_error("no database in context 2")->
             show(1);
 
         $oServ = new TablesService($idContext,$sDb);
