@@ -25,6 +25,7 @@ php run.php --class=App.Services.Dbs.SchemaService --method=get_tables_info --sT
 
 # COMPOSER EN IONOS
 - hay que ejecutar el ionos.sh
+- o la forma manual: curl -sS https://getcomposer.org/installer | /usr/bin/php7.1-cli
 - despues lanzar la siguiente linea:
     - esto da error: `php composer.phar`
     ```
