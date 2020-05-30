@@ -26,19 +26,14 @@
   },
   {
     "id":"c2",
-    "alias":"Otro cont",
-    "description":"No dock mysql",
+    "alias":"db_tinyshop",
+    "description":"Docker mysql",
     "type":"mysql",
     "server":"127.0.0.1",
     "port":"3350",
     "schemas":[
       {
-        "database":"db_xxx",
-        "user":"root",
-        "password":"root"
-      },
-      {
-        "database":"db_yyy",
+        "database":"db_tinyshop",
         "user":"root",
         "password":"root"
       }
