@@ -1,0 +1,5 @@
+{
+  "ENV_SSLENC_METHOD":"AES-256-CBC",
+  "ENV_SSLENC_KEY":"@11111111@",
+  "ENV_SSLSALT":"@#$.salt.$#@"
+}

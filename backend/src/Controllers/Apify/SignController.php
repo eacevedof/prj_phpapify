@@ -11,18 +11,15 @@ namespace App\Controllers\Apify;
 
 use TheFramework\Helpers\HelperJson;
 use App\Controllers\AppController;
-use TheFramework\Components\Session\ComponentEncdecrypt;
+use App\Services\Apify\SignService;
 
 class SignController extends AppController
 {
-
-    private $encdec;
 
     public function __construct()
     {
         //captura trazas de la petición en los logs
         parent::__construct();
-        $this->encdec = new ComponentEncdecrypt();
     }
 
     /**
@@ -31,6 +28,8 @@ class SignController extends AppController
      */
     public function index()
     {
+        $oServ = new SignService();
+
         $oJson = new HelperJson();
 
         if($iserror = 1)
