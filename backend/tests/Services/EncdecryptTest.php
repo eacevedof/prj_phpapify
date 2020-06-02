@@ -12,7 +12,6 @@ include_once($pathappboot);
 class EncdecryptTest extends TestCase
 {
 
-    private $token;
 
     private function log($mxVar,$sTitle=NULL)
     {
@@ -25,7 +24,6 @@ class EncdecryptTest extends TestCase
         $post=["user"=>"fulanito","password"=>"menganito"];
         $oServ = new SignService("localhost:200",$post);
         $token = $oServ->get_token();
-        $this->token = $token;
         $this->assertIsString($token);
     }
 
@@ -36,16 +34,25 @@ class EncdecryptTest extends TestCase
     {
         $post=["user"=>"fulanito","password"=>"menganito"];
         $oServ = new SignService("localhost:200",$post);
-        $r = $oServ->is_valid($this->token);
+        $token = $oServ->get_token();
+        $r = $oServ->is_valid($token);
         $this->assertEquals(true,$r);
     }
 
     /**
      * @depends test_get_token
      */
-    public function tes_is_invalid()
+    public function test_is_invalid()
     {
+        $post=["user"=>"fulanito","password"=>"menganito"];
+        $oServ = new SignService("localhost:200",$post);
+        $token = $oServ->get_token();
 
+        $post=["user"=>"fulanito","password"=>"menganito","injected"=>"some injected"];
+        $oServ = new SignService("localhost:200",$post);
+        $r = $oServ->is_valid($token);
+        $this->assertEquals(void,$r);
+        $this->expectExceptionMessage("Wrong hash submitted");
     }
     
 }//EncdecryptTest

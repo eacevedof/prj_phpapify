@@ -65,7 +65,9 @@ class SignService
         ];
 
         $instring = implode("-",$package);
-        //$instring = $this->to_string($data);
+        print("package to encrypt:\n");
+        print_r($package);
+        print_r("to encrypt:  {$instring}");
         $token = $this->encdec->get_sslencrypted($instring);
         return $token;
     }
@@ -99,8 +101,11 @@ class SignService
 
     public function is_valid($token)
     {
+        print_r("\ntoken:{$token}");
         $instring = $this->encdec->get_ssldecrypted($token);
         $package = explode("-",$instring);
+        print_r("exploded:");
+        print_r($package);
         $this->validate_package($package);
         return true;
     }
