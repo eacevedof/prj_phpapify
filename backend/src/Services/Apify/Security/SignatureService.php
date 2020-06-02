@@ -1,9 +1,9 @@
 <?php
-namespace App\Services\Apify;
+namespace App\Services\Apify\Security;
 use Matrix\Exception;
 use TheFramework\Components\Session\ComponentEncdecrypt;
 
-class SignService
+class SignatureService
 {
     private $domain = null;
     private $data = null;

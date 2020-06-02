@@ -22,7 +22,8 @@ return [
     ["url"=>"/apify/write/raw","controller"=>"App\Controllers\Apify\Rw\WriterController","method"=>"raw"],
     ["url"=>"/apify/write","controller"=>"App\Controllers\Apify\Rw\WriterController","method"=>"index"],
 
-    ["url"=>"/apifiy/sign","controller"=>"App\Controllers\Apify\SignController","method"=>"index"],
+    ["url"=>"/apifiy/security/get-signature","controller"=>"App\Controllers\Apify\Security\SignatureController","method"=>"index"],
+    ["url"=>"/apifiy/security/is-valid-signature","controller"=>"App\Controllers\Apify\Security\SignatureController","method"=>"is_valid_signature"],
 
 //resto de rutas    
     ["url"=>"https://github.com/eacevedof/prj_phpapify/tree/master/backend/src/Controllers/Apify","controller"=>"App\Controllers\NotFoundController","method"=>"error_404"],

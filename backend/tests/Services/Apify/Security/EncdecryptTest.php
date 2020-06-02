@@ -1,17 +1,16 @@
 <?php
 // en: /<project>/backend 
-// ./vendor/bin/phpunit --bootstrap ./vendor/theframework/bootstrap.php ./tests/Services/EncdecryptTest.php --color=auto
+// ./vendor/bin/phpunit --bootstrap ./vendor/theframework/bootstrap.php ./tests/Services/Apify/Security/EncdecryptTest.php --color=auto
 // ./vendor/bin/phpunit --bootstrap ./vendor/theframework/bootstrap.php ./tests
 use PHPUnit\Framework\TestCase;
 use TheFramework\Components\ComponentLog;
-use App\Services\Apify\SignService;
+use App\Services\Apify\Security\SignatureService;
 
-$pathappboot = realpath(__DIR__."/../../boot/appbootstrap.php");
+$pathappboot = realpath(__DIR__ . "/../../../../boot/appbootstrap.php");
 include_once($pathappboot);
 
 class EncdecryptTest extends TestCase
 {
-
 
     private function log($mxVar,$sTitle=NULL)
     {
@@ -22,7 +21,7 @@ class EncdecryptTest extends TestCase
     public function test_get_token()
     {
         $post=["user"=>"fulanito","password"=>"menganito"];
-        $oServ = new SignService("localhost:200",$post);
+        $oServ = new SignatureService("localhost:200",$post);
         $token = $oServ->get_token();
         $this->assertIsString($token);
     }
@@ -33,7 +32,7 @@ class EncdecryptTest extends TestCase
     public function test_is_valid()
     {
         $post=["user"=>"fulanito","password"=>"menganito"];
-        $oServ = new SignService("localhost:200",$post);
+        $oServ = new SignatureService("localhost:200",$post);
         $token = $oServ->get_token();
         $r = $oServ->is_valid($token);
         $this->assertEquals(true,$r);
@@ -47,11 +46,11 @@ class EncdecryptTest extends TestCase
     public function test_is_invalid()
     {
         $post=["user"=>"fulanito","password"=>"menganito"];
-        $oServ = new SignService("localhost:200",$post);
+        $oServ = new SignatureService("localhost:200",$post);
         $token = $oServ->get_token();
 
         $post=["user"=>"fulanito","password"=>"menganito","injected"=>"some injected"];
-        $oServ = new SignService("localhost:200",$post);
+        $oServ = new SignatureService("localhost:200",$post);
         $r = $oServ->is_valid($token);
         //$this->expectException("\Exception"); //no va
         //$this->expectException("Matrix\Exception"); //no va
@@ -64,7 +63,7 @@ class EncdecryptTest extends TestCase
     public function test_domain_not_configured()
     {
         $post=["user"=>"fulanito","password"=>"menganito"];
-        $oServ = new SignService("nonexistentdomain.com",$post);
+        $oServ = new SignatureService("nonexistentdomain.com",$post);
         $token = $oServ->get_token();
     }
     
