@@ -8,9 +8,10 @@ $arSubFolders[] = $sPathRoot;//ruta de components
 //subcarpetas dentro de components
 $arSubFolders[] = $sPathRoot."console";
 $arSubFolders[] = $sPathRoot."db";
+$arSubFolders[] = $sPathRoot."session";
 $arSubFolders[] = $sPathRoot."db".DIRECTORY_SEPARATOR."integration";
 $arSubFolders[] = $sPathRoot."db".DIRECTORY_SEPARATOR."context";
-$arSubFolders[] = $sPathRoot."motosceni";
+
 
 $sPathInclude = implode(PATH_SEPARATOR,$arSubFolders);
 set_include_path($sPathInclude);
