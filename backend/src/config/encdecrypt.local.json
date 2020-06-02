@@ -1,5 +1,14 @@
-{
-  "ENV_SSLENC_METHOD":"AES-256-CBC",
-  "ENV_SSLENC_KEY":"@11111111@",
-  "ENV_SSLSALT":"@#$.salt.$#@"
-}
+[
+  {
+    "ENCDEC_DOMAIN": "localhost:800",
+    "ENCDEC_SSLENC_METHOD":"AES-256-CBC",
+    "ENCDEC_SSLENC_KEY":"@11111111@",
+    "ENCDEC_SSLSALT":"@#$.salt.$#@"
+  },
+  {
+    "ENCDEC_DOMAIN": "localhost:300",
+    "ENCDEC_SSLENC_METHOD":"AES-256-CBC",
+    "ENCDEC_SSLENC_KEY":"@11111111@",
+    "ENCDEC_SSLSALT":"@#$.salt.$#@"
+  }
+]
