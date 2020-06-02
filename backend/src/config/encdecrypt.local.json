@@ -8,7 +8,7 @@
   {
     "ENCDEC_DOMAIN": "localhost:300",
     "ENCDEC_SSLENC_METHOD":"AES-256-CBC",
-    "ENCDEC_SSLENC_KEY":"@11111111@",
-    "ENCDEC_SSLSALT":"@#$.salt.$#@"
+    "ENCDEC_SSLENC_KEY":"@828286@",
+    "ENCDEC_SSLSALT":"@#$.SWLT.$#@"
   }
 ]
