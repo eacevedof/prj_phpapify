@@ -35,7 +35,6 @@ class SignService
     {
         $sPathfile = $_ENV["APP_ENCDECRYPT"] ?? __DIR__.DIRECTORY_SEPARATOR."encdecrypt.json";
         if(!is_file($sPathfile)) {
-            //$this->add_error("No context file found: $sPathfile");
             throw new \Exception("No encdecrypt file found: $sPathfile");
         }
         $sJson = file_get_contents($sPathfile);
@@ -55,7 +54,7 @@ class SignService
         return var_export(data,1);
     }
 
-    public function get_encrypted()
+    public function get_token()
     {
         $data = var_export($this->data,1);
         $package = [

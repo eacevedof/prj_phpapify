@@ -1,6 +1,6 @@
 <?php
 // en: /<project>/backend 
-// ./vendor/bin/phpunit --bootstrap ./vendor/theframework/bootstrap.php ./src/tests/Contexts/ContextsTest.php --color=auto
+// ./vendor/bin/phpunit --bootstrap ./vendor/theframework/bootstrap.php ./src/tests/Contexts/EncdecryptTest.php --color=auto
 // ./vendor/bin/phpunit --bootstrap ./vendor/theframework/bootstrap.php ./src/tests
 use PHPUnit\Framework\TestCase;
 use TheFramework\Components\ComponentLog;
