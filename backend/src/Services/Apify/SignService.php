@@ -59,7 +59,7 @@ class SignService
         $data = var_export($this->data,1);
         $package = [
             "domain"   => $this->domain,
-            "remoteip" => $_SERVER["REMOTE_ADDR"],
+            "remoteip" => $this->_get_server(),
             "hash"     => md5($data),
             "today"    => date("Ymd"),
         ];
@@ -68,6 +68,11 @@ class SignService
         //$instring = $this->to_string($data);
         $token = $this->encdec->get_sslencrypted($instring);
         return $token;
+    }
+
+    private function _get_server()
+    {
+        return $_SERVER["REMOTE_ADDR"]  ?? "127.0.0.1";
     }
 
     private function validate_package($arpackage)
@@ -81,7 +86,7 @@ class SignService
         if($arpackage[0]!==$this->domain)
             throw new Exception("Domain {$this->domain} not Authorized");
 
-        if($arpackage[1]!==$_SERVER["REMOTE_ADDR"])
+        if($arpackage[1]!==$this->_get_server())
             throw new Exception("Wrong source {$arpackage[0]} in token");
 
         if($arpackage[2]!==$md5)
