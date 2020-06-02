@@ -41,6 +41,8 @@ class EncdecryptTest extends TestCase
 
     /**
      * @depends test_get_token
+     * @expectedException \Exception
+     * @expectedExceptionMessage Wrong hash submitted
      */
     public function test_is_invalid()
     {
@@ -51,8 +53,9 @@ class EncdecryptTest extends TestCase
         $post=["user"=>"fulanito","password"=>"menganito","injected"=>"some injected"];
         $oServ = new SignService("localhost:200",$post);
         $r = $oServ->is_valid($token);
-        $this->assertEquals(void,$r);
-        $this->expectExceptionMessage("Wrong hash submitted");
+        //$this->expectException("\Exception"); //no va
+        //$this->expectException("Matrix\Exception"); //no va
+        //$this->expectExceptionMessage("Wrong hash submitted"); //no va
     }
     
 }//EncdecryptTest

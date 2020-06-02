@@ -65,7 +65,7 @@ class SignService
         ];
 
         $instring = implode("-",$package);
-        print("package to encrypt:\n");
+        //print("package to encrypt:\n");
         //print_r($package);
         //print_r("to encrypt:  {$instring}");
         $token = $this->encdec->get_sslencrypted($instring);
