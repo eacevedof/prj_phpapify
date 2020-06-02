@@ -57,5 +57,15 @@ class EncdecryptTest extends TestCase
         //$this->expectException("Matrix\Exception"); //no va
         //$this->expectExceptionMessage("Wrong hash submitted"); //no va
     }
+
+    /**
+     * @expectedException \Exception
+     */
+    public function test_domain_not_configured()
+    {
+        $post=["user"=>"fulanito","password"=>"menganito"];
+        $oServ = new SignService("nonexistentdomain.com",$post);
+        $token = $oServ->get_token();
+    }
     
 }//EncdecryptTest

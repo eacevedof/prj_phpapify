@@ -23,7 +23,7 @@ class SignService
     {
         $config = $this->_get_config($this->domain);
         if(!$config)
-            throw new \Exception("No config found for domain: $config");
+            throw new \Exception("Domain {$this->domain} is not authorized");
 
         $this->encdec = new ComponentEncdecrypt(1);
         $this->encdec->set_sslmethod($config["sslenc_method"]??"");
@@ -59,7 +59,7 @@ class SignService
         $data = var_export($this->data,1);
         $package = [
             "domain"   => $this->domain,
-            "remoteip" => $this->_get_server(),
+            "remoteip" => $this->_get_remote_ip(),
             "hash"     => md5($data),
             "today"    => date("Ymd"),
         ];
@@ -72,7 +72,7 @@ class SignService
         return $token;
     }
 
-    private function _get_server()
+    private function _get_remote_ip()
     {
         return $_SERVER["REMOTE_ADDR"]  ?? "127.0.0.1";
     }
@@ -88,7 +88,7 @@ class SignService
         if($arpackage[0]!==$this->domain)
             throw new Exception("Domain {$this->domain} not Authorized");
 
-        if($arpackage[1]!==$this->_get_server())
+        if($arpackage[1]!==$this->_get_remote_ip())
             throw new Exception("Wrong source {$arpackage[0]} in token");
 
         if($arpackage[2]!==$md5)
