@@ -310,6 +310,7 @@ class ComponentEncdecrypt
     }
 
     public function set_sslkey($value){$this->sSslKey = $value;}
+    public function set_sslsalt($value){$this->sSalt = $value;}
     public function set_sslmethod($value){$this->sSslMethod = $value;}
     public function set_ssliv($iValue){$this->sSslIv = $iValue;}
     public function set_use_salt($isOn=TRUE){$this->useSalt=$isOn;}

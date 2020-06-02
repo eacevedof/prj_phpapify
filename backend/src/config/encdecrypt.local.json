@@ -1,14 +1,14 @@
 [
   {
-    "ENCDEC_DOMAIN": "localhost:800",
-    "ENCDEC_SSLENC_METHOD":"AES-256-CBC",
-    "ENCDEC_SSLENC_KEY":"@11111111@",
-    "ENCDEC_SSLSALT":"@#$.salt.$#@"
+    "domain": "localhost:800",
+    "sslenc_method":"AES-256-CBC",
+    "sslenc_key":"@11111111@",
+    "sslsalt":"@#$.salt.$#@"
   },
   {
-    "ENCDEC_DOMAIN": "localhost:300",
-    "ENCDEC_SSLENC_METHOD":"AES-256-CBC",
-    "ENCDEC_SSLENC_KEY":"@828286@",
-    "ENCDEC_SSLSALT":"@#$.SWLT.$#@"
+    "domain": "localhost:200",
+    "sslenc_method":"AES-256-CBC",
+    "sslenc_key":"@11111111@",
+    "sslsalt":"@#$.salt.$#@"
   }
 ]
