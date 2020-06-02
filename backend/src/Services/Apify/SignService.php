@@ -42,7 +42,7 @@ class SignService
         foreach ($arconfig as $arconf)
         {
             if($arconf["domain"]===$this->domain)
-                return $arconfig;
+                return $arconf;
         }
         return [];
     }
