@@ -96,7 +96,6 @@ class SignatureService
 
         if($arpackage[3]!==date("Ymd"))
             throw new Exception("token has expired");
-
     }
 
     public function is_valid($token)

@@ -9,6 +9,8 @@
  */
 namespace App\Controllers;
 
+use TheFramework\Helpers\HelperJson;
+use App\Services\Apify\Security\SignatureService;
 use App\Traits\AppErrorTrait;
 use App\Traits\AppLogTrait;
 
@@ -22,7 +24,27 @@ class AppController
         //guardo trazas del $_GET y $_POST
         $this->request_log();
     }
-    
+
+    protected function check_signature()
+    {
+        $oJson = new HelperJson();
+        try{
+            $post = $this->get_post();
+            $domain = $_SERVER["REMOTE_HOST"] ?? "";
+            $token = $post["API_SIGNATURE"] ?? "";
+            unset($post["API_SIGNATURE"]);
+            $oServ = new SignatureService($domain,$post);
+            return $oServ->is_valid($token);
+        }
+        catch (\Exception $e)
+        {
+            $oJson->set_code(HelperJson::CODE_UNAUTHORIZED)->
+            set_error(["result"=>false])->
+            set_message($e->getMessage())->
+            show(1);
+        }
+    }
+
     /**
      * Por convención hay que devolver un json con la clave data
      */
