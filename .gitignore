@@ -5,6 +5,7 @@
 /backend/src/logs/
 /backend/src/config/config.php
 /backend/src/config/contexts.json
+/backend/src/config/login.json
 /backend/src/config/encdecrypt.json
 /backend/public/temp/
 .idea
