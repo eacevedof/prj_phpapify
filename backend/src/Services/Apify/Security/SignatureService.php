@@ -106,6 +106,7 @@ class SignatureService
         $package = explode("-",$instring);
         //print_r("exploded:");
         //print_r($package);
+        //esto lanza expecipones
         $this->validate_package($package);
         return true;
     }

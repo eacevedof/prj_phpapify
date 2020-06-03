@@ -18,7 +18,7 @@ class SignatureController extends AppController
 
     /**
      * ruta:
-     *  <dominio>/apify/sign
+     *  <dominio>/apifiy/security/get-signature
      */
     public function index()
     {
@@ -39,19 +39,26 @@ class SignatureController extends AppController
 
     }//index
 
+    /**
+     * ruta:
+     *  <dominio>/apifiy/security/is-valid-signature
+     */
     public function is_valid_signature()
     {
         $domain = $_SERVER["REMOTE_HOST"] ?? "";
         $oJson = new HelperJson();
         try{
-            $oServ = new SignatureService($domain,$this->get_post());
-            $token = $oServ->get_token();
-            $oJson->set_payload([$token])->show();
+            $post = $this->get_post();
+            $token = $post["API_SIGNATURE"] ?? "";
+            unset($post["API_SIGNATURE"]);
+            $oServ = new SignatureService($domain,$post);
+            $oServ->is_valid($token);
+            $oJson->set_payload(["result"=>true])->show();
         }
         catch (\Exception $e)
         {
             $oJson->set_code(HelperJson::CODE_INTERNAL_SERVER_ERROR)->
-            set_error(["no sign possible"])->
+            set_error(["result"=>false])->
             set_message($e->getMessage())->
             show(1);
         }
