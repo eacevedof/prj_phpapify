@@ -124,9 +124,6 @@ class LoginService
         if($remoteip!==$this->_get_remote_ip())
             throw new Exception("Wrong source {$remoteip} in token");
 
-        if(!$this->_user_exists($domain,$username))
-            throw new Exception("Wrong user submitted");
-
         $md5pass = $this->_get_user_password($domain,$username);
         $md5pass = md5($md5pass);
         if($md5pass!==$password)
