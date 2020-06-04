@@ -113,7 +113,7 @@ class LoginService
                 return $this->_get_data_tokenized();
             }
         }
-        return "";
+        throw new \Exception("User {$username} not found");
     }
 
     private function validate_package($arpackage)
