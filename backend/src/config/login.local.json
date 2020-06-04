@@ -1,7 +1,12 @@
 [
   {
-    "id": 1,
-    "user": "fulanito",
-    "password": "menganito"
+    "domain": "localhost:800",
+    "users": [
+      {
+        "id": 1,
+        "user": "fulanito",
+        "password": "menganito"
+      }
+    ]
   }
 ]

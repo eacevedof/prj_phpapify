@@ -19,19 +19,7 @@ class SignatureService
         $this->_load_encdec();
     }
 
-    private function _load_encdec()
-    {
-        $config = $this->_get_config($this->domain);
-        if(!$config)
-            throw new \Exception("Domain {$this->domain} is not authorized");
-
-        $this->encdec = new ComponentEncdecrypt(1);
-        $this->encdec->set_sslmethod($config["sslenc_method"]??"");
-        $this->encdec->set_sslkey($config["sslenc_key"]??"");
-        $this->encdec->set_sslsalt($config["sslsalt"]??"");
-    }
-
-    private function _get_config()
+    private function _get_encdec_config()
     {
         $sPathfile = $_ENV["APP_ENCDECRYPT"] ?? __DIR__.DIRECTORY_SEPARATOR."encdecrypt.json";
         if(!is_file($sPathfile)) {
@@ -47,11 +35,16 @@ class SignatureService
         return [];
     }
 
-    private function to_string($data)
+    private function _load_encdec()
     {
-        if(is_string(data))
-            return data;
-        return var_export(data,1);
+        $config = $this->_get_encdec_config($this->domain);
+        if(!$config)
+            throw new \Exception("Domain {$this->domain} is not authorized");
+
+        $this->encdec = new ComponentEncdecrypt(1);
+        $this->encdec->set_sslmethod($config["sslenc_method"]??"");
+        $this->encdec->set_sslkey($config["sslenc_key"]??"");
+        $this->encdec->set_sslsalt($config["sslsalt"]??"");
     }
 
     public function get_token()

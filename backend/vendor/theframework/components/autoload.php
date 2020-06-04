@@ -9,6 +9,8 @@ $arSubFolders[] = $sPathRoot;//ruta de components
 $arSubFolders[] = $sPathRoot."console";
 $arSubFolders[] = $sPathRoot."db";
 $arSubFolders[] = $sPathRoot."session";
+$arSubFolders[] = $sPathRoot."config";
+$arSubFolders[] = $sPathRoot."formatter";
 $arSubFolders[] = $sPathRoot."db".DIRECTORY_SEPARATOR."integration";
 $arSubFolders[] = $sPathRoot."db".DIRECTORY_SEPARATOR."context";
 
