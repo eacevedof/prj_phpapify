@@ -77,8 +77,8 @@ class LoginService
         {
             $postpassw = $this->arlogin["password"] ?? "";
             $postusr = $this->arlogin["user"] ?? "";
-            $hashpass = $this->encdec->get_hashpassword($postpassw);
-print_r($hashpass);die;
+            //$hashpass = $this->encdec->get_hashpassword($postpassw);
+            //print_r($hashpass);die;
             if($user["user"] === $postusr && $this->encdec->check_hashpassword($postpassw,$user["password"])) {
                 return $this->_get_data_tokenized();
             }
