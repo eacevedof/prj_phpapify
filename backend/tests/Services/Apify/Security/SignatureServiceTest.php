@@ -1,6 +1,6 @@
 <?php
 // en: /<project>/backend 
-// ./vendor/bin/phpunit --bootstrap ./vendor/theframework/bootstrap.php ./tests/Services/Apify/Security/EncdecryptTest.php --color=auto
+// ./vendor/bin/phpunit --bootstrap ./vendor/theframework/bootstrap.php ./tests/Services/Apify/Security/SignatureServiceTest.php --color=auto
 // ./vendor/bin/phpunit --bootstrap ./vendor/theframework/bootstrap.php ./tests
 use PHPUnit\Framework\TestCase;
 use TheFramework\Components\ComponentLog;
@@ -9,7 +9,7 @@ use App\Services\Apify\Security\SignatureService;
 $pathappboot = realpath(__DIR__ . "/../../../../boot/appbootstrap.php");
 include_once($pathappboot);
 
-class EncdecryptTest extends TestCase
+class SignatureServiceTest extends TestCase
 {
 
     private function log($mxVar,$sTitle=NULL)
@@ -67,4 +67,4 @@ class EncdecryptTest extends TestCase
         $token = $oServ->get_token();
     }
     
-}//EncdecryptTest
+}//SignatureServiceTest
