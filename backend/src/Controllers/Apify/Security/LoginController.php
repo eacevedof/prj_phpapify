@@ -23,7 +23,7 @@ class LoginController extends AppController
     public function index()
     {
         $domain = $_SERVER["REMOTE_HOST"] ?? "*";
-        $this->request_log();
+        //$this->request_log();
         $oJson = new HelperJson();
         try{
             $oServ = new LoginService($domain,$this->get_post());
