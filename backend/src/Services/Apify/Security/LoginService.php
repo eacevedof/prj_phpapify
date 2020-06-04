@@ -93,6 +93,9 @@ class LoginService
             throw new \Exception("No password provided");
 
         $config = $this->_get_login_config();
+        if(!$config)
+            throw new \Exception("Domain {$this->domain} not authorized");
+
         $users = $config["users"] ?? [];
         foreach ($users as $user)
         {
