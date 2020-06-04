@@ -27,7 +27,7 @@ class LoginService extends AppService
     private function _get_encdec_config()
     {
         $sPathfile = $_ENV["APP_ENCDECRYPT"] ?? __DIR__.DIRECTORY_SEPARATOR."encdecrypt.json";
-        //print($sPathfile);die;
+        $this->logd($sPathfile,"pathfile");
         $arconf = (new ComponentConfig($sPathfile))->get_node("domain",$this->domain);
         return $arconf;
     }
@@ -36,7 +36,7 @@ class LoginService extends AppService
     {
         $config = $this->_get_encdec_config();
         if(!$config)
-            throw new \Exception("Domain {$this->domain} is not authorized");
+            throw new \Exception("Domain {$this->domain} is not authorized 2");
 
         $this->encdec = new ComponentEncdecrypt(1);
         $this->encdec->set_sslmethod($config["sslenc_method"]??"");
@@ -111,14 +111,14 @@ class LoginService extends AppService
 
     private function validate_package($arpackage)
     {
-        //print_r($arpackage);
+        $this->logd($arpackage,"validate_package.arpaackage");
         if(count($arpackage)!==5)
             throw new Exception("Wrong token submitted");
 
         list($domain,$remoteip,$username,$password,$date) = $arpackage;
 
         if($domain!==$this->domain)
-            throw new Exception("Domain {$this->domain} not Authorized");
+            throw new Exception("Domain {$this->domain} is not authorized 1");
 
         if($remoteip!==$this->_get_remote_ip())
             throw new Exception("Wrong source {$remoteip} in token");
