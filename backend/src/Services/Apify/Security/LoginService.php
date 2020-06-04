@@ -14,7 +14,7 @@ class LoginService
      */
     private $encdec = null;
 
-    public function __construct($domain, $arlogin)
+    public function __construct($domain, $arlogin=[])
     {
         //necesito el dominio pq la encriptación va por dominio en el encdecrypt.json
         $this->domain = $domain;
@@ -26,6 +26,7 @@ class LoginService
     private function _get_encdec_config()
     {
         $sPathfile = $_ENV["APP_ENCDECRYPT"] ?? __DIR__.DIRECTORY_SEPARATOR."encdecrypt.json";
+        //print($sPathfile);die;
         $arconf = (new ComponentConfig($sPathfile))->get_node("domain",$this->domain);
         return $arconf;
     }
@@ -49,7 +50,26 @@ class LoginService
         return $arconf;
     }
 
-    public function checklogin_login()
+    private function _get_remote_ip()
+    {
+        return $_SERVER["REMOTE_ADDR"]  ?? "127.0.0.1";
+    }
+
+    private function _get_data_tokenized()
+    {
+        $package = [
+            "domain"   => $this->domain,
+            "remoteip" => $this->_get_remote_ip(),
+            "username" => $this->arlogin["user"] ?? "",
+            "today"    => date("Ymd-His"),
+        ];
+
+        $instring = implode("|",$package);
+        $token = $this->encdec->get_sslencrypted($instring);
+        return $token;
+    }
+
+    public function get_token()
     {
         $config = $this->_get_login_config();
         $users = $config["users"] ?? [];
@@ -57,30 +77,13 @@ class LoginService
         {
             $postpassw = $this->arlogin["password"] ?? "";
             $postusr = $this->arlogin["user"] ?? "";
+            $hashpass = $this->encdec->get_hashpassword($postpassw);
+print_r($hashpass);die;
             if($user["user"] === $postusr && $this->encdec->check_hashpassword($postpassw,$user["password"])) {
-                return $this->get_token();
+                return $this->_get_data_tokenized();
             }
         }
         return "";
-    }
-
-    private function _get_remote_ip()
-    {
-        return $_SERVER["REMOTE_ADDR"]  ?? "127.0.0.1";
-    }
-
-    public function get_token()
-    {
-        $package = [
-            "domain"   => $this->domain,
-            "remoteip" => $this->_get_remote_ip(),
-            "username" => $this->arlogin["user"],
-            "today"    => date("Ymd-His"),
-        ];
-
-        $instring = implode("|",$package);
-        $token = $this->encdec->get_sslencrypted($instring);
-        return $token;
     }
 
     private function validate_package($arpackage)

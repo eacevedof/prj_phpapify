@@ -1,6 +1,16 @@
 [
   {
-    "domain": "localhost:800",
+    "domain": "*",
+    "users": [
+      {
+        "id": 1,
+        "user": "fulanito",
+        "password": "menganito"
+      }
+    ]
+  },
+  {
+    "domain": "localhost:3000",
     "users": [
       {
         "id": 1,

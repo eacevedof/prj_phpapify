@@ -32,8 +32,7 @@ class SignatureController extends AppController
         catch (\Exception $e)
         {
             $oJson->set_code(HelperJson::CODE_UNAUTHORIZED)->
-            set_error(["no sign possible"])->
-            set_message($e->getMessage())->
+            set_error([$e->getMessage()])->
             show(1);
         }
 

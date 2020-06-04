@@ -27,7 +27,6 @@ class AppController
 
     protected function check_signature()
     {
-        $oJson = new HelperJson();
         try{
             $post = $this->get_post();
             $domain = $_SERVER["REMOTE_HOST"] ?? "";
@@ -38,9 +37,8 @@ class AppController
         }
         catch (\Exception $e)
         {
-            $oJson->set_code(HelperJson::CODE_UNAUTHORIZED)->
-            set_error(["result"=>false])->
-            set_message($e->getMessage())->
+            (new HelperJson())->set_code(HelperJson::CODE_UNAUTHORIZED)->
+            set_error([$e->getMessage()])->
             show(1);
         }
     }
@@ -154,5 +152,15 @@ class AppController
         header("Content-type: application/json");
         echo json_encode($arData);        
     }
-    
+
+    protected function get_header($key)
+    {
+        $all = getallheaders();
+        foreach ($all as $k=>$v)
+            if($k===$key)
+                return $v;
+
+        return null;
+    }
+
 }//AppController

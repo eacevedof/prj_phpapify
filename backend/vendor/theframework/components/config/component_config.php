@@ -44,7 +44,7 @@ class ComponentConfig
         $isfile = is_file($path);
         if(!$isfile)
             return;
-        $this->arcontent = json_decode($content,1);
+        $this->arcontent = \json_decode(file_get_contents($path),1);
     }
 
     public function get_node($key,$value)

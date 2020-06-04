@@ -9,9 +9,9 @@
  */
 namespace App\Controllers\Apify\Security;
 
+use App\Services\Apify\Security\LoginService;
 use TheFramework\Helpers\HelperJson;
 use App\Controllers\AppController;
-use App\Services\Apify\Security\SignatureService;
 
 class LoginController extends AppController
 {
@@ -22,8 +22,41 @@ class LoginController extends AppController
      */
     public function index()
     {
+        $domain = $_SERVER["REMOTE_HOST"] ?? "*";
+        $this->request_log();
+        $oJson = new HelperJson();
+        try{
+            $oServ = new LoginService($domain,$this->get_post());
+            $token = $oServ->get_token();
+            $oJson->set_payload(["result"=>$token])->show();
+        }
+        catch (\Exception $e)
+        {
+            $oJson->set_code(HelperJson::CODE_UNAUTHORIZED)->
+            set_error([$e->getMessage()])->
+            show(1);
+        }
+    }
 
-
-    }//index
-
+    /**
+     * ruta:
+     *  <dominio>/apifiy/security/is-valid-token
+     */
+    public function is_valid_token()
+    {
+        $domain = $_SERVER["REMOTE_HOST"] ?? "*";
+        $oJson = new HelperJson();
+        try{
+            $token = $this->get_header("apify-auth");
+            $oServ = new LoginService($domain);
+            $oServ->is_valid($token);
+            $oJson->set_payload(["result"=>true])->show();
+        }
+        catch (\Exception $e)
+        {
+            $oJson->set_code(HelperJson::CODE_UNAUTHORIZED)->
+            set_error([$e->getMessage()])->
+            show(1);
+        }
+    }
 }//LoginController
