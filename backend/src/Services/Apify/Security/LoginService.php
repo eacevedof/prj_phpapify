@@ -43,11 +43,33 @@ class LoginService
         $this->encdec->set_sslsalt($config["sslsalt"]??"");
     }
 
-    private function _get_login_config()
+    private function _get_login_config($domain="")
     {
+        if(!$domain) $domain = $this->domain;
         $sPathfile = $_ENV["APP_LOGIN"] ?? __DIR__.DIRECTORY_SEPARATOR."login.json";
-        $arconf = (new ComponentConfig($sPathfile))->get_node("domain",$this->domain);
-        return $arconf;
+        $arconfig = (new ComponentConfig($sPathfile))->get_node("domain",$domain);
+        return $arconfig;
+    }
+
+    private function _user_exists($domain, $username)
+    {
+        $arconfig = $this->_get_login_config($domain);
+        //print_r($arconfig);die;
+        foreach($arconfig["users"] as $aruser)
+            if($aruser["user"] === $username)
+                return true;
+
+        return false;
+    }
+
+    private function _get_user_password($domain, $username)
+    {
+        $arconfig = $this->_get_login_config($domain);
+        foreach($arconfig["users"] as $aruser)
+            if($aruser["user"] === $username)
+                return $aruser["password"] ?? "";
+
+        return false;
     }
 
     private function _get_remote_ip()
@@ -57,10 +79,12 @@ class LoginService
 
     private function _get_data_tokenized()
     {
+        $username = $this->arlogin["user"] ?? "";
         $package = [
             "domain"   => $this->domain,
             "remoteip" => $this->_get_remote_ip(),
-            "username" => $this->arlogin["user"] ?? "",
+            "username" => $username,
+            "password" => md5($this->_get_user_password($this->domain, $username)),
             "today"    => date("Ymd-His"),
         ];
 
@@ -88,16 +112,25 @@ class LoginService
 
     private function validate_package($arpackage)
     {
-        if(!$arpackage)
+        //print_r($arpackage);
+        if(count($arpackage)!==5)
             throw new Exception("Wrong token submitted");
 
-        list($domain,$remoteip,$username,$date) = $arpackage;
+        list($domain,$remoteip,$username,$password,$date) = $arpackage;
 
         if($domain!==$this->domain)
             throw new Exception("Domain {$this->domain} not Authorized");
 
         if($remoteip!==$this->_get_remote_ip())
             throw new Exception("Wrong source {$remoteip} in token");
+
+        if(!$this->_user_exists($domain,$username))
+            throw new Exception("Wrong user submitted");
+
+        $md5pass = $this->_get_user_password($domain,$username);
+        $md5pass = md5($md5pass);
+        if($md5pass!==$password)
+            throw new Exception("Wrong user or password submitted");
 
         list($day) = explode("-",$date);
         $now = date("Ymd");
@@ -111,6 +144,7 @@ class LoginService
     public function is_valid($token)
     {
         $instring = $this->encdec->get_ssldecrypted($token);
+        //print_r($instring);die;
         $package = explode("|",$instring);
         $this->validate_package($package);
         return true;
