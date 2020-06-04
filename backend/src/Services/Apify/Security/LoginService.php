@@ -1,11 +1,12 @@
 <?php
 namespace App\Services\Apify\Security;
+use App\Services\AppService;
 use \Exception;
 use TheFramework\Components\Formatter\ComponentMoment;
 use TheFramework\Components\Config\ComponentConfig;
 use TheFramework\Components\Session\ComponentEncdecrypt;
 
-class LoginService
+class LoginService extends AppService
 {
     private $domain = null;
     private $arlogin = null;
@@ -139,6 +140,7 @@ class LoginService
     public function is_valid($token)
     {
         $instring = $this->encdec->get_ssldecrypted($token);
+        $this->logd($instring,"is_valid.instring of token $token");
         //print_r($instring);die;
         $package = explode("|",$instring);
         $this->validate_package($package);
