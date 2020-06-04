@@ -156,6 +156,7 @@ class AppController
     protected function get_header($key)
     {
         $all = getallheaders();
+        $this->logd($all,"get_header.all");
         foreach ($all as $k=>$v)
             if($k===$key)
                 return $v;
