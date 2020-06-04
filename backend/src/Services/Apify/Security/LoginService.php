@@ -95,15 +95,21 @@ class LoginService
 
     public function get_token()
     {
+        $username = $this->arlogin["user"] ?? "";
+        $password = $this->arlogin["password"] ?? "";
+        if(!$username)
+            throw new \Exception("No user provided");
+
+        if(!$password)
+            throw new \Exception("No password provided");
+
         $config = $this->_get_login_config();
         $users = $config["users"] ?? [];
         foreach ($users as $user)
         {
-            $postpassw = $this->arlogin["password"] ?? "";
-            $postusr = $this->arlogin["user"] ?? "";
             //$hashpass = $this->encdec->get_hashpassword($postpassw);
             //print_r($hashpass);die;
-            if($user["user"] === $postusr && $this->encdec->check_hashpassword($postpassw,$user["password"])) {
+            if($user["user"] === $username && $this->encdec->check_hashpassword($password,$user["password"])) {
                 return $this->_get_data_tokenized();
             }
         }
