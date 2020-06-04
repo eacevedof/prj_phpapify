@@ -94,7 +94,7 @@ class LoginService
 
         $config = $this->_get_login_config();
         if(!$config)
-            throw new \Exception("Domain {$this->domain} not authorized");
+            throw new \Exception("Source domain not authorized");
 
         $users = $config["users"] ?? [];
         foreach ($users as $user)

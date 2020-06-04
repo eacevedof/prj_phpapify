@@ -17,13 +17,16 @@ class LoginServiceTest extends TestCase
         $oLog = new ComponentLog("logs",__DIR__);
         $oLog->save($mxVar,$sTitle);
     }
-    
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Source domain not authorized
+     */
     public function test_get_token()
     {
         $post=["user"=>"fulanito","password"=>"menganito"];
         $oServ = new LoginService("localhost:200",$post);
-        $token = $oServ->get_token();
-        $this->assertIsString($token);
+        $oServ->get_token();
     }
 
 
