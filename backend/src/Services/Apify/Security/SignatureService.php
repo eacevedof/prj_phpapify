@@ -1,6 +1,7 @@
 <?php
 namespace App\Services\Apify\Security;
 use Matrix\Exception;
+use TheFramework\Components\Config\ComponentConfig;
 use TheFramework\Components\Session\ComponentEncdecrypt;
 
 class SignatureService
@@ -22,17 +23,9 @@ class SignatureService
     private function _get_encdec_config()
     {
         $sPathfile = $_ENV["APP_ENCDECRYPT"] ?? __DIR__.DIRECTORY_SEPARATOR."encdecrypt.json";
-        if(!is_file($sPathfile)) {
-            throw new \Exception("No encdecrypt file found: $sPathfile");
-        }
-        $sJson = file_get_contents($sPathfile);
-        $arconfig = json_decode($sJson,1);
-        foreach ($arconfig as $arconf)
-        {
-            if($arconf["domain"]===$this->domain)
-                return $arconf;
-        }
-        return [];
+        //print($sPathfile);die;
+        $arconf = (new ComponentConfig($sPathfile))->get_node("domain",$this->domain);
+        return $arconf;
     }
 
     private function _load_encdec()
@@ -73,7 +66,6 @@ class SignatureService
     private function validate_package($arpackage)
     {
         $data = var_export($this->data,1);
-        $md5 = md5($data);
 
         if(!$arpackage)
             throw new Exception("Wrong token submitted");
@@ -84,6 +76,7 @@ class SignatureService
         if($arpackage[1]!==$this->_get_remote_ip())
             throw new Exception("Wrong source {$arpackage[0]} in token");
 
+        $md5 = md5($data);
         if($arpackage[2]!==$md5)
             throw new Exception("Wrong hash submitted");
 

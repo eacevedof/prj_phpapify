@@ -51,17 +51,6 @@ class LoginService
         return $arconfig;
     }
 
-    private function _user_exists($domain, $username)
-    {
-        $arconfig = $this->_get_login_config($domain);
-        //print_r($arconfig);die;
-        foreach($arconfig["users"] as $aruser)
-            if($aruser["user"] === $username)
-                return true;
-
-        return false;
-    }
-
     private function _get_user_password($domain, $username)
     {
         $arconfig = $this->_get_login_config($domain);

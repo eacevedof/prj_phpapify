@@ -54,7 +54,7 @@ class LoginController extends AppController
         }
         catch (\Exception $e)
         {
-            $oJson->set_code(HelperJson::CODE_UNAUTHORIZED)->
+            $oJson->set_code(HelperJson::CODE_FORBIDDEN)->
             set_error([$e->getMessage()])->
             show(1);
         }
