@@ -23,7 +23,7 @@ class LoginController extends AppController
     public function index()
     {
         $domain = $_SERVER["REMOTE_HOST"] ?? "*";
-        $this->logd($domain,"login.index.domain");
+        //$this->logd($domain,"login.index.domain");
         //$this->request_log();
         $oJson = new HelperJson();
         try{
@@ -46,11 +46,11 @@ class LoginController extends AppController
     public function is_valid_token()
     {
         $domain = $_SERVER["REMOTE_HOST"] ?? "*";
-        $this->logd($domain,"login.is_valid_token.domain");
+        //$this->logd($domain,"login.is_valid_token.domain");
         $oJson = new HelperJson();
         try{
             $token = $this->get_header("apify-auth");
-            $this->logd($token,"login.is_valid_token.header");
+            //$this->logd($token,"login.is_valid_token.header");
             $oServ = new LoginService($domain);
             $oServ->is_valid($token);
             $oJson->set_payload(["result"=>true])->show();

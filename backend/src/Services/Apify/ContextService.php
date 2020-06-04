@@ -39,7 +39,7 @@ class ContextService extends AppService
         //pr($arContext);die;
         $ipos = array_keys($arContext)[0];
         $schemas = $arContext[$ipos]["schemas"] ?? [];
-        $this->logd($schemas,"schemas para $dbname");
+        //$this->logd($schemas,"schemas para $dbname");
         foreach ($schemas as $arschema)
             if($arschema["database"] === $dbname)
                 return true;

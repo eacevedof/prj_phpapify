@@ -27,7 +27,7 @@ class LoginService extends AppService
     private function _get_encdec_config()
     {
         $sPathfile = $_ENV["APP_ENCDECRYPT"] ?? __DIR__.DIRECTORY_SEPARATOR."encdecrypt.json";
-        $this->logd($sPathfile,"pathfile");
+        //$this->logd($sPathfile,"pathfile");
         $arconf = (new ComponentConfig($sPathfile))->get_node("domain",$this->domain);
         return $arconf;
     }
@@ -111,7 +111,7 @@ class LoginService extends AppService
 
     private function validate_package($arpackage)
     {
-        $this->logd($arpackage,"validate_package.arpaackage");
+        //$this->logd($arpackage,"validate_package.arpaackage");
         if(count($arpackage)!==5)
             throw new Exception("Wrong token submitted");
 
@@ -140,7 +140,7 @@ class LoginService extends AppService
     public function is_valid($token)
     {
         $instring = $this->encdec->get_ssldecrypted($token);
-        $this->logd($instring,"is_valid.instring of token $token");
+        //$this->logd($instring,"is_valid.instring of token $token");
         //print_r($instring);die;
         $package = explode("|",$instring);
         $this->validate_package($package);
