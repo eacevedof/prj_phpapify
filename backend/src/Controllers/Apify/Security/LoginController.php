@@ -50,9 +50,8 @@ class LoginController extends AppController
         $oJson = new HelperJson();
         try{
             //$token = $this->get_header("apify-auth");
-            $token = $this->get_header("authorization");
-            list($basic,$token) = explode(" ",$token);
-            //$token = $this->get_post("apify_usertoken");
+            //$token = $this->get_header("authorization");
+            $token = $this->get_post("usertoken");
             $this->logd($token,"login.is_valid_token.header");
             $this->logd("domain: $domain, token: $token");
             $oServ = new LoginService($domain);
