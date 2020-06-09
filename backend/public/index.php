@@ -1,6 +1,6 @@
 <?php
 include("../boot/appbootstrap.php");
-header("Access-Control-Allow-Origin: *");
+//header("Access-Control-Allow-Origin: *");
 //Código de configuración de cabeceras que permiten consumir la API desde cualquier origen
 //fuente: https://stackoverflow.com/questions/14467673/enable-cors-in-htaccess
 // Allow from any origin
@@ -12,7 +12,7 @@ if($httpfrom)
     //No 'Access-Control-Allow-Origin' header is present on the requested resource.
     //should do a check here to match $_SERVER["HTTP_ORIGIN"] to a
     //whitelist of safe domains
-    //header("Access-Control-Allow-Origin: {$httpfrom}");
+    header("Access-Control-Allow-Origin: {$httpfrom}");
     header("Access-Control-Allow-Credentials: true");
     header("Access-Control-Max-Age: 86400");    // cache for 1 day
 }
