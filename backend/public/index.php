@@ -4,7 +4,6 @@ header("Access-Control-Allow-Origin: *");
 //Código de configuración de cabeceras que permiten consumir la API desde cualquier origen
 //fuente: https://stackoverflow.com/questions/14467673/enable-cors-in-htaccess
 // Allow from any origin
-die("hola");
 $httpfrom = $_SERVER["HTTP_ORIGIN"] ?? "";
 if($httpfrom)
 {
@@ -27,7 +26,7 @@ if($_SERVER["REQUEST_METHOD"] == "OPTIONS")
     if(isset($_SERVER["HTTP_ACCESS_CONTROL_REQUEST_HEADERS"]))
         header("Access-Control-Allow-Headers: {$_SERVER["HTTP_ACCESS_CONTROL_REQUEST_HEADERS"]}");
 }
-
+die("hola");
 
 //si se está en producción se desactivan los mensajes en el navegador
 if($_ENV["APP_ENV"]=="prod")
