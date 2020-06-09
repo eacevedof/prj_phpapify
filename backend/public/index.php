@@ -34,7 +34,6 @@ if($_ENV["APP_ENV"]=="prod")
     //Define where do you want the log to go, syslog or a file of your liking with
     ini_set("error_log",PATH_LOGS.DS."sys_$sToday.log"); // or ini_set("error_log", "/path/to/syslog/file")
 }
-die($httpfrom);
 
 //autoload de composer
 include_once '../vendor/autoload.php';
@@ -52,5 +51,6 @@ unset($arRoutes);
 
 //con el controlador devuelto en $arRun lo instancio
 $oController = new $arRun["controller"]();
+die("antes llamada");
 //ejecuto el método asociado
 $oController->{$arRun["method"]}();
