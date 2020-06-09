@@ -26,7 +26,6 @@ if($_SERVER["REQUEST_METHOD"] == "OPTIONS")
     if(isset($_SERVER["HTTP_ACCESS_CONTROL_REQUEST_HEADERS"]))
         header("Access-Control-Allow-Headers: {$_SERVER["HTTP_ACCESS_CONTROL_REQUEST_HEADERS"]}");
 }
-die("hola");
 
 //si se está en producción se desactivan los mensajes en el navegador
 if($_ENV["APP_ENV"]=="prod")
@@ -37,7 +36,7 @@ if($_ENV["APP_ENV"]=="prod")
     //Define where do you want the log to go, syslog or a file of your liking with
     ini_set("error_log",PATH_LOGS.DS."sys_$sToday.log"); // or ini_set("error_log", "/path/to/syslog/file")
 }
-
+die($httpfrom);
 
 //autoload de composer
 include_once '../vendor/autoload.php';
