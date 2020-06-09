@@ -7,8 +7,6 @@ include("../boot/appbootstrap.php");
 $httpfrom = $_SERVER["HTTP_ORIGIN"] ?? "";
 if($httpfrom)
 {
-    //chrome bloquea cors para localhost
-    if(strstr($httpfrom,"/localhost")) $httpfrom = "*";
     //No 'Access-Control-Allow-Origin' header is present on the requested resource.
     //should do a check here to match $_SERVER["HTTP_ORIGIN"] to a
     //whitelist of safe domains
