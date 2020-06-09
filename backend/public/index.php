@@ -1,19 +1,7 @@
 <?php
 include("../boot/appbootstrap.php");
 //print_r($_SERVER);die;
-header("Access-Control-Allow-Origin: *");
-die("hola");
-
-//si se está en producción se desactivan los mensajes en el navegador
-if($_ENV["APP_ENV"]=="prod")
-{
-    $sToday = date("Ymd");
-    ini_set("display_errors",0);
-    ini_set("log_errors",1);
-    //Define where do you want the log to go, syslog or a file of your liking with
-    ini_set("error_log",PATH_LOGS.DS."sys_$sToday.log"); // or ini_set("error_log", "/path/to/syslog/file")
-}
-
+//header("Access-Control-Allow-Origin: *");
 //Código de configuración de cabeceras que permiten consumir la API desde cualquier origen
 //fuente: https://stackoverflow.com/questions/14467673/enable-cors-in-htaccess
 // Allow from any origin
@@ -22,7 +10,7 @@ if($httpfrom)
 {
     header("Access-Control-Allow-Origin: *");
     //chrome bloquea cors para localhost
-    if(strstr($httpfrom,"local")) $httpfrom = "*";
+    if(strstr($httpfrom,"/localhost")) $httpfrom = "*";
     //No 'Access-Control-Allow-Origin' header is present on the requested resource.
     //should do a check here to match $_SERVER["HTTP_ORIGIN"] to a
     //whitelist of safe domains
@@ -35,11 +23,23 @@ if($httpfrom)
 if($_SERVER["REQUEST_METHOD"] == "OPTIONS")
 {
     if(isset($_SERVER["HTTP_ACCESS_CONTROL_REQUEST_METHOD"]))
-        header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");         
+        header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 
     if(isset($_SERVER["HTTP_ACCESS_CONTROL_REQUEST_HEADERS"]))
         header("Access-Control-Allow-Headers: {$_SERVER["HTTP_ACCESS_CONTROL_REQUEST_HEADERS"]}");
 }
+
+
+//si se está en producción se desactivan los mensajes en el navegador
+if($_ENV["APP_ENV"]=="prod")
+{
+    $sToday = date("Ymd");
+    ini_set("display_errors",0);
+    ini_set("log_errors",1);
+    //Define where do you want the log to go, syslog or a file of your liking with
+    ini_set("error_log",PATH_LOGS.DS."sys_$sToday.log"); // or ini_set("error_log", "/path/to/syslog/file")
+}
+
 
 //autoload de composer
 include_once '../vendor/autoload.php';
