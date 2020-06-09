@@ -18,6 +18,7 @@ if($_ENV["APP_ENV"]=="prod")
 $httpfrom = $_SERVER["HTTP_ORIGIN"] ?? "";
 if($httpfrom)
 {
+    header("Access-Control-Allow-Origin: *");
     //chrome bloquea cors para localhost
     if(strstr($httpfrom,"local")) $httpfrom = "*";
     //No 'Access-Control-Allow-Origin' header is present on the requested resource.
