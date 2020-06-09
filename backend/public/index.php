@@ -1,6 +1,6 @@
 <?php
 include("../boot/appbootstrap.php");
-
+print_r($_SERVER);die;
 //print_r($_SERVER);die;
 //si se está en producción se desactivan los mensajes en el navegador
 if($_ENV["APP_ENV"]=="prod")
