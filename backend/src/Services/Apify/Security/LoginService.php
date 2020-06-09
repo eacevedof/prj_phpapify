@@ -70,15 +70,19 @@ class LoginService extends AppService
     private function _get_data_tokenized()
     {
         $username = $this->arlogin["user"] ?? "";
-        $package = [
+        $arpackage = [
             "domain"   => $this->domain,
+            "salt1"    => rand(0,3),
             "remoteip" => $this->_get_remote_ip(),
+            "salt2"    => rand(4,8),
             "username" => $username,
+            "salt3"    => rand(8,12),
             "password" => md5($this->_get_user_password($this->domain, $username)),
+            "salt4"    => rand(12,15),
             "today"    => date("Ymd-His"),
         ];
 
-        $instring = implode("|",$package);
+        $instring = implode("|",$arpackage);
         $token = $this->encdec->get_sslencrypted($instring);
         return $token;
     }
@@ -112,10 +116,10 @@ class LoginService extends AppService
     private function validate_package($arpackage)
     {
         //$this->logd($arpackage,"validate_package.arpaackage");
-        if(count($arpackage)!==5)
+        if(count($arpackage)!==9)
             throw new Exception("Wrong token submitted");
 
-        list($domain,$remoteip,$username,$password,$date) = $arpackage;
+        list($domain,$s1,$remoteip,$s2,$username,$s3,$password,$s4,$date) = $arpackage;
 
         if($domain!==$this->domain)
             throw new Exception("Domain {$this->domain} is not authorized 1");
@@ -142,8 +146,8 @@ class LoginService extends AppService
         $instring = $this->encdec->get_ssldecrypted($token);
         //$this->logd($instring,"is_valid.instring of token $token");
         //print_r($instring);die;
-        $package = explode("|",$instring);
-        $this->validate_package($package);
+        $arpackage = explode("|",$instring);
+        $this->validate_package($arpackage);
         return true;
     }
 }
