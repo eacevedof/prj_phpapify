@@ -115,11 +115,26 @@ class HelperJson
         $this->load_codes();
         return $this;
     }
-    
+
+    private function _send_cors_headers()
+    {
+        if(isset($_SERVER["HTTP_ORIGIN"]))
+        {
+            //No 'Access-Control-Allow-Origin' header is present on the requested resource.
+            //should do a check here to match $_SERVER["HTTP_ORIGIN"] to a
+            //whitelist of safe domains
+            header("Access-Control-Allow-Origin: {$_SERVER["HTTP_ORIGIN"]}");
+            header("Access-Control-Allow-Credentials: true");
+            header("Access-Control-Max-Age: 86400");// cache for 1 day
+        }
+    }
+
     public function show($isExit=0)
     {
         // clear the old headers
         header_remove();
+
+        $this->_send_cors_headers();
         // set the actual code
         http_response_code($this->arResponse["header"]["http"]["code"]);
         // set the header to make sure cache is forced
