@@ -1,5 +1,6 @@
 <?php
 include("../boot/appbootstrap.php");
+echo "<pre>";
 print_r($_SERVER);die;
 //print_r($_SERVER);die;
 //si se está en producción se desactivan los mensajes en el navegador
@@ -17,9 +18,11 @@ if($_ENV["APP_ENV"]=="prod")
 // Allow from any origin
 if(isset($_SERVER["HTTP_ORIGIN"])) 
 {
+    // No 'Access-Control-Allow-Origin' header is present on the requested resource.
     //should do a check here to match $_SERVER["HTTP_ORIGIN"] to a
     //whitelist of safe domains
-    header("Access-Control-Allow-Origin: {$_SERVER["HTTP_ORIGIN"]}");
+    header("Access-Control-Allow-Origin: *");
+    //header("Access-Control-Allow-Origin: {$_SERVER["HTTP_ORIGIN"]}");
     header("Access-Control-Allow-Credentials: true");
     header("Access-Control-Max-Age: 86400");    // cache for 1 day
 }
