@@ -1,14 +1,12 @@
 <?php
 include("../boot/appbootstrap.php");
-//print_r($_SERVER);die;
-//header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: *");
 //Código de configuración de cabeceras que permiten consumir la API desde cualquier origen
 //fuente: https://stackoverflow.com/questions/14467673/enable-cors-in-htaccess
 // Allow from any origin
 $httpfrom = $_SERVER["HTTP_ORIGIN"] ?? "";
 if($httpfrom)
 {
-    header("Access-Control-Allow-Origin: *");
     //chrome bloquea cors para localhost
     if(strstr($httpfrom,"/localhost")) $httpfrom = "*";
     //No 'Access-Control-Allow-Origin' header is present on the requested resource.
