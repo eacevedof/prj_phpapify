@@ -52,7 +52,7 @@ class ReaderService extends AppService
         $oCrud->set_joins($arParams["joins"]??[]);
         $oCrud->set_and($arParams["where"]??[]);
         $oCrud->set_groupby($arParams["groupby"]??[]);
-        $oCrud->set_limit();
+        if(isset($arParams["limit"])) $oCrud->set_limit($arParams["limit"]["perpage"] ?? 1000,$arParams["limit"]["regfrom"]??0);
 
         $arTmp = [];
         if(isset($arParams["orderby"]))
