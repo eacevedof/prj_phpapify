@@ -29,7 +29,7 @@ class LoginController extends AppController
         try{
             $oServ = new LoginService($domain,$this->get_post());
             $token = $oServ->get_token();
-            $oJson->set_payload(["result"=>$token])->show();
+            $oJson->set_payload(["token"=>$token])->show();
         }
         catch (\Exception $e)
         {
@@ -56,7 +56,7 @@ class LoginController extends AppController
             $this->logd("domain: $domain, token: $token");
             $oServ = new LoginService($domain);
             $oServ->is_valid($token);
-            $oJson->set_payload(["result"=>true])->show();
+            $oJson->set_payload(["isvalid"=>true])->show();
         }
         catch (\Exception $e)
         {

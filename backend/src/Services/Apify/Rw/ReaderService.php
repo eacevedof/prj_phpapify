@@ -24,7 +24,8 @@ class ReaderService extends AppService
     private $oContext;
     private $oBehav;
     private $sSQL;
-    
+    private $iFoundrows;
+
     public function __construct($idContext="",$sDb="") 
     {
         $this->idContext = $idContext;
@@ -82,7 +83,8 @@ class ReaderService extends AppService
     {
         if(!$sSQL) return [];
         $this->sSQL = $sSQL;
-        $r = $this->oBehav->read_raw($sSQL);   
+        $r = $this->oBehav->read_raw($sSQL);
+        $this->iFoundrows = $this->oBehav->get_foundrows();
         if($this->oBehav->is_error())
             $this->add_error($this->oBehav->get_errors());
         return $r;
@@ -98,16 +100,9 @@ class ReaderService extends AppService
         return $r;
     }
 
-    public function get_foundrows($arParams)
-    {
-        $isFoundrows = $arParams["foundrows"] ?? 0;
-        if(!$isFoundrows) return null;
-
-        $sSQL = "SELECT FOUND_ROWS()";
-        $r = $this->read_raw($sSQL);
-        return $r;
-    }
     
     public function get_sql(){return $this->sSQL;}
+
+    public function get_foundrows(){return $this->iFoundrows;}
 
 }//ReaderService

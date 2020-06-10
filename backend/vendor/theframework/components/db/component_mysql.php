@@ -3,8 +3,8 @@
  * @author Eduardo Acevedo Farje.
  * @link www.eduardoaf.com
  * @name TheFramework\Components\Db\ComponentMysql 
- * @file component_mysql.php v2.1.2
- * @date 29-06-2019 17:08 SPAIN
+ * @file component_mysql.php v2.2.0
+ * @date 10-06-2020 15:10 SPAIN
  * @observations
  */
 namespace TheFramework\Components\Db;
@@ -15,12 +15,14 @@ class ComponentMysql
     private $isError;
     private $arErrors;    
     private $iAffected;
+    private $iFoundrows;
     
     public function __construct($arConn=[]) 
     {
         $this->isError = FALSE;
         $this->arErrors = [];
         $this->arConn = $arConn;
+        $this->iFoundrows = 0;
     }
 
     private function get_conn_string()
@@ -69,7 +71,8 @@ class ComponentMysql
             //https://stackoverflow.com/questions/38671330/error-with-php7-and-sql-server-on-windows
             $oPdo = new \PDO($sConn,$this->arConn["user"],$this->arConn["password"]
                     ,[\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"]);
-            $oPdo->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION ); 
+            $oPdo->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION );
+
             $this->log($sSQL,"ComponentMysql.exec");
             $oCursor = $oPdo->query($sSQL);
             if($oCursor===FALSE)
@@ -80,9 +83,11 @@ class ComponentMysql
             {
                 while($arRow = $oCursor->fetch(\PDO::FETCH_ASSOC))
                     $arResult[] = $arRow;
-                
+
+                $sSQL = "SELECT FOUND_ROWS()";
+                $this->iFoundrows = $oPdo->query($sSQL)->fetch(\PDO::FETCH_COLUMN);
+
                 $this->iAffected = count($arResult);
-                
                 if($arResult)
                     $arResult = $this->get_rowcol($arResult,$iCol,$iRow);
             }
@@ -143,5 +148,6 @@ class ComponentMysql
 
     public function get_conn($k){return $this->arConn[$k];}
     public function get_affected(){return $this->iAffected;}
+    public function get_foundrows(){return $this->iFoundrows;}
     
 }//ComponentMysql

@@ -15,6 +15,7 @@ use App\Services\Dbs\CoreQueriesService;
 class SchemaBehaviour extends AppModel
 {
     private $oQServ;
+    private $iFoundrows;
     
     public function __construct($oDb=NULL) 
     {
@@ -25,6 +26,7 @@ class SchemaBehaviour extends AppModel
     public function query($sSQL,$iCol=NULL,$iRow=NULL)
     {
         $r = $this->oDb->query($sSQL,$iCol,$iRow);
+        $this->iFoundrows = $this->oDb->get_foundrows();
         if($this->oDb->is_error())
             $this->add_error($this->oDb->get_errors());
         return $r;
@@ -91,5 +93,6 @@ class SchemaBehaviour extends AppModel
     
     public function read_raw($sSQL){ return $this->query($sSQL);}
     public function write_raw($sSQL){ return $this->execute($sSQL);}
+    public function get_foundrows(){return $this->iFoundrows; }
 
 }//SchemaBehaviour

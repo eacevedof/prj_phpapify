@@ -36,6 +36,7 @@ class ReaderController extends AppController
         $oServ = new ReaderService($idContext, $sDb);
         $arJson = $oServ->get_read($arParts);
         $iNumrows = $oServ->get_foundrows($arParts);
+        $this->logd($iNumrows,"NUM_ROWS");
         
         $oJson = new HelperJson();
         if($oServ->is_error()) 
@@ -44,7 +45,7 @@ class ReaderController extends AppController
                     set_message("database error")->
                     show(1);
 
-        $oJson->set_payload($arJson)->show();
+        $oJson->set_payload(["result"=>$arJson,"foundrows"=>$oServ->get_foundrows()])->show();
 
     }//index
 
@@ -69,7 +70,7 @@ class ReaderController extends AppController
                     set_message("database error")->
                     show(1);
 
-        $oJson->set_payload($arJson)->show();
+        $oJson->set_payload(["rows"=>$arJson,"numrows"=>$oServ->get_foundrows()])->show();
     }//raw
    
 
