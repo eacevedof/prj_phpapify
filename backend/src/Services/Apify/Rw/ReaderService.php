@@ -48,11 +48,14 @@ class ReaderService extends AppService
         if($this->isError) return;
 
         $oCrud->set_table($arParams["table"]);
+        if(isset($arParams["distinct"])) $oCrud->is_distinct($arParams["distinct"]);
+        if(isset($arParams["foundrows"])) $oCrud->is_foundrows($arParams["foundrows"]);
+
         $oCrud->set_getfields($arParams["fields"]);
         $oCrud->set_joins($arParams["joins"]??[]);
         $oCrud->set_and($arParams["where"]??[]);
         $oCrud->set_groupby($arParams["groupby"]??[]);
-        if(isset($arParams["limit"])) $oCrud->set_limit($arParams["limit"]["perpage"] ?? 1000,$arParams["limit"]["regfrom"]??0);
+        $oCrud->set_having($arParams["having"]??[]);
 
         $arTmp = [];
         if(isset($arParams["orderby"]))
@@ -65,6 +68,10 @@ class ReaderService extends AppService
         }
         //pr($oCrud);die;
         $oCrud->set_orderby($arTmp);
+
+        if(isset($arParams["limit"]["perpage"]))
+            $oCrud->set_limit($arParams["limit"]["perpage"] ?? 1000,$arParams["limit"]["regfrom"]??0);
+
         $oCrud->get_selectfrom();
         $sql =  $oCrud->get_sql();
         //pr($sql,"sql");
@@ -87,6 +94,16 @@ class ReaderService extends AppService
             return $this->add_error("get_read No params");
         $sSQL = $this->get_parsed_tosql($arParams);
         $this->sSQL = $sSQL;
+        $r = $this->read_raw($sSQL);
+        return $r;
+    }
+
+    public function get_foundrows($arParams)
+    {
+        $isFoundrows = $arParams["foundrows"] ?? 0;
+        if(!$isFoundrows) return null;
+
+        $sSQL = "SELECT FOUND_ROWS()";
         $r = $this->read_raw($sSQL);
         return $r;
     }

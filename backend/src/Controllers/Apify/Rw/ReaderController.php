@@ -23,8 +23,7 @@ class ReaderController extends AppController
         //excepcion en caso de error
         $this->check_usertoken();
     }
-    
-    
+
     /**
      * /apify/read?context=c&dbname=d
      */
@@ -34,8 +33,9 @@ class ReaderController extends AppController
         $sDb = $this->get_get("dbname");
         $arParts = $this->get_post("queryparts");
         
-        $oServ = new ReaderService($idContext,$sDb);
+        $oServ = new ReaderService($idContext, $sDb);
         $arJson = $oServ->get_read($arParts);
+        $iNumrows = $oServ->get_foundrows($arParts);
         
         $oJson = new HelperJson();
         if($oServ->is_error()) 
