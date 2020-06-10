@@ -52,6 +52,7 @@ class ReaderService extends AppService
         $oCrud->set_joins($arParams["joins"]??[]);
         $oCrud->set_and($arParams["where"]??[]);
         $oCrud->set_groupby($arParams["groupby"]??[]);
+        $oCrud->set_limit();
 
         $arTmp = [];
         if(isset($arParams["orderby"]))

@@ -28,6 +28,7 @@ class ComponentCrud
     private $arGetFields;
     private $arResult;
     private $arEnd;
+    private $arLimit;
     
     private $oDB;
     
@@ -91,7 +92,15 @@ class ComponentCrud
     {
         $sEnd = " ".implode("\n",$this->arEnd);
         return $sEnd;        
-    }    
+    }
+
+    private function get_limit()
+    {
+        if(!$this->arLimit) return "";
+        // LIMIT regfrom (secuenta desde 0), perpage
+        $sLimit = " LIMIT ".implode(", ",$this->arLimit);
+        return $sLimit;
+    }
     
     private function is_numeric($sFieldName){return in_array($sFieldName,$this->arNumeric);}
         
@@ -385,6 +394,7 @@ class ComponentCrud
                 $sSQL .= $this->get_groupby();
                 $sSQL .= $this->get_orderby();
                 $sSQL .= $this->get_end();
+                $sSQL .= $this->get_limit();
                 $this->sSQL = $sSQL;
                 //bug($sSQL);die;
                 $this->query();
@@ -544,7 +554,11 @@ class ComponentCrud
     public function set_orderby($arOrderBy=array()){$this->arOrderBy = array(); if(is_array($arOrderBy)) $this->arOrderBy=$arOrderBy;}
     public function set_groupby($arGroupBy=array()){$this->arGroupBy = array(); if(is_array($arGroupBy)) $this->arGroupBy=$arGroupBy;}
     public function set_end($arEnd=array()){$this->arEnd = array(); if(is_array($arEnd)) $this->arEnd=$arEnd;}
-    
+    public function set_limit($iPPage=1000, $iRegfrom=0){
+        $this->arLimit=["regfrom"=>$iRegfrom, "perpage"=>$iPPage];
+        if($iPPage==null) $this->arLimit = [];
+    }
+
     public function get_sql(){return $this->sSQL;}
     
     /**
