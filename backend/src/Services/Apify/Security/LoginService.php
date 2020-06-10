@@ -71,6 +71,7 @@ class LoginService extends AppService
     {
         $username = $this->arlogin["user"] ?? "";
         $arpackage = [
+            "salt0"    => date("Ymd-His"),
             "domain"   => $this->domain,
             "salt1"    => rand(0,3),
             "remoteip" => $this->_get_remote_ip(),
@@ -116,10 +117,10 @@ class LoginService extends AppService
     private function validate_package($arpackage)
     {
         //$this->logd($arpackage,"validate_package.arpaackage");
-        if(count($arpackage)!==9)
+        if(count($arpackage)!==10)
             throw new Exception("Wrong token submitted");
 
-        list($domain,$s1,$remoteip,$s2,$username,$s3,$password,$s4,$date) = $arpackage;
+        list($s0,$domain,$s1,$remoteip,$s2,$username,$s3,$password,$s4,$date) = $arpackage;
 
         if($domain!==$this->domain)
             throw new Exception("Domain {$this->domain} is not authorized 1");
