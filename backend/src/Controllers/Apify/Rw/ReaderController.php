@@ -20,6 +20,8 @@ class ReaderController extends AppController
     {
         //captura trazas de la petición en los logs
         parent::__construct();
+        //excepcion en caso de error
+        $this->check_usertoken();
     }
     
     

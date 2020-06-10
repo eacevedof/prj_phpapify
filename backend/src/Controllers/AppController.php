@@ -9,6 +9,7 @@
  */
 namespace App\Controllers;
 
+use App\Services\Apify\Security\LoginService;
 use TheFramework\Helpers\HelperJson;
 use App\Services\Apify\Security\SignatureService;
 use App\Traits\AppErrorTrait;
@@ -18,7 +19,8 @@ class AppController
 {
     use AppErrorTrait;
     use AppLogTrait;
-    
+    protected const KEY_APIFYUSERTOKEN = "apify-usertoken";
+
     public function __construct() 
     {
         //guardo trazas del $_GET y $_POST
@@ -38,6 +40,25 @@ class AppController
         catch (\Exception $e)
         {
             (new HelperJson())->set_code(HelperJson::CODE_UNAUTHORIZED)->
+            set_error([$e->getMessage()])->
+            show(1);
+        }
+    }
+
+    protected function check_usertoken()
+    {
+        try{
+            $domain = $_SERVER["REMOTE_HOST"] ?? "*";
+            $token = $this->get_post(self::KEY_APIFYUSERTOKEN);
+            $this->logd("domain:$domain,token:$token","check_usertoken");
+            $oServ = new LoginService($domain);
+            $oServ->is_valid($token);
+            return true;
+        }
+        catch (\Exception $e)
+        {
+            $oJson = new HelperJson();
+            $oJson->set_code(HelperJson::CODE_FORBIDDEN)->
             set_error([$e->getMessage()])->
             show(1);
         }
