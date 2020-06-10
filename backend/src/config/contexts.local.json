@@ -38,5 +38,20 @@
         "password":"root"
       }
     ]
+  },
+  {
+    "id":"c3",
+    "alias":"db ipblocker",
+    "description":"Docker mysql Ip Blocker",
+    "type":"mysql",
+    "server":"127.0.0.1",
+    "port":"3306",
+    "schemas":[
+      {
+        "database":"db_security",
+        "user":"root",
+        "password":"1234"
+      }
+    ]
   }
 ]

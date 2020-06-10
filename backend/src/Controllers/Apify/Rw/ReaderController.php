@@ -28,8 +28,6 @@ class ReaderController extends AppController
      */
     public function index()
     {
-        //bugp();
-        //print_r("ReaderController.index()");
         $idContext = $this->get_get("context");
         $sDb = $this->get_get("dbname");
         $arParts = $this->get_post("queryparts");

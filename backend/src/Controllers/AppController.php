@@ -126,6 +126,15 @@ class AppController
         if(!$sKey) return $_POST;
         return (isset($_POST[$sKey])?$_POST[$sKey]:"");
     }
+
+    /**
+     * lee valores de $_FILES
+     */
+    protected function get_files($sKey=NULL)
+    {
+        if(!$sKey) return $_FILES;
+        return (isset($_FILES[$sKey])?$_FILES[$sKey]:"");
+    }
     
     protected function is_post(){return count($_POST)>0;}
 
@@ -145,6 +154,7 @@ class AppController
         $sReqUri = $_SERVER["REQUEST_URI"];
         $this->logd($this->get_get(),"$sReqUri GET");
         $this->logd($this->get_post(),"$sReqUri POST");
+        $this->logd($this->get_files(),"$sReqUri FILES");
     }
     
     protected function response_json($arData)
