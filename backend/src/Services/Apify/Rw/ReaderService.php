@@ -75,6 +75,7 @@ class ReaderService extends AppService
 
         $oCrud->get_selectfrom();
         $sql =  $oCrud->get_sql();
+        $this->logd($sql,"get_parsed_tosql.sql");
         //pr($sql,"sql");
         return $sql;
     }
