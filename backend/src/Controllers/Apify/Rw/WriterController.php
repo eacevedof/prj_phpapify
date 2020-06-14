@@ -50,7 +50,7 @@ class WriterController extends AppController
         elseif($sAction=="delete")
             $oJson->set_message("resource deleted");
 
-        $oJson->set_payload(["result"=>$arJson])->show();
+        $oJson->set_payload(["result"=>$arJson,"lastid"=>$oServ->get_lastinsert_id()])->show();
     }//index
 
     /**

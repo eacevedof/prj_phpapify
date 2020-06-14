@@ -16,6 +16,7 @@ class ComponentMysql
     private $arErrors;    
     private $iAffected;
     private $iFoundrows;
+    private $iLastid;
     
     public function __construct($arConn=[]) 
     {
@@ -23,6 +24,7 @@ class ComponentMysql
         $this->arErrors = [];
         $this->arConn = $arConn;
         $this->iFoundrows = 0;
+        $this->iLastid = -1;
     }
 
     private function get_conn_string()
@@ -114,6 +116,9 @@ class ComponentMysql
             $mxR = $oPdo->exec($sSQL);
 
             $this->iAffected = $mxR;
+
+            if(strstr($sSQL,"INSERT INTO ")) $this->iLastid = $oPdo->lastInsertId();
+
             if($mxR===FALSE)
             {
                 $this->add_error("exec-error: $sSQL");
@@ -149,5 +154,6 @@ class ComponentMysql
     public function get_conn($k){return $this->arConn[$k];}
     public function get_affected(){return $this->iAffected;}
     public function get_foundrows(){return $this->iFoundrows;}
+    public function get_lastid(){return $this->iLastid;}
     
 }//ComponentMysql

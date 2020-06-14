@@ -143,7 +143,12 @@ class WriterService extends AppService
     {
         $sSQL = $this->get_parsed_tosql($arParams,$sAction);
         //print_r($sSQL);die;
-        return $this->write_raw($sSQL);        
+        return $this->write_raw($sSQL);
+    }
+
+    public function get_lastinsert_id()
+    {
+        return $this->oBehav->get_lastinsert_id();
     }
 
 }//WriterService

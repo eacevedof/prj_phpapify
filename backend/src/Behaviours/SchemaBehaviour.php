@@ -95,4 +95,5 @@ class SchemaBehaviour extends AppModel
     public function write_raw($sSQL){ return $this->execute($sSQL);}
     public function get_foundrows(){return $this->iFoundrows; }
 
+
 }//SchemaBehaviour

@@ -63,8 +63,7 @@ class AppModel
     
     public function get_lastinsert_id()
     {
-        $sSQL = "SELECT LAST_INSERT_ID()";
-        return $this->oDb->query($sSQL);
+        return $this->oDb->get_lastid();
     }
     
     //$arPost = $_POST
