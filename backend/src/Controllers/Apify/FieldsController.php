@@ -21,6 +21,7 @@ class FieldsController extends AppController
     {
         //captura trazas de la petición en los logs
         parent::__construct();
+        $this->check_usertoken();
     }
     
     /**

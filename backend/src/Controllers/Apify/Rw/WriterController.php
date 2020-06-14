@@ -20,6 +20,7 @@ class WriterController extends AppController
     {
         //captura trazas de la petición en los logs
         parent::__construct();
+        $this->check_usertoken();
     }
     
     /**
@@ -49,7 +50,7 @@ class WriterController extends AppController
         elseif($sAction=="delete")
             $oJson->set_message("resource deleted");
 
-        $oJson->set_payload($arJson)->show();
+        $oJson->set_payload(["result"=>$arJson])->show();
     }//index
 
     /**
