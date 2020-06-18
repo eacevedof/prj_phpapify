@@ -37,7 +37,8 @@ class ComponentLog
     
     private function merge($sContent,$sTitle)
     {
-        $sReturn = "-- [".date("Ymd-His")."]\n";
+        $ip = $_SERVER["REMOTE_ADDR"] ?? "127.0.0.1";
+        $sReturn = "-- [".date("Ymd-His")." ip:$ip]\n";
         if($sTitle) $sReturn .= $sTitle.":\n";
         if($sContent) $sReturn .= $sContent."\n\n";
         return $sReturn;
