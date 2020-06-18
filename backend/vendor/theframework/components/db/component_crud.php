@@ -36,7 +36,9 @@ class ComponentCrud
     
     protected $arErrors = [];
     protected $isError = FALSE;
-    
+
+    protected $reserved = ["get","order"];
+
     /**
      * 
      * @param TheFramework\Components\Db\ComponentMysql $oDB
@@ -63,8 +65,10 @@ class ComponentCrud
         if($this->arOrderBy)
         {
             $sOrderBy = " ORDER BY ";
-            foreach($this->arOrderBy as $sField=>$sAD)
+            foreach($this->arOrderBy as $sField=>$sAD) {
+                $this->clean_reserved($sField);
                 $arSQL[] = "$sField $sAD";
+            }
             $sOrderBy = $sOrderBy.implode(",",$arSQL);
         }
         return $sOrderBy;
@@ -88,8 +92,10 @@ class ComponentCrud
         if($this->arGroupBy)
         {
             $sGroupBy = " GROUP BY ";
-            foreach($this->arGroupBy as $sField)
+            foreach($this->arGroupBy as $sField) {
+                $this->clean_reserved($sField);
                 $arSQL[] = $sField;
+            }
             $sGroupBy = $sGroupBy.implode(",",$arSQL);
         }
         return $sGroupBy;
@@ -116,7 +122,23 @@ class ComponentCrud
     }
     
     private function is_numeric($sFieldName){return in_array($sFieldName,$this->arNumeric);}
-        
+
+    private function is_reserved($word){return in_array(strtolower($word),$this->reserved);}
+
+    private function clean_reserved(&$mxfields)
+    {
+        if(is_array($mxfields)) {
+            foreach ($mxfields as $i => $field) {
+                if ($this->is_reserved($field))
+                    $mxfields[$i] = "`$field`";
+            }
+        }
+        elseif(is_string($mxfields)) {
+            if ($this->is_reserved($mxfields))
+                $mxfields = "`$mxfields`";
+        }
+    }
+
     public function autoinsert($sTable=NULL,$arFieldVal=[])
     {
         //Limpio la consulta 
@@ -140,6 +162,7 @@ class ComponentCrud
                 $sSQL .= "$sTable ( ";
 
                 $arFields = array_keys($arFieldVal);
+                $this->clean_reserved($arFields);
                 $sSQL .= implode(",",$arFields);
 
                 $arValues = array_values($arFieldVal);
@@ -188,7 +211,8 @@ class ComponentCrud
             //creo las asignaciones de campos set extras
             $arAux = [];
             foreach($arFieldVal as $sField=>$sValue)
-            {    
+            {
+                $this->clean_reserved($sField);
                 if($sValue===NULL)
                     $arAux[] = "$sField=NULL";
                 elseif($this->is_numeric($sField))
@@ -199,13 +223,13 @@ class ComponentCrud
 
             $sSQL .= implode(",",$arAux);
 
-            
             $sSQL .= " WHERE 1 ";
 
             //condiciones con las claves
             $arAux = [];
             foreach($arPksFV as $sField=>$sValue)
-            {    
+            {
+                $this->clean_reserved($sField);
                 if($sValue===NULL)
                     $arAux[] = "$sField IS NULL";
                 elseif($this->is_numeric($sField))
@@ -247,7 +271,8 @@ class ComponentCrud
             //condiciones con las claves
             $arAux = [];
             foreach($arPksFV as $sField=>$sValue)
-            {    
+            {
+                $this->clean_reserved($sField);
                 if($sValue===NULL)
                     $arAux[] = "$sField IS NULL";
                 elseif($this->is_numeric($sField))
@@ -295,7 +320,8 @@ class ComponentCrud
                 //condiciones con las claves
                 $arAnd = [];
                 foreach($arPksFV as $sField=>$sValue)
-                {    
+                {
+                    $this->clean_reserved($sField);
                     if($sValue===NULL)
                         $arAnd[] = "$sField IS NULL";
                     elseif($this->is_numeric($sField))
@@ -334,16 +360,18 @@ class ComponentCrud
                 $codUserSession = getPostParam("userId");
                 $sNow = date("Ymdhis");
                 $sSQL = "$sSQLComment UPDATE $sTable 
-                        SET Delete_Date=NULL
-                        ,Delete_User=NULL
-                        ,Modify_Date='$sNow'
-                        ,Modify_User='$codUserSession'
+                        SET 
+                        delete_date=NULL
+                        ,delte_user=NULL
+                        ,update_date='$sNow'
+                        ,update_user='$codUserSession'
                         ";
 
                 //condiciones con las claves
                 $arAnd = [];
                 foreach($arPksFV as $sField=>$sValue)
-                {    
+                {
+                    $this->clean_reserved($sField);
                     if($sValue===NULL)
                         $arAnd[] = "$sField IS NULL";
                     elseif($this->is_numeric($sField))
@@ -381,10 +409,11 @@ class ComponentCrud
                 $arPksFV = $this->arPksFV;
             
             if($arFields)
-            {    
+            {
                 $sSQL = "$sSQLComment SELECT ";
                 if($this->isFoundrows) $sSQL .= "SQL_CALC_FOUND_ROWS ";
                 if($this->isDistinct) $sSQL .= "DISTINCT ";
+                $this->clean_reserved($arFields);
                 $sSQL .= implode(",",$arFields)." ";
                 $sSQL .= "FROM $sTable";
                 
@@ -392,7 +421,8 @@ class ComponentCrud
                 //condiciones con las claves
                 $arAux = [];
                 foreach($arPksFV as $sField=>$sValue)
-                {    
+                {
+                    $this->clean_reserved($sField);
                     if($sValue===NULL)
                         $arAux[] = "$sField IS NULL";
                     elseif($this->is_numeric($sField))
