@@ -2,8 +2,8 @@
 /**
  * @author Eduardo Acevedo Farje.
  * @link www.eduardoaf.com
- * @name App\Controllers\Apify\SignatureController 
- * @file SignatureController.php 1.0.0
+ * @name App\Controllers\Apify\PasswordController 
+ * @file PasswordController.php 1.0.0
  * @date 27-06-2019 18:17 SPAIN
  * @observations
  */
@@ -13,12 +13,12 @@ use TheFramework\Helpers\HelperJson;
 use App\Controllers\AppController;
 use App\Services\Apify\Security\SignatureService;
 
-class SignatureController extends AppController
+class PasswordController extends AppController
 {
 
     /**
      * ruta:
-     *  <dominio>/apifiy/security/get-signature
+     *  <dominio>/apifiy/security/get-password
      */
     public function index()
     {
@@ -26,7 +26,7 @@ class SignatureController extends AppController
         $oJson = new HelperJson();
         try{
             $oServ = new SignatureService($domain,$this->get_post());
-            $token = $oServ->get_token();
+            $token = $oServ->get_password();
             $oJson->set_payload(["result"=>$token])->show();
         }
         catch (\Exception $e)
@@ -38,14 +38,6 @@ class SignatureController extends AppController
 
     }//index
 
-    /**
-     * ruta:
-     *  <dominio>/apifiy/security/is-valid-signature
-     */
-    public function is_valid_signature()
-    {
-        $this->check_signature();
-        (new HelperJson())->set_payload(["result"=>true])->show();
-    }//index
+
     
-}//SignatureController
+}//PasswordController

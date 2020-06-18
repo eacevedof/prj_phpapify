@@ -22,6 +22,7 @@ return [
     ["url"=>"/apify/write/raw","controller"=>"App\Controllers\Apify\Rw\WriterController","method"=>"raw"],
     ["url"=>"/apify/write","controller"=>"App\Controllers\Apify\Rw\WriterController","method"=>"index"],
 
+    ["url"=>"/apifiy/security/get-password","controller"=>"App\Controllers\Apify\Security\PasswordController","method"=>"index"],
     ["url"=>"/apifiy/security/get-signature","controller"=>"App\Controllers\Apify\Security\SignatureController","method"=>"index"],
     ["url"=>"/apifiy/security/is-valid-signature","controller"=>"App\Controllers\Apify\Security\SignatureController","method"=>"is_valid_signature"],
     ["url"=>"/apifiy/security/login","controller"=>"App\Controllers\Apify\Security\LoginController","method"=>"index"],

@@ -58,6 +58,13 @@ class SignatureService
         return $token;
     }
 
+    public function get_password()
+    {
+        $word = $this->data["word"] ?? ":)";
+        $password = $this->encdec->get_hashpassword($word);
+        return $password;
+    }
+
     private function _get_remote_ip()
     {
         return $_SERVER["REMOTE_ADDR"]  ?? "127.0.0.1";
