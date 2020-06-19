@@ -15,7 +15,7 @@ class ComponentContext
     private $arErrors;
 
     private $arContexts;
-    private $arContextNoconf;
+    private $arContextPublic;
 
     private $idSelected;
     private $arSelected;
@@ -58,7 +58,7 @@ class ComponentContext
         foreach($this->arContexts as $arContext)
         {
             unset($arContext["schemas"],$arContext["server"],$arContext["port"]);
-            $this->arContextNoconf[] = $arContext;
+            $this->arContextPublic[] = $arContext;
         }
     }
 
@@ -71,7 +71,7 @@ class ComponentContext
         if($this->arSelected["ctx"])
             $this->arSelected["ctx"] = $this->arSelected["ctx"][array_keys($this->arSelected["ctx"])[0]];
 
-        $this->arSelected["noconfig"] = $this->get_noconfig_by("id",$this->idSelected);
+        $this->arSelected["pubconfig"] = $this->get_pubconfig_by("id",$this->idSelected);
         //pr($this->arSelected,"arSelected");
     }
 
@@ -98,8 +98,7 @@ class ComponentContext
     {
         $arConfig = $this->get_filter_level_1($key,$val);
 
-        if($arConfig)
-        {
+        if($arConfig) {
             $arConfig = $arConfig[array_keys($arConfig)[0]];
             return $arConfig["schemas"];
         }
@@ -109,21 +108,19 @@ class ComponentContext
     public function get_selected(){return $this->arSelected;}
     public function get_selected_id(){return $this->arSelected["ctx"]["id"];}
 
-    public function get_databases(){
+    public function get_schemas(){
         return $this->arSelected["ctx"]["schemas"];
     }
 
-    public function get_noconfig_by($key,$val)
+    public function get_pubconfig_by($key,$val)
     {
-        $arConfig = $this->get_filter_level_1($key,$val,$this->arContextNoconf);
+        $arConfig = $this->get_filter_level_1($key,$val,$this->arContextPublic);
         if($arConfig)
-        {
             return $arConfig[array_keys($arConfig)[0]];
-        }
         return [];
     }
 
-    public function get_noconfig(){return $this->arContextNoconf;}
+    public function get_pubconfig(){return $this->arContextPublic;}
     public function get_errors(){return isset($this->arErrors)?$this->arErrors:[];}
     public function is_error(){return $this->isError;}
     private function add_error($sMessage){$this->isError = true; $this->arErrors[] = $sMessage;}

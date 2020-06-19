@@ -1,7 +1,7 @@
 [
   {
     "id":"c1",
-    "alias":"Docker mysql", 
+    "alias":"docker-mysql",
     "description":"Docker mysql",
     "type":"mysql",
     "server":"127.0.0.1",
@@ -26,13 +26,14 @@
   },
   {
     "id":"c2",
-    "alias":"db_tinys",
+    "alias":"docker-mysql",
     "description":"Docker mysql",
     "type":"mysql",
     "server":"127.0.0.1",
     "port":"3350",
     "schemas":[
       {
+        "alias": "db-tinyshop",
         "database":"db_tinyshop",
         "user":"root",
         "password":"root"
@@ -48,6 +49,7 @@
     "port":"3306",
     "schemas":[
       {
+        "alias": "db-security",
         "database":"db_security",
         "user":"root",
         "password":"1234"

@@ -25,7 +25,7 @@ class TablesController extends AppController
     }
     
     /**
-     * ruta:    <dominio>/apify/tables/{id_context}/{database}
+     * ruta:    <dominio>/apify/tables/{id_context}/{database}|{dbalias}
      * // ruta comentada: <dominio>/apify/tables/{id_context} en standby, para poder obtener unas tablas necesito contexto y database
      * Muestra los schemas
      */
@@ -33,6 +33,9 @@ class TablesController extends AppController
     {
         $idContext = $this->get_get("id_context");
         $sDb = $this->get_get("dbname");
+        if(!$sDb){
+            $dbalias = $this->get_get("dbalias");
+        }
 
         $oJson = new HelperJson();
         $oServ = new ContextService();
@@ -42,6 +45,11 @@ class TablesController extends AppController
             $oJson->set_code(HelperJson::CODE_NOT_FOUND)->
             set_error("context does not exist")->
             show(1);
+
+        if(!$sDb){
+            $dbalias = $this->get_get($dbalias);
+            $sDb = $oServ->get_db($idContext,$dbalias);
+        }
 
         if (!$oServ->is_db($idContext,$sDb))
             $oJson->set_code(HelperJson::CODE_NOT_FOUND)->

@@ -42,12 +42,12 @@ class ContextsController extends AppController
                         set_error("context does not exist")->
                         show(1);
 
-            $arJson = $oServ->get_noconfig_by_id($this->get_get("id"));
+            $arJson = $oServ->get_pubconfig_by_id($this->get_get("id"));
         }
         else
         {
             //pr("no id");
-            $arJson = $oServ->get_noconfig();
+            $arJson = $oServ->get_pubconfig();
         }
 
         if($oServ->is_error()) 
