@@ -23,31 +23,45 @@ class FieldsController extends AppController
         parent::__construct();
         $this->check_usertoken();
     }
-    
-    /**
-     * /apify/fields/{id_context}/{database}/{tablename}/{fieldname}
-     * /apify/fields/{id_context}/{database}/{tablename}
-     * Muestra los schemas
-     */
-    public function index()
+
+    private function _get_database()
     {
-        $idContext = $this->get_get("id_context");
-        $sDb = $this->get_get("dbname");
-
-        $oJson = new HelperJson();
         $oServ = new ContextService();
+        $oJson = new HelperJson();
 
-        //obligatorio
+        $idContext = $this->get_get("id_context");
         if(!$oServ->is_context($idContext))
             $oJson->set_code(HelperJson::CODE_NOT_FOUND)->
             set_error("context does not exist")->
             show(1);
 
-        if (!$oServ->is_db($idContext,$sDb))
-            $oJson->set_code(HelperJson::CODE_NOT_FOUND)->
-            set_error("no database in context 1")->
-            show(1);
+        //schemainfo puede ser un alias o un dbname
+        $sDb = $this->get_get("schemainfo");
 
+        //compruebo que sea una dbname
+        $sDb2 = $oServ->is_db($idContext,$sDb);
+        if($sDb2) return $sDb2;
+
+        //aqui $sdb se trata como dbalias
+        $sDb2 = $oServ->get_db($idContext,$sDb);
+        if($sDb2) return $sDb2;
+
+        $oJson->set_code(HelperJson::CODE_NOT_FOUND)->
+        set_error("no database found in context 1")->
+        show(1);
+    }
+
+    /**
+     * /apify/fields/{id_context}/{schemainfo}/{tablename}/{fieldname}
+     * /apify/fields/{id_context}/{schemainfo}/{tablename}
+     * Muestra los schemas
+     */
+    public function index()
+    {
+        //si no hay db lanza un exit
+        $sDb = $this->_get_database();
+
+        $idContext = $this->get_get("id_context");
         $sTableName = $this->get_get("tablename");
         $sFieldName = $this->get_get("fieldname");
 
@@ -57,6 +71,7 @@ class FieldsController extends AppController
         else
             $arJson = $oServ->get_all($sTableName);
 
+        $oJson = new HelperJson();
         if($oServ->is_error()) 
             $oJson->set_code(HelperJson::CODE_INTERNAL_SERVER_ERROR)->
                     set_error($oServ->get_errors())->
