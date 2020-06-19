@@ -1,3 +1,3 @@
-- Hay que repensar lo que es un contexto
-- Tal como lo tengo 1 contexto es 1 db pero si pido las bds de un contexto me muestra todas y si quiero alguna más no podria solicitarla
-- Debería crear un array con las bds de cada contexto 
+- ComponentContext debería ser un singleton
+- Implementar busqueda por alias de contexto
+- Verificar usertoken en endpoints críticos 
