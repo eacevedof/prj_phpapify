@@ -42,7 +42,7 @@
   },
   {
     "id":"c3",
-    "alias":"db ipblocker",
+    "alias":"ipblocker",
     "description":"Docker mysql Ip Blocker",
     "type":"mysql",
     "server":"127.0.0.1",
@@ -51,6 +51,22 @@
       {
         "alias": "db-security",
         "database":"db_security",
+        "user":"root",
+        "password":"1234"
+      }
+    ]
+  },
+  {
+    "id":"c4",
+    "alias":"tinymarket",
+    "description":"Bd marketplace",
+    "type":"mysql",
+    "server":"127.0.0.1",
+    "port":"3306",
+    "schemas":[
+      {
+        "alias": "db-tinymarket",
+        "database":"db_tinymarket",
         "user":"root",
         "password":"1234"
       }
