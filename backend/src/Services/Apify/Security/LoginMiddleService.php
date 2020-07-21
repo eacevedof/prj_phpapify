@@ -20,7 +20,7 @@ class LoginMiddleService extends AppService
         //el post con los datos de usuario
         $this->post = $post;
         //necesito el dominio pq la encriptación va por dominio en el encdecrypt.json
-        $this->origin = $this->post["remotehost"] ?? "-empty-";
+        $this->origin = $this->post["remotehost"] ?? "";
         $this->_load_encdec();
     }
 
@@ -61,11 +61,11 @@ class LoginMiddleService extends AppService
         return false;
     }
 
-    private function _get_remote_ip(){return $this->post["remoteip"]  ?? "127.0.0.1";}
+    private function _get_remote_ip(){return $this->post["remoteip"];}
 
     private function _get_data_tokenized()
     {
-        $username = $this->post["user"] ?? "";
+        $username = $this->post["user"];
         $arpackage = [
             "salt0"    => date("Ymd-His"),
             "domain" => $this->origin, //nombre de la maquina que hace la petición suele ser *
@@ -86,8 +86,12 @@ class LoginMiddleService extends AppService
 
     public function get_token()
     {
+        if(!$this->origin) throw new \Exception("No origin domain provided");
         $username = $this->post["user"] ?? "";
         $password = $this->post["password"] ?? "";
+        $remoteip = $this->post["remoteip"] ?? "";
+
+        if(!$remoteip) throw new \Exception("No remote ip provided");
         if(!$username) throw new \Exception("No user provided");
         if(!$password) throw new \Exception("No password provided");
         $config = $this->_get_login_config();
