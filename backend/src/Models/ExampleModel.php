@@ -2,8 +2,8 @@
 /**
  * @author Eduardo Acevedo Farje.
  * @link www.eduardoaf.com
- * @name App\Models\AgencyModel 
- * @file AgencyModel.php v1.0.0
+ * @name App\Models\ExampleModel 
+ * @file ExampleModel.php v1.0.0
  * @date 29-11-2018 19:00 SPAIN
  * @observations
  */
@@ -11,7 +11,7 @@ namespace App\Models;
 
 use App\Models\AppModel;
 
-class AgencyModel extends AppModel
+class ExampleModel extends AppModel
 {
     public function __construct() 
     {
@@ -41,7 +41,7 @@ class AgencyModel extends AppModel
     public function get_picklist()
     {
         $sSQL = "
-        /*AgencyModel.get_picklist*/
+        /*ExampleModel.get_picklist*/
         SELECT DISTINCT title,title
         FROM titles
         ORDER BY 2
@@ -50,4 +50,4 @@ class AgencyModel extends AppModel
         return $arRows;
     }//get_picklist
     
-}//AgencyModel
+}//ExampleModel

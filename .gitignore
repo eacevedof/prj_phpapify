@@ -2,11 +2,11 @@
 /backend/vendor/*
 !/backend/vendor/theframework/
 /backend/tests/logs/
-/backend/src/logs/
-/backend/src/config/config.php
-/backend/src/config/contexts.json
-/backend/src/config/login.json
-/backend/src/config/encdecrypt.json
+/backend/logs/
+/backend/config/config.php
+/backend/config/contexts.json
+/backend/config/login.json
+/backend/config/encdecrypt.json
 /backend/public/temp/
 .idea
 /backend/.env.local
