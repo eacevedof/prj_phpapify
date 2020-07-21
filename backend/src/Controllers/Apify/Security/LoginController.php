@@ -74,7 +74,7 @@ class LoginController extends AppController
             //$token = $this->get_header("apify-auth");
             //$token = $this->get_header("authorization");
             $token = $this->get_post(self::KEY_APIFYUSERTOKEN);
-            $this->logd($token,"login.is_valid_token.header");
+            $this->logd($token,"login.is_valid_token.post");
             $this->logd("domain: $domain, token: $token");
             if(!$token) throw new \Exception("No token provided");
             $oServ = new LoginService($domain);

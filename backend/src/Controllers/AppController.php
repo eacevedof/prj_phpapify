@@ -12,13 +12,13 @@ namespace App\Controllers;
 use App\Services\Apify\Security\LoginService;
 use TheFramework\Helpers\HelperJson;
 use App\Services\Apify\Security\SignatureService;
-use App\Traits\AppErrorTrait;
-use App\Traits\AppLogTrait;
+use App\Traits\ErrorTrait;
+use App\Traits\LogTrait;
 
 class AppController  
 {
-    use AppErrorTrait;
-    use AppLogTrait;
+    use ErrorTrait;
+    use LogTrait;
     protected const KEY_APIFYUSERTOKEN = "apify-usertoken";
 
     public function __construct() 
@@ -173,6 +173,12 @@ class AppController
     protected function request_log()
     {
         $sReqUri = $_SERVER["REQUEST_URI"];
+        $this->logd($_SERVER["HTTP_USER_AGENT"] ?? "","HTTP_USER_AGENT");
+        $this->logd($_SERVER["REMOTE_ADDR"] ?? "","REMOTE_ADDR");
+        $this->logd($_SERVER["REMOTE_HOST"] ?? "","REMOTE_HOST");
+        $this->logd($_SERVER["HTTP_HOST"] ?? "","HTTP_HOST");
+        //$this->logd($_SERVER["REMOTE_USER"] ?? "","REMOTE_USER");
+
         $this->logd($this->get_get(),"$sReqUri GET");
         $this->logd($this->get_post(),"$sReqUri POST");
         $this->logd($this->get_files(),"$sReqUri FILES");

@@ -62,10 +62,7 @@ class LoginService extends AppService
         return false;
     }
 
-    private function _get_remote_ip()
-    {
-        return $_SERVER["REMOTE_ADDR"]  ?? "127.0.0.1";
-    }
+    private function _get_remote_ip(){return $_SERVER["REMOTE_ADDR"]  ?? "127.0.0.1";}
 
     private function _get_data_tokenized()
     {
@@ -114,24 +111,33 @@ class LoginService extends AppService
         throw new \Exception("Bad user or password");
     }
 
+    private function _is_publicip()
+    {
+        $ip = $this->_get_remote_ip();
+        $r = filter_var(
+            $ip,
+            FILTER_VALIDATE_IP,
+            FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE |  FILTER_FLAG_NO_RES_RANGE
+        );
+        //$this->logd($r,"_is_publicip $ip");
+        return $r;
+    }
+
     private function validate_package($arpackage)
     {
         //$this->logd($arpackage,"validate_package.arpaackage");
-        if(count($arpackage)!==10)
-            throw new Exception("Wrong token submitted");
+        if(count($arpackage)!==10) throw new Exception("Wrong token submitted (pieces)");
 
         list($s0,$domain,$s1,$remoteip,$s2,$username,$s3,$password,$s4,$date) = $arpackage;
 
-        if($domain!==$this->domain)
-            throw new Exception("Domain {$this->domain} is not authorized 1");
+        if($domain!==$this->domain) throw new Exception("Domain {$this->domain} is not authorized 1");
 
-        if($remoteip!==$this->_get_remote_ip())
-            throw new Exception("Wrong source {$remoteip} in token");
+        //hago validacion en local por peticiones entre las ips de docker y mi maquina host que usan distitntas ips
+        if (!$this->is_local() && $remoteip !== $this->_get_remote_ip()) throw new Exception("Wrong source {$remoteip} in token");
 
         $md5pass = $this->_get_user_password($domain,$username);
         $md5pass = md5($md5pass);
-        if($md5pass!==$password)
-            throw new Exception("Wrong user or password submitted");
+        if($md5pass!==$password) throw new Exception("Wrong user or password submitted");
 
         list($day) = explode("-",$date);
         $now = date("Ymd");
