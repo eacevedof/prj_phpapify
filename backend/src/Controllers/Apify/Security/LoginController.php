@@ -41,17 +41,15 @@ class LoginController extends AppController
     }
     /**
      * Para servidores intermediarios
+     * El serv tiene que hacer un forward en POST de remoteip y remotehost
      * ruta:
      *  <dominio>/apifiy/security/login-middle
      */
     public function middle()
     {
-        $domain = $_SERVER["REMOTE_HOST"] ?? "*";
-        //$this->logd($domain,"login.index.domain");
-        //$this->request_log();
         $oJson = new HelperJson();
         try{
-            $oServ = new LoginMiddleService($domain,$this->get_post());
+            $oServ = new LoginMiddleService($this->get_post());
             $token = $oServ->get_token();
             $oJson->set_payload(["token"=>$token])->show();
         }

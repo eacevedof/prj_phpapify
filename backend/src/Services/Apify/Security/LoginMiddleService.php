@@ -8,19 +8,19 @@ use TheFramework\Components\Session\ComponentEncdecrypt;
 
 class LoginMiddleService extends AppService
 {
-    private $domain = null;
-    private $arlogin = null;
+    private $origin = null;
+    private $post = [];
     /**
      * @var ComponentEncdecrypt
      */
     private $encdec = null;
 
-    public function __construct($domain, $arlogin=[])
+    public function __construct($post=[])
     {
-        //necesito el dominio pq la encriptación va por dominio en el encdecrypt.json
-        $this->domain = $domain;
         //el post con los datos de usuario
-        $this->arlogin = $arlogin;
+        $this->post = $post;
+        //necesito el dominio pq la encriptación va por dominio en el encdecrypt.json
+        $this->origin = $this->post["remotehost"] ?? "-empty-";
         $this->_load_encdec();
     }
 
@@ -28,15 +28,14 @@ class LoginMiddleService extends AppService
     {
         $sPathfile = $_ENV["APP_ENCDECRYPT"] ?? __DIR__.DIRECTORY_SEPARATOR."encdecrypt.json";
         //$this->logd($sPathfile,"pathfile");
-        $arconf = (new ComponentConfig($sPathfile))->get_node("domain",$this->domain);
+        $arconf = (new ComponentConfig($sPathfile))->get_node("domain",$this->origin);
         return $arconf;
     }
 
     private function _load_encdec()
     {
         $config = $this->_get_encdec_config();
-        if(!$config)
-            throw new \Exception("Domain {$this->domain} is not authorized 2");
+        if(!$config) throw new \Exception("domain {$this->origin} is not authorized 2");
 
         $this->encdec = new ComponentEncdecrypt(1);
         $this->encdec->set_sslmethod($config["sslenc_method"]??"");
@@ -44,17 +43,17 @@ class LoginMiddleService extends AppService
         $this->encdec->set_sslsalt($config["sslsalt"]??"");
     }
 
-    private function _get_login_config($domain="")
+    private function _get_login_config($hostname="")
     {
-        if(!$domain) $domain = $this->domain;
+        if(!$hostname) $hostname = $this->origin;
         $sPathfile = $_ENV["APP_LOGIN"] ?? __DIR__.DIRECTORY_SEPARATOR."login.json";
-        $arconfig = (new ComponentConfig($sPathfile))->get_node("domain",$domain);
+        $arconfig = (new ComponentConfig($sPathfile))->get_node("domain",$hostname);
         return $arconfig;
     }
 
-    private function _get_user_password($domain, $username)
+    private function _get_user_password($hostname, $username)
     {
-        $arconfig = $this->_get_login_config($domain);
+        $arconfig = $this->_get_login_config($hostname);
         foreach($arconfig["users"] as $aruser)
             if($aruser["user"] === $username)
                 return $aruser["password"] ?? "";
@@ -62,20 +61,20 @@ class LoginMiddleService extends AppService
         return false;
     }
 
-    private function _get_remote_ip(){return $this->arlogin["clientip"]  ?? "127.0.0.1";}
+    private function _get_remote_ip(){return $this->post["remoteip"]  ?? "127.0.0.1";}
 
     private function _get_data_tokenized()
     {
-        $username = $this->arlogin["user"] ?? "";
+        $username = $this->post["user"] ?? "";
         $arpackage = [
             "salt0"    => date("Ymd-His"),
-            "domain"   => $this->domain,
+            "domain" => $this->origin, //nombre de la maquina que hace la petición suele ser *
             "salt1"    => rand(0,3),
-            "remoteip" => $this->_get_remote_ip(),
+            "remoteip" => $this->_get_remote_ip(), //viene por post
             "salt2"    => rand(4,8),
             "username" => $username,
             "salt3"    => rand(8,12),
-            "password" => md5($this->_get_user_password($this->domain, $username)),
+            "password" => md5($this->_get_user_password($this->origin, $username)),
             "salt4"    => rand(12,15),
             "today"    => date("Ymd-His"),
         ];
@@ -87,65 +86,20 @@ class LoginMiddleService extends AppService
 
     public function get_token()
     {
-        $username = $this->arlogin["user"] ?? "";
-        $password = $this->arlogin["password"] ?? "";
-        if(!$username)
-            throw new \Exception("No user provided");
-
-        if(!$password)
-            throw new \Exception("No password provided");
-
+        $username = $this->post["user"] ?? "";
+        $password = $this->post["password"] ?? "";
+        if(!$username) throw new \Exception("No user provided");
+        if(!$password) throw new \Exception("No password provided");
         $config = $this->_get_login_config();
-        if(!$config)
-            throw new \Exception("Source domain not authorized");
+        if(!$config) throw new \Exception("Source hostname not authorized");
 
         $users = $config["users"] ?? [];
         foreach ($users as $user)
         {
-            //$hashpass = $this->encdec->get_hashpassword($postpassw);
-            //print_r($hashpass);die;
             if($user["user"] === $username && $this->encdec->check_hashpassword($password,$user["password"])) {
                 return $this->_get_data_tokenized();
             }
         }
         throw new \Exception("Bad user or password");
-    }
-
-    private function validate_package($arpackage)
-    {
-        //$this->logd($arpackage,"validate_package.arpaackage");
-        if(count($arpackage)!==10)
-            throw new Exception("Wrong token submitted");
-
-        list($s0,$domain,$s1,$remoteip,$s2,$username,$s3,$password,$s4,$date) = $arpackage;
-
-        if($domain!==$this->domain)
-            throw new Exception("Domain {$this->domain} is not authorized 1");
-
-        if($remoteip!==$this->_get_remote_ip())
-            throw new Exception("Wrong source {$remoteip} in token");
-
-        $md5pass = $this->_get_user_password($domain,$username);
-        $md5pass = md5($md5pass);
-        if($md5pass!==$password)
-            throw new Exception("Wrong user or password submitted");
-
-        list($day) = explode("-",$date);
-        $now = date("Ymd");
-        $moment = new ComponentMoment($day);
-        $ndays = $moment->get_ndays($now);
-        if($ndays>30)
-            throw new Exception("Token has expired");
-    }
-
-
-    public function is_valid($token)
-    {
-        $instring = $this->encdec->get_ssldecrypted($token);
-        //$this->logd($instring,"is_valid.instring of token $token");
-        //print_r($instring);die;
-        $arpackage = explode("|",$instring);
-        $this->validate_package($arpackage);
-        return true;
     }
 }
