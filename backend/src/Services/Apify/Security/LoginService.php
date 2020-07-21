@@ -125,6 +125,7 @@ class LoginService extends AppService
 
     private function validate_package($arpackage)
     {
+        $this->logd($this->get_env(),"validate_package.ENV");
         //$this->logd($arpackage,"validate_package.arpaackage");
         if(count($arpackage)!==10) throw new Exception("Wrong token submitted (pieces)");
 

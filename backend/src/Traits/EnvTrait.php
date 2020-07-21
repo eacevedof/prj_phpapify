@@ -11,7 +11,7 @@ namespace App\Traits;
 
 trait EnvTrait
 {
-    protected function get_env($key){ return $_ENV[$key] ?? "";}
+    protected function get_env($key=null){ return ($key===null)?$_ENV:$_ENV[$key] ?? "";}
 
     protected function get_appenv($key){return $this->get_env("APP_{$key}");}
 
