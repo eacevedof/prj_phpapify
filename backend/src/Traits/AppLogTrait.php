@@ -15,13 +15,13 @@ trait AppLogTrait
 {
     public function log($mxVar,$sTitle=NULL)
     {
-        $oLog = new ComponentLog("sql",__DIR__."/../logs");
+        $oLog = new ComponentLog("sql",PATH_LOGS);
         $oLog->save($mxVar,$sTitle);
     }
     
     public function logd($mxVar,$sTitle=NULL)
     {
-        $oLog = new ComponentLog("debug",__DIR__."/../logs");
+        $oLog = new ComponentLog("debug",PATH_LOGS);
         $oLog->save($mxVar,$sTitle);
     }
     

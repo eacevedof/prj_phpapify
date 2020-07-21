@@ -10,6 +10,7 @@
 namespace App\Controllers\Apify\Security;
 
 use App\Services\Apify\Security\LoginService;
+use App\Services\Apify\Security\LoginMiddleService;
 use TheFramework\Helpers\HelperJson;
 use App\Controllers\AppController;
 
@@ -28,6 +29,29 @@ class LoginController extends AppController
         $oJson = new HelperJson();
         try{
             $oServ = new LoginService($domain,$this->get_post());
+            $token = $oServ->get_token();
+            $oJson->set_payload(["token"=>$token])->show();
+        }
+        catch (\Exception $e)
+        {
+            $oJson->set_code(HelperJson::CODE_UNAUTHORIZED)->
+            set_error([$e->getMessage()])->
+            show(1);
+        }
+    }
+    /**
+     * Para servidores intermediarios
+     * ruta:
+     *  <dominio>/apifiy/security/login-middle
+     */
+    public function middle()
+    {
+        $domain = $_SERVER["REMOTE_HOST"] ?? "*";
+        //$this->logd($domain,"login.index.domain");
+        //$this->request_log();
+        $oJson = new HelperJson();
+        try{
+            $oServ = new LoginMiddleService($domain,$this->get_post());
             $token = $oServ->get_token();
             $oJson->set_payload(["token"=>$token])->show();
         }

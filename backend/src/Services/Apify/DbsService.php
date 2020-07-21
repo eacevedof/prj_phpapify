@@ -2,7 +2,7 @@
 /**
  * @author Eduardo Acevedo Farje.
  * @link www.eduardoaf.com
- * @name App\Services\Apify\Mysql
+ * @name App\Services\Apify\DbsService
  * @file DbsService.php 1.1.0
  * @date 02-07-2019 17:55 SPAIN
  * @observations
