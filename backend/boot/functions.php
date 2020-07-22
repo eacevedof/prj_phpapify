@@ -1,4 +1,5 @@
 <?php
+//functions.php 20200721
 function appboot_loadenv()
 {
     $arpaths = [

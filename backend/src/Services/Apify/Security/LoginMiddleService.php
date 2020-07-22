@@ -1,8 +1,6 @@
 <?php
 namespace App\Services\Apify\Security;
 use App\Services\AppService;
-use \Exception;
-use TheFramework\Components\Formatter\ComponentMoment;
 use TheFramework\Components\Config\ComponentConfig;
 use TheFramework\Components\Session\ComponentEncdecrypt;
 
