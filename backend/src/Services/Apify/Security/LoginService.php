@@ -134,7 +134,7 @@ class LoginService extends AppService
         if($domain!==$this->domain) throw new Exception("Domain {$this->domain} is not authorized 1");
 
         //hago validacion en local por peticiones entre las ips de docker y mi maquina host que usan distitntas ips
-        if (!$this->is_local() && $remoteip !== $this->_get_remote_ip()) throw new Exception("Wrong source {$remoteip} in token");
+        if (!$this->is_envlocal() && $remoteip !== $this->_get_remote_ip()) throw new Exception("Wrong source {$remoteip} in token");
 
         $md5pass = $this->_get_user_password($domain,$username);
         $md5pass = md5($md5pass);
