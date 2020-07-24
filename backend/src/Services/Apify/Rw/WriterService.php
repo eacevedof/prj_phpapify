@@ -29,6 +29,7 @@ class WriterService extends AppService
 
     public function __construct($idContext="",$sDb="") 
     {
+        //$this->logd($_POST,"write post");
         $this->idContext = $idContext;
         $this->sDb = $sDb;
         
