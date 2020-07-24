@@ -60,14 +60,14 @@ class ContextService extends AppService
     public function get_db($idContext,$dbalias)
     {
         $schemas = $this->_get_schemas($idContext);
-        $schema = $this->_get_schema_by_alias($dbalias);
+        $schema = $this->_get_schema_by_alias($schemas, $dbalias);
         return $schema["database"] ?? "";
     }
 
     public function is_db($idContext,$dbname)
     {
         $schemas = $this->_get_schemas($idContext);
-        $schema = $this->_get_schema_by_dbname($dbname);
+        $schema = $this->_get_schema_by_dbname($schemas, $dbname);
         if($schema) return true;
         //$this->logd("no is in schemas $dbname");
         return false;

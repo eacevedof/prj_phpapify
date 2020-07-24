@@ -52,7 +52,6 @@ class SchemaBehaviour extends AppModel
     
     public function get_tables($sDb="")
     {
-
         $sSQL = $this->oQServ->get_tables($sDb);
         //bug($sSQL);
         $arRows = $this->query($sSQL,0);
@@ -62,8 +61,6 @@ class SchemaBehaviour extends AppModel
     
     public function get_table($sTable,$sDb="")
     {
-        if(!$sDb)
-            $sDb = $this->get_config("db","database");
         $sSQL = $this->oQServ->get_tables($sDb,$sTable);
         //bug($sSQL);
         $arRows = $this->query($sSQL,0);
@@ -73,8 +70,6 @@ class SchemaBehaviour extends AppModel
    
     public function get_fields_info($sTable,$sDb="")
     {
-        if(!$sDb)
-            $sDb = $this->get_config("db","database");
         $sSQL = $this->oQServ->get_fields($sDb,$sTable);
         $arRows = $this->query($sSQL);
         //bug($arRows);die;
@@ -83,8 +78,6 @@ class SchemaBehaviour extends AppModel
 
     public function get_field_info($sField,$sTable,$sDb="")
     {
-        if(!$sDb)
-            $sDb = $this->get_config("db","database");
         $sSQL = $this->oQServ->get_field($sDb,$sTable,$sField);
         $arRows = $this->query($sSQL);
         //bug($arRows);die;

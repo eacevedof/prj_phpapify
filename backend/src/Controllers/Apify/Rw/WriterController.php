@@ -29,11 +29,11 @@ class WriterController extends AppController
     public function index()
     {
         $idContext = $this->get_get("context");
-        $sDb = $this->get_get("dbname");
+        $sDbalias = $this->get_get("schemainfo");
         $arParts = $this->get_post("queryparts");
         $sAction = $this->get_post("action");
         
-        $oServ = new WriterService($idContext,$sDb);
+        $oServ = new WriterService($idContext,$sDbalias);
         $arJson = $oServ->set_action($sAction)->write($arParts);
 
         $oJson = new HelperJson();

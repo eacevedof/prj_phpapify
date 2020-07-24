@@ -28,7 +28,7 @@ class DbFactory
         return null;
     }
 
-    private static function get_dbconfig($arConfig,$sDb)
+    private static function _get_dbconfig($arConfig,$sDb)
     {
         $arContext = $arConfig["ctx"]?? [];
         if(!$arContext) return [];
@@ -55,7 +55,7 @@ class DbFactory
     {
         //pr($oCtx,"octx");
         $arConfig = $oCtx->get_selected();
-        $arConfig = self::get_dbconfig($arConfig,$sDb);
+        $arConfig = self::_get_dbconfig($arConfig,$sDb);
         //bug($arConfig,"arconfig");die;
         if(!$arConfig) return new ComponentMysql();
         $oDb = new ComponentMysql($arConfig);

@@ -27,14 +27,14 @@ class WriterService extends AppService
     private $arActions;
     private $action;
 
-    public function __construct($idContext="",$sDb="") 
+    public function __construct($idContext="",$sDbalias="")
     {
         //$this->logd($_POST,"write post");
         $this->idContext = $idContext;
-        $this->sDb = $sDb;
-        
-        $this->oContext = new ComponentContext($_ENV["APP_CONTEXTS"],$idContext);
-        $oDb = DbFactory::get_dbobject_by_ctx($this->oContext,$sDb);
+
+        $this->oContext = new ComponentContext($this->get_env("APP_CONTEXTS"),$idContext);
+        $this->sDb = $this->oContext->get_dbname($sDbalias);
+        $oDb = DbFactory::get_dbobject_by_ctx($this->oContext,$this->sDb);
         $this->oBehav = new SchemaBehaviour($oDb);
         $this->arActions = ["insert","update","delete","deletelogic","drop","alter"];
     }
@@ -64,7 +64,7 @@ class WriterService extends AppService
         return $sSQL;
     }
 
-    private function _add_sysfields(ComponentCrud $oCrud,$arParams)
+    private function _add_sysfields(ComponentCrud $oCrud, $arParams)
     {
         $issysfields = $arParams["autosysfields"] ?? 0;
         if($issysfields){
@@ -87,7 +87,7 @@ class WriterService extends AppService
         foreach($arParams["fields"] as $sFieldName=>$sFieldValue)
             $oCrud->add_insert_fv($sFieldName,$sFieldValue);
 
-        $this->_add_sysfields($oCrud,$arParams);
+        $this->_add_sysfields($oCrud, $arParams);
 
         $oCrud->autoinsert();
         
@@ -113,6 +113,7 @@ class WriterService extends AppService
 
     private function _get_update_sql($arParams)
     {
+$this->logd($arParams,"_get_update_sql.arparam");
         $oCrud = new ComponentCrud();
         if(!isset($arParams["table"])) return $this->add_error("_get_update_sql no table");
         if(!isset($arParams["fields"])) return $this->add_error("_get_update_sql no fields");
@@ -122,7 +123,7 @@ class WriterService extends AppService
         foreach($arParams["fields"] as $sFieldName=>$sFieldValue)
             $oCrud->add_update_fv($sFieldName,$sFieldValue);
 
-        $this->_add_sysfields($oCrud,$arParams);
+        $this->_add_sysfields($oCrud, $arParams);
         
         if(isset($arParams["pks"]))
             foreach($arParams["pks"] as $sFieldName=>$sFieldValue)
@@ -148,7 +149,7 @@ class WriterService extends AppService
         if(!isset($arParams["table"])) return $this->add_error("__get_deletelogic_sql no table");
 
         $oCrud->set_table($arParams["table"]);
-        $this->_add_sysfields($oCrud,$arParams);
+        $this->_add_sysfields($oCrud, $arParams);
 
         if(isset($arParams["pks"]))
             foreach($arParams["pks"] as $sFieldName=>$sFieldValue)

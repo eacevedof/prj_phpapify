@@ -21,6 +21,7 @@ class SysfieldsService extends AppService
 
     private $useruuid = "";
     private $action = "";
+    private $sDb;
 
     public function __construct($idContext="",$sDb="", $action="", $useruuid="")
     {

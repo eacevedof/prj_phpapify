@@ -30,10 +30,10 @@ class ReaderController extends AppController
     public function index()
     {
         $idContext = $this->get_get("context");
-        $sDb = $this->get_get("dbname");
+        $sDbalias = $this->get_get("schemainfo");
         $arParts = $this->get_post("queryparts");
         
-        $oServ = new ReaderService($idContext, $sDb);
+        $oServ = new ReaderService($idContext, $sDbalias);
         $arJson = $oServ->get_read($arParts);
         $iNumrows = $oServ->get_foundrows($arParts);
         $this->logd($iNumrows,"NUM_ROWS");
