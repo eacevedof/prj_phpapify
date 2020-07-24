@@ -18,8 +18,8 @@ class CoreQueriesService extends AppService
     {
         $sSQL = "
         /*CoreQueriesService.get_fields_min*/
-        SELECT key_column_usage.column_name field_name
-        FROM information_schema.key_column_usage
+        SELECT information_schema.columns.column_name field_name
+        FROM information_schema.columns 
         WHERE 1
         AND table_schema = '$sDb'
         AND table_name = '$sTable'        
