@@ -76,6 +76,14 @@ class SchemaBehaviour extends AppModel
         return $arRows;
     }
 
+    public function get_fields($sTable,$sDb="")
+    {
+        $sSQL = $this->oQServ->get_fields_min($sDb,$sTable);
+        $arRows = $this->query($sSQL);
+        //bug($arRows);die;
+        return $arRows;
+    }
+
     public function get_field_info($sField,$sTable,$sDb="")
     {
         $sSQL = $this->oQServ->get_field($sDb,$sTable,$sField);

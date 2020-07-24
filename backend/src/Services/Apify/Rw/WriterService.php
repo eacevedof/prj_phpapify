@@ -70,6 +70,7 @@ class WriterService extends AppService
         if($issysfields){
             $useruuid = $arParams["useruuid"];
             $sysfields = (new SysfieldsService($this->idContext, $this->sDb,$this->action,$useruuid))->get();
+$this->logd($sysfields,"_add_sysfields $this->action");
             foreach ($sysfields as $sysfield=>$value){
                 if(in_array($this->action,["update","deletelogic"])) $oCrud->add_update_fv($sysfield, $value);
                 if($this->action=="insert") $oCrud->add_insert_fv($sysfield, $value);
@@ -79,6 +80,7 @@ class WriterService extends AppService
 
     private function _get_insert_sql($arParams)
     {
+$this->logd($arParams,"_get_insert_sql.arparam");
         $oCrud = new ComponentCrud();
         if(!isset($arParams["table"])) return $this->add_error("_get_insert_sql no table");
         if(!isset($arParams["fields"])) return $this->add_error("_get_insert_sql no fields");

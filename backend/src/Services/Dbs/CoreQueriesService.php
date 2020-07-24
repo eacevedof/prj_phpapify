@@ -14,6 +14,19 @@ use App\Services\AppService;
 class CoreQueriesService extends AppService
 {
 
+    public function get_fields_min($sDb,$sTable)
+    {
+        $sSQL = "
+        /*CoreQueriesService.get_fields_min*/
+        SELECT key_column_usage.column_name field_name
+        FROM information_schema.key_column_usage
+        WHERE 1
+        AND table_schema = '$sDb'
+        AND table_name = '$sTable'        
+        ";
+        return $sSQL;
+    }//get_fields
+
     public function get_fields($sDb,$sTable)
     {
         $sSQL = "

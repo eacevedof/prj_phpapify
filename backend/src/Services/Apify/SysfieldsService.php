@@ -37,7 +37,7 @@ class SysfieldsService extends AppService
         
     private function _get_allfields()
     {
-        $allfields = $this->oBehav->get_fields_info($this->usertable, $this->sDb);
+        $allfields = $this->oBehav->get_fields($this->usertable, $this->sDb);
         if(!$allfields) return [];
         return array_column($allfields,"field_name");
     }
@@ -58,25 +58,49 @@ class SysfieldsService extends AppService
     {
         $action = $this->action;
         if($action==="deletelogic") $action = "delete";
-        return [
+        $fields = [
             "{$action}_date" => date("YmdHis"),
             "{$action}_user" => $this->_get_userid(),
         ];
+
+        if($action==="insert")
+
+        return $fields;
     }
     
     private function _get_sysfields()
     {
         $action = $this->action;
-        return [
+        $fields = [
             "{$action}_date", "{$action}_user"
         ];
+
+        if($action === "insert") $fields[$this->useruuidfield] = $this->_get_uuid();
+        return $fields;
+    }
+
+    private function _get_uuid() {
+        return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            // 32 bits for "time_low"
+            mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
+            // 16 bits for "time_mid"
+            mt_rand( 0, 0xffff ),
+            // 16 bits for "time_hi_and_version",
+            // four most significant bits holds version number 4
+            mt_rand( 0, 0x0fff ) | 0x4000,
+            // 16 bits, 8 bits for "clk_seq_hi_res",
+            // 8 bits for "clk_seq_low",
+            // two most significant bits holds zero and one for variant DCE1.1
+            mt_rand( 0, 0x3fff ) | 0x8000,
+            // 48 bits for "node"
+            mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
+        );
     }
 
     private function _exist_sysfields()
     {
         $allfields = $this->_get_allfields();
         $fields = $this->_get_sysfields();
-        $fields[] = $this->useruuidfield;
 
         foreach ($fields as $sysfield)
             if(!in_array($sysfield, $allfields))
