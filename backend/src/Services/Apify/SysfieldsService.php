@@ -64,6 +64,7 @@ class SysfieldsService extends AppService
         ];
 
         if($action==="insert")
+            $fields[$this->useruuidfield] = $this->_get_uuid();
 
         return $fields;
     }
@@ -75,7 +76,7 @@ class SysfieldsService extends AppService
             "{$action}_date", "{$action}_user"
         ];
 
-        if($action === "insert") $fields[$this->useruuidfield] = $this->_get_uuid();
+        if($action === "insert") $fields[] = $this->useruuidfield;
         return $fields;
     }
 
@@ -100,19 +101,25 @@ class SysfieldsService extends AppService
     private function _exist_sysfields()
     {
         $allfields = $this->_get_allfields();
-        $fields = $this->_get_sysfields();
-
-        foreach ($fields as $sysfield)
-            if(!in_array($sysfield, $allfields))
+        $sysfields = $this->_get_sysfields();
+//$this->logd($allfields,"allfields");
+//$this->logd($sysfields,"sysfields");
+        foreach ($sysfields as $sysfield)
+            if(!in_array($sysfield, $allfields)) {
+                $this->logd("not in array $sysfield");
                 return false;
+            }
         return true;
     }
 
     private function _isvalid()
     {
+//$this->logd("isvalid $this->action");
         if(!$this->action) return false;
         if(!$this->_get_table_user()) return false;
         if(!$this->_exist_sysfields()) return false;
+//$this->logd("isvalid end");
+        return true;
     }
 
     public function get()
