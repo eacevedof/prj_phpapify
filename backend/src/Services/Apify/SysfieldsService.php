@@ -90,7 +90,7 @@ class SysfieldsService extends AppService
         if(!$this->_exist_sysfields()) return false;
     }
 
-    public function get_by_action()
+    public function get()
     {
         if(!$this->_isvalid()) return [];
 

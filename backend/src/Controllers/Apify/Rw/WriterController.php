@@ -34,7 +34,7 @@ class WriterController extends AppController
         $sAction = $this->get_post("action");
         
         $oServ = new WriterService($idContext,$sDb);
-        $arJson = $oServ->write($arParts,$sAction);
+        $arJson = $oServ->set_action($sAction)->write($arParts);
 
         $oJson = new HelperJson();
         if($oServ->is_error()) 
@@ -49,6 +49,8 @@ class WriterController extends AppController
             $oJson->set_message("resource updated");
         elseif($sAction=="delete")
             $oJson->set_message("resource deleted");
+        elseif($sAction=="deletelogic")
+            $oJson->set_message("resource deleted *");
 
         $oJson->set_payload(["result"=>$arJson,"lastid"=>$oServ->get_lastinsert_id()])->show();
     }//index
@@ -79,6 +81,8 @@ class WriterController extends AppController
             $oJson->set_message("resource updated");
         elseif($sAction=="delete")
             $oJson->set_message("resource deleted");
+        elseif($sAction=="deletelogic")
+            $oJson->set_message("resource deleted *");
 
         $oJson->set_payload($arJson)->show();
     }//raw    
