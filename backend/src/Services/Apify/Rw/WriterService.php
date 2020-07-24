@@ -54,6 +54,9 @@ class WriterService extends AppService
             case "delete":
                 $sSQL = $this->get_delete_sql($arParams);
             break;
+            case "deletelogic":
+                $sSQL = $this->get_deletelogic_sql($arParams);
+            break;
             default:
                 return $this->add_error("get_parsed_tosql","action: $sAction not implemented!");
         }
@@ -125,7 +128,38 @@ class WriterService extends AppService
         $sSQL = $oCrud->get_sql();
         //pr($sSQL);die;
         return $sSQL;
-    }//get_update_sql    
+    }//get_update_sql
+
+    private function get_deletelogic_sql($arParams)
+    {
+        $oCrud = new ComponentCrud();
+        if(!isset($arParams["table"])) return $this->add_error("get_update_sql no table");
+        if(!isset($arParams["fields"])) return $this->add_error("get_update_sql no fields");
+        //if(!isset($arParams["pks"])) return $this->add_error("get_update_sql no pks");
+
+        $oCrud->set_table($arParams["table"]);
+        foreach($arParams["fields"] as $sFieldName=>$sFieldValue)
+        {
+            $oCrud->add_update_fv($sFieldName,$sFieldValue);
+        }
+
+        if(isset($arParams["pks"]))
+            foreach($arParams["pks"] as $sFieldName=>$sFieldValue)
+            {
+                $oCrud->add_pk_fv($sFieldName,$sFieldValue);
+            }
+
+        if(isset($arParams["where"]))
+            foreach($arParams["where"] as $sWhere)
+            {
+                $oCrud->add_and($sWhere);
+            }
+
+        $oCrud->autoupdate();
+        $sSQL = $oCrud->get_sql();
+        //pr($sSQL);die;
+        return $sSQL;
+    }//get_deletelogic_sql
 
     public function write_raw($sSQL)
     {
