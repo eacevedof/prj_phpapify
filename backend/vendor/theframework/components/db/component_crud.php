@@ -3,8 +3,8 @@
  * @author Eduardo Acevedo Farje.
  * @link www.eduardoaf.com
  * @name TheFramework\Components\Db\ComponentCrud 
- * @file component_crud.php 2.6.0
- * @date 10-07-2020 14:12 SPAIN
+ * @file component_crud.php 2.7.0
+ * @date 25-07-2020 18:14 SPAIN
  * @observations
  */
 namespace TheFramework\Components\Db;
@@ -139,6 +139,25 @@ class ComponentCrud
         }
     }
 
+    private function is_tagged($value)
+    {
+        //$value = trim($value);
+        $tagini = substr($value,0,2);
+        $tagend = substr($value, -2);
+        $ilen = strlen($value);
+        if($ilen>4 && $tagini==="%%" && $tagend==="%%") {
+            $field = substr($value, 2, $ilen - 4);
+            return (trim($field) !== "");
+        }
+        return false;
+    }
+
+    private function get_untagged($tagged)
+    {
+        $ilen = strlen($tagged);
+        return substr($tagged, 2, $ilen - 4);
+    }
+
     public function autoinsert($sTable=NULL,$arFieldVal=[])
     {
         //Limpio la consulta 
@@ -207,14 +226,17 @@ class ComponentCrud
 
             $sSQL = "$sSQLComment UPDATE $sTable ";
             $sSQL .= "SET ";
-            
             //creo las asignaciones de campos set extras
             $arAux = [];
             foreach($arFieldVal as $sField=>$sValue)
             {
+                //echo "$sField  =  $sValue\n";
                 $this->clean_reserved($sField);
                 if($sValue===NULL)
                     $arAux[] = "$sField=NULL";
+                elseif($this->is_tagged($sValue)) {
+                    $arAux[] = "$sField={$this->get_untagged($sValue)}";
+                }
                 elseif($this->is_numeric($sField))
                     $arAux[] = "$sField=$sValue";
                 else    
@@ -232,6 +254,9 @@ class ComponentCrud
                 $this->clean_reserved($sField);
                 if($sValue===NULL)
                     $arAux[] = "$sField IS NULL";
+                elseif($this->is_tagged($sValue)) {
+                    $arAux[] = "$sField={$this->get_untagged($sValue)}";
+                }
                 elseif($this->is_numeric($sField))
                     $arAux[] = "$sField=$sValue";
                 else    
@@ -275,6 +300,9 @@ class ComponentCrud
                 $this->clean_reserved($sField);
                 if($sValue===NULL)
                     $arAux[] = "$sField IS NULL";
+                elseif($this->is_tagged($sValue)) {
+                    $arAux[] = "$sField={$this->get_untagged($sValue)}";
+                }
                 elseif($this->is_numeric($sField))
                     $arAux[] = "$sField=$sValue";
                 else    
@@ -324,9 +352,12 @@ class ComponentCrud
                     $this->clean_reserved($sField);
                     if($sValue===NULL)
                         $arAnd[] = "$sField IS NULL";
+                    elseif($this->is_tagged($sValue)) {
+                        $arAux[] = "$sField={$this->get_untagged($sValue)}";
+                    }
                     elseif($this->is_numeric($sField))
                         $arAux[] = "$sField=$sValue";
-                    else    
+                    else
                         $arAux[] = "$sField='$sValue'";
                 }
                 

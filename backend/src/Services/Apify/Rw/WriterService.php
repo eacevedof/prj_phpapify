@@ -70,7 +70,7 @@ class WriterService extends AppService
         if($issysfields){
             $useruuid = $arParams["useruuid"];
             $sysfields = (new SysfieldsService($this->idContext, $this->sDb,$this->action,$useruuid))->get();
-$this->logd($sysfields,"_add_sysfields $this->action");
+//$this->logd($sysfields,"_add_sysfields $this->action");
             foreach ($sysfields as $sysfield=>$value){
                 if(in_array($this->action,["update","deletelogic"])) $oCrud->add_update_fv($sysfield, $value);
                 if($this->action=="insert") $oCrud->add_insert_fv($sysfield, $value);
@@ -80,7 +80,7 @@ $this->logd($sysfields,"_add_sysfields $this->action");
 
     private function _get_insert_sql($arParams)
     {
-$this->logd($arParams,"_get_insert_sql.arparam");
+//$this->logd($arParams,"_get_insert_sql.arparam");
         $oCrud = new ComponentCrud();
         if(!isset($arParams["table"])) return $this->add_error("_get_insert_sql no table");
         if(!isset($arParams["fields"])) return $this->add_error("_get_insert_sql no fields");
@@ -90,6 +90,7 @@ $this->logd($arParams,"_get_insert_sql.arparam");
             $oCrud->add_insert_fv($sFieldName,$sFieldValue);
 
         $this->_add_sysfields($oCrud, $arParams);
+        $oCrud->add_insert_fv("update_date",null,0);
 
         $oCrud->autoinsert();
         
@@ -115,7 +116,7 @@ $this->logd($arParams,"_get_insert_sql.arparam");
 
     private function _get_update_sql($arParams)
     {
-$this->logd($arParams,"_get_update_sql.arparam");
+//$this->logd($arParams,"_get_update_sql.arparam");
         $oCrud = new ComponentCrud();
         if(!isset($arParams["table"])) return $this->add_error("_get_update_sql no table");
         if(!isset($arParams["fields"])) return $this->add_error("_get_update_sql no fields");
@@ -152,6 +153,7 @@ $this->logd($arParams,"_get_update_sql.arparam");
 
         $oCrud->set_table($arParams["table"]);
         $this->_add_sysfields($oCrud, $arParams);
+        $oCrud->add_update_fv("update_date","%%update_date%%",0);
 
         if(isset($arParams["pks"]))
             foreach($arParams["pks"] as $sFieldName=>$sFieldValue)
