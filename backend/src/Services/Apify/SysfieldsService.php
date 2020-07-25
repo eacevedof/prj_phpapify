@@ -66,6 +66,8 @@ class SysfieldsService extends AppService
         if($action==="insert")
             $fields[$this->useruuidfield] = $this->_get_uuid();
 
+        //if($action==="deletelogic")  $fields["update_date"] = "field-self";
+
         return $fields;
     }
     
@@ -107,7 +109,7 @@ class SysfieldsService extends AppService
 //$this->logd($sysfields,"sysfields");
         foreach ($sysfields as $sysfield)
             if(!in_array($sysfield, $allfields)) {
-                $this->logd("not in array $sysfield");
+//$this->logd("not in array $sysfield");
                 return false;
             }
         return true;
