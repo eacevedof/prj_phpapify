@@ -72,6 +72,7 @@ class SysfieldsService extends AppService
     private function _get_sysfields()
     {
         $action = $this->action;
+        if($action==="deletelogic") $action = "delete";
         $fields = [
             "{$action}_date", "{$action}_user"
         ];
