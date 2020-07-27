@@ -116,7 +116,7 @@ class WriterService extends AppService
         $oCrud->set_table($arParams["table"]);
         foreach($arParams["fields"] as $sFieldName=>$sFieldValue)
             if($sFieldValue==="null")
-                $oCrud->add_insert_fv($sFieldName,"%%$sFieldValue%%",0);
+                $oCrud->add_insert_fv($sFieldName,null,0);
             else
                 $oCrud->add_insert_fv($sFieldName,$sFieldValue);
 
@@ -140,7 +140,7 @@ class WriterService extends AppService
 
         foreach($arParams["fields"] as $sFieldName=>$sFieldValue)
             if($sFieldValue==="null")
-                $oCrud->add_update_fv($sFieldName,"%%$sFieldValue%%",0);
+                $oCrud->add_update_fv($sFieldName,null,0);
             else
                 $oCrud->add_update_fv($sFieldName,$sFieldValue);
 
@@ -160,15 +160,15 @@ class WriterService extends AppService
 
         $oCrud->autoupdate();
         $sSQL = $oCrud->get_sql();
-        pr($sSQL);die;
+        //pr($sSQL);die;
         return $sSQL;
     }//_get_update_sql
 
     private function _get_delete_sql($arParams)
     {
-        $oCrud = new ComponentCrud();
         if(!isset($arParams["table"])) return $this->add_error("_get_delete_sql no table");
 
+        $oCrud = new ComponentCrud();
         $oCrud->set_table($arParams["table"]);
         if(isset($arParams["where"]))
             foreach($arParams["where"] as $sWhere)
@@ -183,11 +183,13 @@ class WriterService extends AppService
 
     private function __get_deletelogic_sql($arParams)
     {
-        $oCrud = new ComponentCrud();
         if(!isset($arParams["table"])) return $this->add_error("__get_deletelogic_sql no table");
 
+        $oCrud = new ComponentCrud();
         $oCrud->set_table($arParams["table"]);
         $this->_add_sysfields($oCrud, $arParams);
+
+        $oCrud->add_update_fv("delete_platform",$arParams["fields"]["delete_platform"]);
         $oCrud->add_update_fv("update_date","%%update_date%%",0);
 
         if(isset($arParams["pks"]))

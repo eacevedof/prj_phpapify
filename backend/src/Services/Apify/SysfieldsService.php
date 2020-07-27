@@ -54,6 +54,8 @@ class SysfieldsService extends AppService
         return $id;
     }
 
+    private function _get_platform(){}
+
     private function _get_autofilled()
     {
         $action = $this->action;
@@ -64,6 +66,7 @@ class SysfieldsService extends AppService
         ];
 
         if($action==="insert")
+            //fields[code_cache] = uuid
             $fields[$this->useruuidfield] = $this->_get_uuid();
 
         //if($action==="deletelogic")  $fields["update_date"] = "field-self";
