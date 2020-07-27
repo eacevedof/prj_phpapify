@@ -47,15 +47,18 @@ class WriterService extends AppService
 
         switch ($sAction) {
             case "insert":
+                $this->_unset_sysfields($arParams,$sAction);
                 $sSQL = $this->_get_insert_sql($arParams);
             break;
             case "update":
+                $this->_unset_sysfields($arParams,$sAction);
                 $sSQL = $this->_get_update_sql($arParams);
             break;   
             case "delete":
                 $sSQL = $this->_get_delete_sql($arParams);
             break;
             case "deletelogic":
+                $this->_unset_sysfields($arParams,$sAction);
                 $sSQL = $this->__get_deletelogic_sql($arParams);
             break;
             default:
@@ -78,16 +81,44 @@ class WriterService extends AppService
         }
     }
 
+    private function _unset_sysfields(&$arParams,$sAction)
+    {
+        $issysfields = $arParams["autosysfields"] ?? 0;
+        if($issysfields)
+        {
+            switch ($sAction) {
+                case "insert":
+                    $arUnset = ["update_date", "update_user", "update_platform", "delete_date", "delete_user", "delete_platform"];
+                    break;
+                case "update":
+                    $arUnset = ["insert_date", "insert_user", "insert_platform", "delete_date", "delete_user", "delete_platform"];
+                    break;
+                case "deletelogic":
+                    $arUnset = ["insert_date", "insert_user", "insert_platform", "update_date", "update_user", "update_platform"];
+                    break;
+                default:
+                    $arUnset = [];
+            }
+
+            foreach ($arUnset as $fieldname)
+                if (isset($arParams["fields"][$fieldname]))
+                    unset($arParams["fields"][$fieldname]);
+        }
+    }
+
     private function _get_insert_sql($arParams)
     {
 //$this->logd($arParams,"_get_insert_sql.arparam");
-        $oCrud = new ComponentCrud();
         if(!isset($arParams["table"])) return $this->add_error("_get_insert_sql no table");
         if(!isset($arParams["fields"])) return $this->add_error("_get_insert_sql no fields");
 
+        $oCrud = new ComponentCrud();
         $oCrud->set_table($arParams["table"]);
         foreach($arParams["fields"] as $sFieldName=>$sFieldValue)
-            $oCrud->add_insert_fv($sFieldName,$sFieldValue);
+            if($sFieldValue==="null")
+                $oCrud->add_insert_fv($sFieldName,"%%$sFieldValue%%",0);
+            else
+                $oCrud->add_insert_fv($sFieldName,$sFieldValue);
 
         $this->_add_sysfields($oCrud, $arParams);
         $oCrud->add_insert_fv("update_date",null,0);
@@ -96,6 +127,42 @@ class WriterService extends AppService
         
         return $oCrud->get_sql();
     }
+
+    private function _get_update_sql($arParams)
+    {
+//$this->logd($arParams,"_get_update_sql.arparam");
+        if(!isset($arParams["table"])) return $this->add_error("_get_update_sql no table");
+        if(!isset($arParams["fields"])) return $this->add_error("_get_update_sql no fields");
+        //if(!isset($arParams["pks"])) return $this->add_error("_get_update_sql no pks");
+
+        $oCrud = new ComponentCrud();
+        $oCrud->set_table($arParams["table"]);
+
+        foreach($arParams["fields"] as $sFieldName=>$sFieldValue)
+            if($sFieldValue==="null")
+                $oCrud->add_update_fv($sFieldName,"%%$sFieldValue%%",0);
+            else
+                $oCrud->add_update_fv($sFieldName,$sFieldValue);
+
+        $this->_add_sysfields($oCrud, $arParams);
+
+        if(isset($arParams["pks"]))
+            foreach($arParams["pks"] as $sFieldName=>$sFieldValue)
+            {
+                $oCrud->add_pk_fv($sFieldName,$sFieldValue);
+            }
+
+        if(isset($arParams["where"]))
+            foreach($arParams["where"] as $sWhere)
+            {
+                $oCrud->add_and($sWhere);
+            }
+
+        $oCrud->autoupdate();
+        $sSQL = $oCrud->get_sql();
+        pr($sSQL);die;
+        return $sSQL;
+    }//_get_update_sql
 
     private function _get_delete_sql($arParams)
     {
@@ -113,38 +180,6 @@ class WriterService extends AppService
         
         return $sSQL;      
     }//_get_delete_sql
-
-    private function _get_update_sql($arParams)
-    {
-//$this->logd($arParams,"_get_update_sql.arparam");
-        $oCrud = new ComponentCrud();
-        if(!isset($arParams["table"])) return $this->add_error("_get_update_sql no table");
-        if(!isset($arParams["fields"])) return $this->add_error("_get_update_sql no fields");
-        //if(!isset($arParams["pks"])) return $this->add_error("_get_update_sql no pks");
-
-        $oCrud->set_table($arParams["table"]);
-        foreach($arParams["fields"] as $sFieldName=>$sFieldValue)
-            $oCrud->add_update_fv($sFieldName,$sFieldValue);
-
-        $this->_add_sysfields($oCrud, $arParams);
-        
-        if(isset($arParams["pks"]))
-            foreach($arParams["pks"] as $sFieldName=>$sFieldValue)
-            {
-                $oCrud->add_pk_fv($sFieldName,$sFieldValue);
-            }        
-
-        if(isset($arParams["where"]))
-            foreach($arParams["where"] as $sWhere)
-            {
-                $oCrud->add_and($sWhere);
-            }        
-
-        $oCrud->autoupdate();
-        $sSQL = $oCrud->get_sql();
-        //pr($sSQL);die;
-        return $sSQL;
-    }//_get_update_sql
 
     private function __get_deletelogic_sql($arParams)
     {
