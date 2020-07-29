@@ -118,6 +118,13 @@ class ComponentCrud
         if(!$this->arLimit) return "";
         // LIMIT regfrom (secuenta desde 0), perpage
         $sLimit = " LIMIT ".implode(", ",$this->arLimit);
+        /**
+         * si por ejemplo deseo paginar de 10 en 10
+         * para la pag:
+         *  1 sería LIMIT 0,10   -- 1 a 10
+         *  2 LIMIT 10,10        -- 11 a 20
+         *  3 LIMIT 20,10        -- 21 a 30
+         */
         return $sLimit;
     }
     
