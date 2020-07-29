@@ -7,7 +7,8 @@ cd /c/proyecto/prj_phpapify/backend
 
 php /c/programas/composer/composer.phar update
 
-php -S localhost:3000 -t backend/public
+php -S 0.0.0.0:10000 -t backend/public
+php -S localhost:10000 -t backend/public
 ```
 
 ```js
