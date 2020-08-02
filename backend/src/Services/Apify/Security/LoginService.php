@@ -26,7 +26,7 @@ class LoginService extends AppService
 
     private function _get_encdec_config()
     {
-        $sPathfile = $_ENV["APP_ENCDECRYPT"] ?? __DIR__.DIRECTORY_SEPARATOR."encdecrypt.json";
+        $sPathfile = $this->get_env("APP_ENCDECRYPT") ?? __DIR__.DIRECTORY_SEPARATOR."encdecrypt.json";
         //$this->logd($sPathfile,"pathfile");
         $arconf = (new ComponentConfig($sPathfile))->get_node("domain",$this->domain);
         return $arconf;
@@ -35,8 +35,7 @@ class LoginService extends AppService
     private function _load_encdec()
     {
         $config = $this->_get_encdec_config();
-        if(!$config)
-            throw new \Exception("Domain {$this->domain} is not authorized 2");
+        if(!$config) throw new \Exception("Domain {$this->domain} is not authorized 2");
 
         $this->encdec = new ComponentEncdecrypt(1);
         $this->encdec->set_sslmethod($config["sslenc_method"]??"");
@@ -89,15 +88,12 @@ class LoginService extends AppService
     {
         $username = $this->arlogin["user"] ?? "";
         $password = $this->arlogin["password"] ?? "";
-        if(!$username)
-            throw new \Exception("No user provided");
+        if(!$username) throw new \Exception("No user provided");
 
-        if(!$password)
-            throw new \Exception("No password provided");
+        if(!$password) throw new \Exception("No password provided");
 
         $config = $this->_get_login_config();
-        if(!$config)
-            throw new \Exception("Source domain not authorized");
+        if(!$config) throw new \Exception("Source domain not authorized");
 
         $users = $config["users"] ?? [];
         foreach ($users as $user)

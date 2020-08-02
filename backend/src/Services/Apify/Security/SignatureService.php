@@ -22,8 +22,7 @@ class SignatureService
 
     private function _get_encdec_config()
     {
-        $sPathfile = $_ENV["APP_ENCDECRYPT"] ?? __DIR__.DIRECTORY_SEPARATOR."encdecrypt.json";
-        //print($sPathfile);die;
+        $sPathfile = $this->get_env("APP_ENCDECRYPT") ?? __DIR__.DIRECTORY_SEPARATOR."encdecrypt.json";
         $arconf = (new ComponentConfig($sPathfile))->get_node("domain",$this->domain);
         return $arconf;
     }
@@ -31,8 +30,7 @@ class SignatureService
     private function _load_encdec()
     {
         $config = $this->_get_encdec_config($this->domain);
-        if(!$config)
-            throw new \Exception("Domain {$this->domain} is not authorized");
+        if(!$config) throw new \Exception("Domain {$this->domain} is not authorized");
 
         $this->encdec = new ComponentEncdecrypt(1);
         $this->encdec->set_sslmethod($config["sslenc_method"]??"");
@@ -51,9 +49,6 @@ class SignatureService
         ];
 
         $instring = implode("-",$package);
-        //print("package to encrypt:\n");
-        //print_r($package);
-        //print_r("to encrypt:  {$instring}");
         $token = $this->encdec->get_sslencrypted($instring);
         return $token;
     }
@@ -65,39 +60,28 @@ class SignatureService
         return $password;
     }
 
-    private function _get_remote_ip()
-    {
-        return $_SERVER["REMOTE_ADDR"]  ?? "127.0.0.1";
-    }
+    private function _get_remote_ip(){return $_SERVER["REMOTE_ADDR"] ?? "127.0.0.1";}
 
     private function validate_package($arpackage)
     {
         $data = var_export($this->data,1);
 
-        if(!$arpackage)
-            throw new Exception("Wrong token submitted");
+        if(!$arpackage) throw new Exception("Wrong token submitted");
 
-        if($arpackage[0]!==$this->domain)
-            throw new Exception("Domain {$this->domain} not Authorized");
+        if($arpackage[0]!==$this->domain) throw new Exception("Domain {$this->domain} not Authorized");
 
-        if($arpackage[1]!==$this->_get_remote_ip())
-            throw new Exception("Wrong source {$arpackage[0]} in token");
+        if($arpackage[1]!==$this->_get_remote_ip()) throw new Exception("Wrong source {$arpackage[0]} in token");
 
         $md5 = md5($data);
-        if($arpackage[2]!==$md5)
-            throw new Exception("Wrong hash submitted");
+        if($arpackage[2]!==$md5) throw new Exception("Wrong hash submitted");
 
-        if($arpackage[3]!==date("Ymd"))
-            throw new Exception("token has expired");
+        if($arpackage[3]!==date("Ymd")) throw new Exception("token has expired");
     }
 
     public function is_valid($token)
     {
-        //print_r("\ntoken:{$token}");
         $instring = $this->encdec->get_ssldecrypted($token);
         $package = explode("-",$instring);
-        //print_r("exploded:");
-        //print_r($package);
         //esto lanza expecipones
         $this->validate_package($package);
         return true;
