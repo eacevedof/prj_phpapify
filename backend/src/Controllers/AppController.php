@@ -10,16 +10,22 @@
 namespace App\Controllers;
 
 use App\Services\Apify\Security\LoginService;
+use http\Exception;
 use TheFramework\Helpers\HelperJson;
 use App\Services\Apify\Security\SignatureService;
-use App\Traits\ErrorTrait;
 use App\Traits\LogTrait;
+use App\Traits\EnvTrait;
+use App\Traits\ErrorTrait;
+
 
 class AppController  
 {
     use ErrorTrait;
     use LogTrait;
+    use EnvTrait;
+
     protected const KEY_APIFYUSERTOKEN = "apify-usertoken";
+    //protected const KEY_APIFYDOMAIN= "apify-origindomain";
 
     public function __construct() 
     {
@@ -31,7 +37,7 @@ class AppController
     {
         try{
             $post = $this->get_post();
-            $domain = $_SERVER["REMOTE_HOST"] ?? "";
+            $domain = $this->get_domain(); //trata excepcion
             $token = $post["API_SIGNATURE"] ?? "";
             unset($post["API_SIGNATURE"]);
             $oServ = new SignatureService($domain,$post);
@@ -48,7 +54,7 @@ class AppController
     protected function check_usertoken()
     {
         try{
-            $domain = $_SERVER["REMOTE_HOST"] ?? "*";
+            $domain = $this->get_domain(); //excepcion
             $token = $this->get_post(self::KEY_APIFYUSERTOKEN);
             $this->logd("domain:$domain,token:$token","check_usertoken");
             $oServ = new LoginService($domain);
@@ -190,15 +196,42 @@ class AppController
         echo json_encode($arData);        
     }
 
-    protected function get_header($key)
+    protected function get_header($key=null)
     {
         $all = getallheaders();
         $this->logd($all,"get_header.all");
+        if(!$key) return $all;
         foreach ($all as $k=>$v)
             if(strtolower($k)===strtolower($key))
                 return $v;
-
         return null;
+/*
+ Ejemplo de all:
+  'Host' => 'localhost:10000',
+  'Connection' => 'keep-alive',
+  'Content-Length' => '883',
+  'Accept' => 'application/json, text/plain, * /*',
+  'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36',
+  'Content-Type' => 'multipart/form-data; boundary=----WebKitFormBoundaryvqgSyJucPdRuOBVB',
+  'Origin' => 'http://localhost:3000',
+  'Sec-Fetch-Site' => 'same-site',
+  'Sec-Fetch-Mode' => 'cors',
+  'Sec-Fetch-Dest' => 'empty',
+  'Referer' => 'http://localhost:3000/admin/product/516',
+  'Accept-Encoding' => 'gzip, deflate, br',
+  'Accept-Language' => 'es-ES,es;q=0.9,en;q=0.8,lt;q=0.7',
+ */
+    }
+
+    protected function get_domain()
+    {
+        //$this->get_header();
+        $domain = $_SERVER["REMOTE_HOST"] ?? "";
+        if(!$domain) $domain = $this->get_header("origin");
+        //if(!$domain) $domain = $_POST[self::KEY_APIFYDOMAIN] ?? "";
+        if(!$domain) throw new \Exception("No domain supplied");
+        $domain = str_replace(["https://","http://"],"",$domain);
+        return $domain;
     }
 
 }//AppController
