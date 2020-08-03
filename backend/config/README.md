@@ -9,4 +9,4 @@
     - si todo va bien se devolverá el token de acceso que caduca a la semana. 
     
 ### Notas:
-- Para poder usar el endpoint `/apifiy/security/get-password`, habría que configurar **encdecrypt** con el mismo cifrado del dominio sobre el que se desea generar un login.
+- Para poder usar el endpoint `/apifiy/security/get-password`, habría que configurar **encdecrypt** (domain: self) con el mismo cifrado del dominio sobre el que se desea generar un login.
