@@ -1,12 +1,14 @@
 [
   {
-    "domain": "*",
+    "domain": "react-restrict-dev",
+    "domain": "localhost:3000",
     "sslenc_method":"AES-256-CBC",
     "sslenc_key":"@11111111@",
     "sslsalt":"@#$.salt.$#@"
   },
   {
-    "domain": "localhost:800",
+    "domain": "tinymarket",
+    "domain": "localhost:300",
     "sslenc_method":"AES-256-CBC",
     "sslenc_key":"@11111111@",
     "sslsalt":"@#$.salt.$#@"

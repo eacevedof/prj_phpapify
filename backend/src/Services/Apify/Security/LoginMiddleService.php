@@ -24,7 +24,7 @@ class LoginMiddleService extends AppService
 
     private function _get_encdec_config()
     {
-        $sPathfile = $_ENV["APP_ENCDECRYPT"] ?? __DIR__.DIRECTORY_SEPARATOR."encdecrypt.json";
+        $sPathfile = $this->get_env("APP_ENCDECRYPT") ?? __DIR__.DIRECTORY_SEPARATOR."encdecrypt.json";
         //$this->logd($sPathfile,"pathfile");
         $arconf = (new ComponentConfig($sPathfile))->get_node("domain",$this->origin);
         return $arconf;
@@ -33,7 +33,8 @@ class LoginMiddleService extends AppService
     private function _load_encdec()
     {
         $config = $this->_get_encdec_config();
-        if(!$config) throw new \Exception("domain {$this->origin} is not authorized 2");
+        //$this->logd($config,"_load_encdec");
+        if(!$config) throw new \Exception("domain {$this->origin} is not authorized 2 by middle");
 
         $this->encdec = new ComponentEncdecrypt(1);
         $this->encdec->set_sslmethod($config["sslenc_method"]??"");
