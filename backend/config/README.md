@@ -1,0 +1,10 @@
+### info:
+- **context.json**
+    - configuraciones dbs a publicar
+- **encdecrypt.json**
+    - como se cifrarán las contraseñas y tokens según el dominio de origen. `header.host o header.origin`
+    - así pues el token desde un dominio no sirve para otro
+- **login.json**
+    - `usuario/contraseña` que debe enviar cada dominio de origen para poder acceder a los recursos
+    - si todo va bien se devolverá el token de acceso que caduca a la semana. 
+    
