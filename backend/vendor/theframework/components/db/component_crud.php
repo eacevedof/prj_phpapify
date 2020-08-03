@@ -3,8 +3,8 @@
  * @author Eduardo Acevedo Farje.
  * @link www.eduardoaf.com
  * @name TheFramework\Components\Db\ComponentCrud 
- * @file component_crud.php 2.7.0
- * @date 25-07-2020 18:14 SPAIN
+ * @file component_crud.php 2.7.1
+ * @date 03-08-2020 14:54 SPAIN
  * @observations
  */
 namespace TheFramework\Components\Db;
@@ -148,6 +148,7 @@ class ComponentCrud
 
     private function is_tagged($value)
     {
+        if(!is_string($value)) return false;
         //$value = trim($value);
         $tagini = substr($value,0,2);
         $tagend = substr($value, -2);
@@ -772,4 +773,4 @@ class ComponentCrud
     public function show_errors(){echo "<pre>".var_export($this->arErrors,1);}
     public function set_dbobj($oDb=NULL){$this->oDB=$oDb;}
     
-}//Crud 2.6.0
+}//Crud 2.7.1
