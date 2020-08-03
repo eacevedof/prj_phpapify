@@ -1,10 +1,11 @@
 <?php
 namespace App\Services\Apify\Security;
+use App\Services\AppService;
 use Matrix\Exception;
 use TheFramework\Components\Config\ComponentConfig;
 use TheFramework\Components\Session\ComponentEncdecrypt;
 
-class SignatureService
+class SignatureService extends AppService
 {
     private $domain = null;
     private $data = null;
