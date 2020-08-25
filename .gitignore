@@ -8,5 +8,6 @@
 /backend/config/login.json
 /backend/config/encdecrypt.json
 /backend/public/temp/
+/backend/public/*_custom.log
 .idea
 /backend/.env.local

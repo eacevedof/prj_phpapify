@@ -52,7 +52,7 @@ class SysfieldsService extends AppService
         //no se está suministrando el
         if($this->useruuid==="null") return null;
         $sql = "SELECT id FROM $this->usertable WHERE $this->useruuidfield='$this->useruuid'";
-        lg($sql,"ssqqll");
+        //lg($sql,"ssqqll");
         $id = $this->oBehav->query($sql,0,0);
         if(!$id) $id = null;
         return $id;
