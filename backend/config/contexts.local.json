@@ -71,5 +71,21 @@
         "password":"1234"
       }
     ]
+  },
+  {
+    "id":"c5",
+    "alias":"shopelchalan",
+    "description":"Bd Shop El Chalan",
+    "type":"mysql",
+    "server":"127.0.0.1",
+    "port":"3306",
+    "schemas":[
+      {
+        "alias": "db-shopelchalan",
+        "database":"db_shopelchalan",
+        "user":"root",
+        "password":"1234"
+      }
+    ]
   }
 ]

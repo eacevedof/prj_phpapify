@@ -15,6 +15,7 @@
   },
   {
     "domain": "tinymarket",
+    "domain": "shopelchalan",
     "domain": "localhost:300",
     "sslenc_method":"AES-256-CBC",
     "sslenc_key":"@11111111@",
