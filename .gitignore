@@ -6,8 +6,12 @@
 /backend/config/config.php
 /backend/config/contexts.json
 /backend/config/login.json
+/backend/config/config.prod.php
+/backend/config/contexts.prod.json
+/backend/config/login.prod.json
 /backend/config/encdecrypt.json
 /backend/public/temp/
 /backend/public/*_custom.log
 .idea
 /backend/.env.local
+/backend/.env.prod
