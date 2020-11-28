@@ -37,6 +37,6 @@ php run.php --class=App.Services.Dbs.SchemaService --method=get_tables_info --sT
     - sacado de [aqui](https://www.ionos.com/community/hosting/php/using-php-composer-in-11-ionos-webhosting-packages/)
     
 #### Notas
-- Al hacer un deploy con fetch --all suele dar este error:
+- Al hacer un deploy con `git fetch --all; reset --hard origin/master` suele dar este error:
     - `Unauthorized domain 2` (o algo así)
     - Hay que eliminar los .env que no son de producción 
