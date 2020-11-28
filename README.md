@@ -1,5 +1,5 @@
 # prj_phpapify
-## Actualizado: 27/04/2020
+## Actualizado: 28/11/2020
 Generador de scripts de importación
 
 ```js
@@ -35,4 +35,8 @@ php run.php --class=App.Services.Dbs.SchemaService --method=get_tables_info --sT
     - con esta funciona:
     - `/usr/bin/php7.1-cli -d 'memory_limit=-1' ~/composer.phar update -o --ignore-platform-reqs`
     - sacado de [aqui](https://www.ionos.com/community/hosting/php/using-php-composer-in-11-ionos-webhosting-packages/)
-        
+    
+#### Notas
+- Al hacer un deploy con fetch --all suele dar este error:
+    - `Unauthorized domain 2` (o algo así)
+    - Hay que eliminar los .env que no son de producción 
