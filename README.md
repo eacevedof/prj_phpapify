@@ -23,6 +23,9 @@ php run.php --class=App.Services.Dbs.SchemaService --method=get_tables
 ```js
 php run.php --class=App.Services.Dbs.SchemaService --method=get_tables_info --sTables=insertion_orders,bigdata_banners,bigdata_placements,super_black_list,line_items,insertion_orders_placement_type,insertion_orders_placement_tactic,pmp_deals,pmp_deals_placements
 ```
+#### comandos
+- tests:
+    - php ./vendor/bin/phpunit ./tests
 
 # COMPOSER EN IONOS
 - hay que ejecutar el ionos.sh

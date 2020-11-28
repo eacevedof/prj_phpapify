@@ -19,3 +19,4 @@
 .idea
 /backend/.env.local
 /backend/.env.prod
+/backend/.phpunit.result.cache
