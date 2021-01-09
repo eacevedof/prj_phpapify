@@ -24,8 +24,8 @@ class ComponentRouter
         $this->arPieces = ["urlsep_exploded"=>[],"get_params"=>[]];
         $this->load_routes();
         $this->load_pieces();
-        print_r($this->sRequestUri);
-        print_r($this->arPieces);
+        //print_r($this->sRequestUri);
+        //print_r($this->arPieces);
     }
     
     private function load_routes()
@@ -72,7 +72,7 @@ class ComponentRouter
     
     private function compare_pieces($arRequest,$arRoute)
     {
-        //bug($arRequest);pr($arRoute);
+        bug($arRequest);pr($arRoute);
         if(count($arRequest)!=count($arRoute))
             return FALSE;
         
