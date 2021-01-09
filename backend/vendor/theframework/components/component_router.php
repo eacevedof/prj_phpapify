@@ -72,7 +72,7 @@ class ComponentRouter
     
     private function compare_pieces($arRequest,$arRoute)
     {
-        bug($arRequest);pr($arRoute);
+        //bug($arRequest);pr($arRoute);
         if(count($arRequest)!=count($arRoute))
             return FALSE;
         
