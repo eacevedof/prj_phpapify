@@ -18,6 +18,7 @@ class ComponentRouter
         
     public function __construct($arRoutes=[],$sPathRoutes="") 
     {
+        print_r($_SERVER);die;
         $this->sRequestUri = $_SERVER["REQUEST_URI"];
         $this->sPathRoutes = $sPathRoutes;
         $this->arRoutes = $arRoutes;
