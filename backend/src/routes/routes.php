@@ -22,14 +22,14 @@ return [
     ["url"=>"/apify/write/raw","controller"=>"App\Controllers\Apify\Rw\WriterController","method"=>"raw"],
     ["url"=>"/apify/write","controller"=>"App\Controllers\Apify\Rw\WriterController","method"=>"index"],
 
-    ["url"=>"/apifiy/security/get-password","controller"=>"App\Controllers\Apify\Security\PasswordController","method"=>"index"],
-    ["url"=>"/apifiy/security/get-signature","controller"=>"App\Controllers\Apify\Security\SignatureController","method"=>"index"],
-    ["url"=>"/apifiy/security/is-valid-signature","controller"=>"App\Controllers\Apify\Security\SignatureController","method"=>"is_valid_signature"],
+    ["url"=>"/apify/security/get-password","controller"=>"App\Controllers\Apify\Security\PasswordController","method"=>"index"],
+    ["url"=>"/apify/security/get-signature","controller"=>"App\Controllers\Apify\Security\SignatureController","method"=>"index"],
+    ["url"=>"/apify/security/is-valid-signature","controller"=>"App\Controllers\Apify\Security\SignatureController","method"=>"is_valid_signature"],
 
 //tokens
-    ["url"=>"/apifiy/security/login","controller"=>"App\Controllers\Apify\Security\LoginController","method"=>"index"],
-    ["url"=>"/apifiy/security/login-middle","controller"=>"App\Controllers\Apify\Security\LoginController","method"=>"middle"],
-    ["url"=>"/apifiy/security/is-valid-token","controller"=>"App\Controllers\Apify\Security\LoginController","method"=>"is_valid_token"],
+    ["url"=>"/apify/security/login","controller"=>"App\Controllers\Apify\Security\LoginController","method"=>"index"],
+    ["url"=>"/apify/security/login-middle","controller"=>"App\Controllers\Apify\Security\LoginController","method"=>"middle"],
+    ["url"=>"/apify/security/is-valid-token","controller"=>"App\Controllers\Apify\Security\LoginController","method"=>"is_valid_token"],
 
 //resto de rutas    
     ["url"=>"https://github.com/eacevedof/prj_phpapify/tree/master/backend/src/Controllers/Apify","controller"=>"App\Controllers\NotFoundController","method"=>"error_404"],
