@@ -45,6 +45,7 @@ class AppController
         }
         catch (\Exception $e)
         {
+            $this->logerr($e->getMessage(),"AppController.check_signature");
             (new HelperJson())->set_code(HelperJson::CODE_UNAUTHORIZED)->
             set_error([$e->getMessage()])->
             show(1);
@@ -63,6 +64,7 @@ class AppController
         }
         catch (\Exception $e)
         {
+            $this->logerr($e->getMessage(),"AppController.check_usertoken");
             $oJson = new HelperJson();
             $oJson->set_code(HelperJson::CODE_FORBIDDEN)->
             set_error([$e->getMessage()])->

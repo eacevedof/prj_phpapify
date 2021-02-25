@@ -31,6 +31,7 @@ class SignatureController extends AppController
         }
         catch (\Exception $e)
         {
+            $this->logerr($e->getMessage(),"SignatureController.index");
             $oJson->set_code(HelperJson::CODE_UNAUTHORIZED)->
             set_error([$e->getMessage()])->
             show(1);

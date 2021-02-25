@@ -31,6 +31,7 @@ class PasswordController extends AppController
         }
         catch (\Exception $e)
         {
+            $this->logerr($e->getMessage(),"PasswordController.index");
             $oJson->set_code(HelperJson::CODE_UNAUTHORIZED)->
             set_error([$e->getMessage()])->
             show(1);
