@@ -24,5 +24,11 @@ trait LogTrait
         $oLog = new ComponentLog("debug",PATH_LOGS);
         $oLog->save($mxVar,$sTitle);
     }
+
+    protected function logerr($mxVar,$sTitle=NULL)
+    {
+        $oLog = new ComponentLog("error",PATH_LOGS);
+        $oLog->save($mxVar,$sTitle);
+    }    
     
 }//LogTrait

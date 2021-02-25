@@ -53,6 +53,7 @@ class LoginController extends AppController
         }
         catch (\Exception $e)
         {
+            $this->logerr($e->getMessage(),"login.miggle exception");
             $oJson->set_code(HelperJson::CODE_UNAUTHORIZED)->
             set_error([$e->getMessage()])->
             show(1);

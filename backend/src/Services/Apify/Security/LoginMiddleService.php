@@ -79,6 +79,7 @@ class LoginMiddleService extends AppService
         ];
 
         $instring = implode("|",$arpackage);
+        $this->logd($instring,"instring");
         $token = $this->encdec->get_sslencrypted($instring);
         return $token;
     }
