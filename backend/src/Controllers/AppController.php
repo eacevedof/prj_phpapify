@@ -30,7 +30,6 @@ class AppController
     public function __construct() 
     {
         //guardo trazas del $_GET y $_POST
-        $this->logerr("error ???","err");
         $this->request_log();
     }
 
