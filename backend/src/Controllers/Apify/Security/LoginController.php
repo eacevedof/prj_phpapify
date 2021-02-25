@@ -45,6 +45,7 @@ class LoginController extends AppController
      */
     public function middle()
     {
+        $this->logd("middle start");
         $oJson = new HelperJson();
         try{
             $oServ = new LoginMiddleService($this->get_post());
@@ -58,6 +59,7 @@ class LoginController extends AppController
             set_error([$e->getMessage()])->
             show(1);
         }
+        $this->logd("middle end");
     }
 
     /**
