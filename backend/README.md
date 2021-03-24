@@ -1,7 +1,7 @@
 ### Access
-- Access involves 3 files:
+- Access involves 2 files:
   - login.json
-    - Every source (domain and/or host) must exist in login.local.json as doamin key
+    - Every source (domain and/or host) have to exist in this file as domain key
     - Every source contains users with:
       - id 
       - user
@@ -17,8 +17,9 @@
 
 ### get a password 
 - /apify/security/get-password
-  - Origin *necesario para obtener la sal por origen*
-  - word  *cualquier palabra que se devolverá cifrada. Esta habrá que colocarla en login.json*
+  - POST
+    - Origin *Needed to obtain the salt key by source*
+    - word  *Any text that will be converted in a hash token. This token must be placed in login.json*
 ```json
 {
     "status": 1,
@@ -35,9 +36,9 @@
 ### login
 - /apify/security/login
   - POST 
-    - user
-    - password
-    - REMOTE_HOST | Origin 
+    - user *user in login.sjon*
+    - password *password in login.json*
+    - REMOTE_HOST | Origin *domain in login.json*
 ```json
 {
     "status": 1,
@@ -55,4 +56,4 @@
   - POST 
     - user
     - password
-    - remotehost *se mapea con origin*
+    - remotehost *similar to origin in common login endpoint*
