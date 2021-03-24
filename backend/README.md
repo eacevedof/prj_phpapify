@@ -19,6 +19,18 @@
 - /apify/security/get-password
   - Origin *necesario para obtener la sal por origen*
   - word  *cualquier palabra que se devolverá cifrada. Esta habrá que colocarla en login.json*
+```json
+{
+    "status": 1,
+    "message": "",
+    "links": [],
+    "errors": [],
+    "data": {
+        "result": "$2y$10$EHXc47BuhSBD5QCOiUPgTurEbcfDbnsqNkYEQ8jA2.Tr4oDTc6RvK"
+    },
+    "included": []
+}
+```
 
 ### login
 - /apify/security/login
@@ -26,6 +38,18 @@
     - user
     - password
     - REMOTE_HOST | Origin 
+```json
+{
+    "status": 1,
+    "message": "",
+    "links": [],
+    "errors": [],
+    "data": {
+        "token": "ZVVqeTQ0cUZldTBjNnFJTHkrdWJJWVRwR1FOTGdjdHVzcGJpUmI0SVlBRUxkZmxES2txY05rNHNxQU9wN1RmMSs3Tk9MTCtHeU1XT0hZdzUzVS9rT2toOEIyaDRMV3BLa3JVdEk4N3V2LzZTZ3hMZzh6Ulp3Zi9GQkpaWmlLRnZmank5QVJRY05FenU5WFFScStRVnZlQ2RzU0ZlTmZVWUVVbCt6SlF0YUtBPQ=="
+    },
+    "included": []
+}
+```
 ### login as middleware
 - /apify/security/login-middle
   - POST 
