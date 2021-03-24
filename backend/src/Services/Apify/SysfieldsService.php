@@ -14,7 +14,7 @@ use App\Services\AppService;
 use App\Behaviours\SchemaBehaviour;
 use App\Factories\DbFactory;
 
-class SysfieldsService extends AppService
+final class SysfieldsService extends AppService
 {
     private $usertable = "base_user";
     private $useruuidfield = "code_cache";

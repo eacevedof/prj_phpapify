@@ -9,9 +9,7 @@
  */
 namespace App\Services\Dbs;
 
-use App\Services\AppService;
-
-class CoreQueriesService extends AppService
+final class CoreQueriesService
 {
 
     public function get_fields_min($sDb,$sTable)

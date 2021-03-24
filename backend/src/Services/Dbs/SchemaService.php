@@ -11,7 +11,7 @@ namespace App\Services\Dbs;
 
 use App\Behaviours\SchemaBehaviour;
 
-class SchemaService
+final class SchemaService
 {
     private $oBehav;
 

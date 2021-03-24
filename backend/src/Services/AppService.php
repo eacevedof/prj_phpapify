@@ -14,7 +14,7 @@ use App\Traits\ErrorTrait;
 use App\Traits\LogTrait;
 use App\Traits\EnvTrait;
 
-class AppService
+abstract class AppService
 {
     use ErrorTrait;
     use LogTrait;
