@@ -17,8 +17,8 @@
 
 ### get a password 
 - /apify/security/get-password
-  - Origin
-  - word
+  - Origin *necesario para obtener la sal por origen*
+  - word  *cualquier palabra que se devolverá cifrada. Esta habrá que colocarla en login.json*
 
 ### login
 - /apify/security/login
