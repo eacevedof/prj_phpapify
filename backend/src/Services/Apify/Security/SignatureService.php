@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\Apify\Security;
 use App\Services\AppService;
-use Matrix\Exception;
+use \Exception;
 use TheFramework\Components\Config\ComponentConfig;
 use TheFramework\Components\Session\ComponentEncdecrypt;
 

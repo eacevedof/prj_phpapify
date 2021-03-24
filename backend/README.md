@@ -5,11 +5,7 @@
     - Every source contains users with:
       - id 
       - user
-      - password  
-    - To create an encrypted password you can use [this tool](http://eduardoaf.com/servicios/probar-openssl-encrypt)
-      - option = 0
-      - iv = 99326425
-      - You can get the rest in encdecrypt.json  
+      - password
 
   - encdecrypt.json
     - Config file with params that will be used for password validation
@@ -19,8 +15,13 @@
       - sslenc_key
       - sslsalt
 
-### login
+### get a password 
 - /apify/security/get-password
+  - Origin
+  - word
+
+### login
+- /apify/security/login
   - POST 
     - user
     - password
